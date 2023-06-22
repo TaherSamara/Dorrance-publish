@@ -1,0 +1,186 @@
+﻿@{
+    ViewBag.Title = "Authors";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+    var all = ViewBag.vw as IEnumerable<dorranceCP.Models.authers>;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+}
+
+@section css{
+
+    <style>
+        .addBookForm .form-group {
+            margin-bottom: 10px !important;
+        }
+
+        .margin-topForm {
+            margin-top: 0 !important;
+        }
+
+        .table thead tr th {
+            font-size: 15px !important;
+        }
+
+        .autImg {
+            float: left !important;
+        }
+
+        td h4 {
+            line-height: 34px;
+            verticle-alight: unset !important;
+        }
+
+         .table td {
+        color: #fff !important;
+    }
+
+        .numOfBook {
+            width: 20% !important;
+        }
+
+        .generateCreateButtons {
+            margin-top: 20px;
+        }
+
+        /*.table thead tr th {
+            padding: 17px !important;
+        }*/
+
+        .settingBox1 li {
+            padding: 15px 0;
+            border-bottom: .5px solid #E6E6E6;
+            width: 100%;
+        }
+
+        .settingsSec1 {
+            position: relative;
+        }
+
+        .settingBox1 {
+            display: none;
+            background-color: white;
+            padding: 0 15px;
+            width: 225px;
+            border-radius: 5px;
+            position: absolute;
+            top: 40%;
+            z-index: 99999999;
+            right: 20%;
+            box-shadow: 1px 3px 30px 2px rgba(0,0,0,.16);
+        }
+
+        .container {
+            max-width: 95% !important;
+        }
+        .m-checkbox{
+            display : none !important;
+        }
+    </style>
+
+}
+
+<div class="pageBody" style="overflow:unset !important;">
+    <div class="whiteOverlay">
+
+    </div>
+    <div class="container">
+        @Html.Partial("_msg")
+        <div class="row">
+                <div class="pageHeader" style="width:100%;margin-left: 1%;padding-right: 6%;">
+                    <div class="generateCreateButtons float-right">
+                        <a href="/CP/Authers/" style="width: 150px !important;" class="btn generateBtn">
+                            Return to Authors
+                        </a>
+                    </div>
+                    <div>
+                        <h4><a href="/CP/">Home</a> / Authors</h4>
+                        <h2 class="pageTitle">Authors</h2>
+                    </div>
+
+                </div>
+            @if (all.Count() > 0)
+            {
+                <div style="width:100%;">
+                   
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    @*<th hidden style="display: none;"></th>*@
+                                    <th width="5%">#</th>
+                                    <th width="13%">Contract No.</th>
+                                    <th width="18%">Author Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th width="17%">Address</th>
+                                    <th width="17%">Address 2</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var i = 0;}
+                                @foreach (var item in all)
+                                {
+                                    i = i + 1;
+                                    if (item.is_delete == true)
+                                    {
+                                      <tr style="background-color:red;color:#fff;">
+                                        <td width="5%">#@i</td>
+                                        <td width="13%">@item.contract_numb</td>
+                                        <td width="30%" >
+                                           @item.name
+                                        </td>
+                                        <td width="13%">@item.email</td>
+                                        <td>@item.phone</td>
+                                        <td width="17%" style="word-break:break-all;">
+                                            @item.address
+                                        </td>
+                                        <td width="17%" style="word-break:break-all;">
+                                            @item.address2
+                                        </td>
+                                      
+                                    </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr style="background-color:green;color:#fff;">
+                                            <td width="5%">#@i</td>
+                                            <td width="13%">@item.contract_numb</td>
+                                            <td width="30%">
+                                                @item.name
+                                            </td>
+                                            <td width="13%">@item.email</td>
+                                            <td>@item.phone</td>
+                                            <td width="17%" style="word-break:break-all;">
+                                                @item.address
+                                            </td>
+                                            <td width="17%" style="word-break:break-all;">
+                                                @item.address2
+                                            </td>
+
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-info col-md-12">
+                                            There is no data to display
+
+                                        </div>
+                                    }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts{
+
+}

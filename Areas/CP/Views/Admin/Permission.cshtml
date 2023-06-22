@@ -1,0 +1,172 @@
+﻿@model dorranceCP.Models.admin
+@{
+    Layout = "~/Areas/CP/Views/Shared/_iFrame.cshtml";
+    ViewBag.Title = "Permission - " + Model.Name;
+    var AllLink = (List<dorranceCP.Models.Links>)ViewBag.LinkList;
+    var db = ViewBag.db as dorranceCP.Models.NS_DorranceEntities;
+}
+<style>
+    .pageBody {
+        display: contents !important;
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.ID)
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="form-horizontal">
+
+                        <div class="form-group">
+
+                            <ul class="list-unstyled permission">
+                                @{
+                                    var links = db.Links.Where(x => x.ParentID == 0 && x.Show == true).ToList();
+                                    foreach (var link in links)
+                                    {
+                                        var haveAdminThisLink =
+                                            Model.Links.Count(x => x.ID == link.ID) > 0;
+                                        <li>
+                                            <label>
+                                                <input name="linkId" @(haveAdminThisLink ? "checked" : "") type="checkbox" value="@link.ID" />
+                                                <b>@link.TitleEn</b>
+                                            </label>
+                                            <ul class="list-unstyled">
+                                                @{
+                                                    var sublinks = db.Links.Where(x => x.ParentID == link.ID && x.Show == true).ToList();
+                                                    foreach (var sublink in sublinks)
+                                                    {
+
+                                                        var haveAdminThisSubLink =
+                                                            Model.Links.Count(x => x.ID == sublink.ID) > 0;
+                                                        <li>
+                                                            <label>
+                                                              <input name="linkId" @(haveAdminThisSubLink ? "checked" : "") type="checkbox" value="@sublink.ID" />
+                                                               @sublink.TitleEn
+                                                            </label>
+                                                        </li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </li>
+                                                    }
+                                }
+                            </ul>
+
+
+                            @*<ul class="list-unstyled permission">
+
+                                <li>
+                                    <label>
+                                        <input type="checkbox" value="" onchange="Active(this)" />
+                                        <b> @Resources.Labels.UserPermission</b>
+                                    </label>
+                                    <ul class="list-unstyled">
+
+
+
+                                        @{
+                                            var links = AllLink.Where(x => x.ParentID == 0).OrderBy(o => o.OrderdId).ToList();
+                                            foreach (var link in links)
+                                            {
+                                                var haveAdminThisLink = Model.Links.Where(x => x.ID == link.ID).Count() > 0;
+                                                <li>
+                                                    <label>
+                                                        <input name="linkId" @(haveAdminThisLink ? "checked" : "") onchange="Active(this)" type="checkbox" value="@link.ID" />
+                                                        <b>@(lang == "ar" ? link.TitleAr : link.TitleEn )</b>
+                                                    </label>
+                                                    <ul class="list-unstyled">
+                                                        @{
+                                                            var sublinks = AllLink.Where(x => x.ParentID == link.ID && x.Show == true).OrderBy(o => o.OrderdId).ToList();
+                                                            foreach (var sublink in sublinks)
+                                                            {
+                                                                var haveAdminThisSubLink = Model.Links.Where(x => x.ID == sublink.ID).Count() > 0;
+                                                                <li>
+                                                                    <label>
+                                                                        <input name="linkId" @(haveAdminThisSubLink ? "checked" : "") onchange="Active(this)" type="checkbox" value="@sublink.ID" />
+                                                                        @(lang == "ar" ? sublink.TitleAr : sublink.TitleEn )
+                                                                    </label>
+                                                                    <ul class="list-unstyled">
+                                                                        @{
+                                                                            var subsublinks = AllLink.Where(x => x.ParentID == sublink.ID && x.Show == true).OrderBy(o => o.OrderdId).ToList();
+                                                                            foreach (var subsublink in subsublinks)
+                                                                            {
+                                                                                var haveAdminThisSubSubLink = Model.Links.Where(x => x.ID == subsublink.ID).Count() > 0;
+                                                                                <li>
+                                                                                    <label>
+                                                                                        <input name="linkId" @(haveAdminThisSubSubLink ? "checked" : "") onchange="Active(this)" type="checkbox" value="@subsublink.ID" />
+                                                                                        @(lang == "ar" ? subsublink.TitleAr : subsublink.TitleEn )
+                                                                                    </label>
+                                                                                </li>
+                                                                            }
+                                                                        }
+                                                                    </ul>
+                                                                </li>
+
+
+                                                                            }
+                                                        }
+                                                    </ul>
+                                                </li>
+                                                                            }
+                                        }
+                                    </ul>
+
+                                </li>
+                            </ul>*@
+                        </div>
+
+
+
+                        <br />
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-lg-10">
+                                <input type="submit" value="Save" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+                                                                            }
+
+
+@*@section scripts{
+    <script>
+                    function Active(checkboxElem) {
+                        //alert("sss");
+                        $(checkboxElem).parent().next().find(":checkbox").prop("checked", $(checkboxElem).prop("checked"));
+
+                        $(checkboxElem).parents("ul").each(function () {
+                            $(checkboxElem).prev().find(":checkbox").prop("checked",
+                                $(checkboxElem).find(":checked").size() > 0);
+                        });
+
+                    }
+
+    </script>
+    }*@
+
+@section scripts{
+    <script>
+        $(function () {
+            $(".permission :checkbox").click(function () {
+                $(this).parent().next().find(":checkbox").prop("checked", $(this).prop("checked"));
+                $(this).parents("ul").each(function () {
+                    $(this).prev().find(":checkbox").prop("checked",
+                        $(this).find(":checked").size() > 0);
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,197 @@
+﻿
+@{
+    ViewBag.Title = "Reset Password";
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+    int id = ViewBag.nid;
+    string title1 = ViewBag.title1;
+    string msg = ViewBag.msg;
+    string link1 = ViewBag.link1;
+    string link2 = ViewBag.link2;
+    var suh = db.authers.Where(y => y.id == id).FirstOrDefault();
+}
+
+
+
+   @using (Html.BeginForm("ChangePassword", "Authers", FormMethod.Post,
+                                                 new { enctype = "multipart/form-data" }))
+   {
+    <h5 class="modal-title" style="padding:3%;"> Update Password</h5>
+    @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="modal-body">
+        <input id="nid" hidden name="nid" value="@id" style="font-size: 13px;border: none;width: 100%;text-align: center;" />
+        <form action="">
+            <div class="form-group">
+                <input type="password" required name="new_password" id="newpass" class="form-control" placeholder="New Password">
+                <i class="fa fa-eye-slash" style="top: 18% !important;margin-left: 86%;position: absolute;" id="showHide" onclick="myFunction()"></i>
+
+            </div>
+            <div class="form-group">
+                <input type="password" required name="confirmed_password" id="confirm" class="form-control" placeholder="Confirm Password">
+                <i class="fa fa-eye-slash" id="showHide2" style="top: 50% !important;margin-left: 86%;position: absolute;" onclick="myFunction2()"></i>
+            </div>
+            <input type="submit" id="ok" readonly style="cursor: pointer; background: #5bbdb7;color: #fff !important;padding: 2%;margin-top: 1%;-webkit-user-modify:read-only;" class="btn confirmPass" value="Save">
+        </form>
+    </div>*@
+    <form action="">
+        <input id="nid" hidden name="nid" value="@id" style="font-size: 13px;border: none;width: 100%;text-align: center;" />
+
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top: 1% !important;">
+           
+                     <tr>
+                            @*<td align="center" bgcolor="#70bbd9" style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
+                                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/h1.gif" alt="Creating Email Magic" width="300" height="230" style="display: block;" />
+                                </td>*@
+                            <td align="center" style="padding: 5%;color: #153643;font-size: 28px;font-weight: bold;font-family: Arial, sans-serif;">
+                                <img src="http://portal.dorrancepublishing.com/Content/logo%201.png" alt="Creating Email Magic" width="300" height="230" style="display: block;width: 200px !important;height: 200px !important;" />
+                            </td>
+                        </tr>
+
+                       
+                               <tr>
+                                        <td style="padding: 2%;color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
+                                            <input type="password" required name="new_password" id="newpass" class="form-control" placeholder="New Password">
+                                            <i class="fa fa-eye-slash" style="top: 31% !important;margin-left: 86%;position: absolute;" id="showHide" onclick="myFunction()"></i>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 2%;color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
+                                            <input type="password" required name="confirmed_password" id="confirm" class="form-control" placeholder="Confirm Password">
+                                            <i class="fa fa-eye-slash" id="showHide2" style="top: 39% !important;margin-left: 86%;position: absolute;" onclick="myFunction2()"></i>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding: 2%;color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
+                                            <input type="text" value="@title1" style="background: #fff;" class="form-control" name="subject" placeholder="subjcet">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 2%; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
+                                            <textarea class=" form-control" style="background: #fff;height: 170px;" name="message" placeholder="Message" rows="5">@msg</textarea>
+                                        </td>
+                                    </tr>
+
+                       
+                        @*<tr>
+                            <td bgcolor="#ffffff" style="padding: 0 40px 30px;">
+                                Start your journey in Dorrance by downloading the App by clicking the applicable link below!
+                                <br />
+                                Download from the Apple App Store here:
+                                <br />
+                                <a href="@link1" target="_blank"><img style="width:20%;" src="http://cp.dorrancepublishing.com/Content/ios_btn.png" /></a>
+                                <br />
+                                Download from the Google Play Store here:
+                                <br />
+                                <a href="@link2" target="_blank"><img style="width:20%;" src="http://cp.dorrancepublishing.com/Content/play-store.png" /></a>
+                                <br />You Can Open Your Account on Dorrance Website here :<br /><a href="http://portal.dorrancepublishing.com/Account/Login" target="_blank">Dorrance Website Click here !</a>
+
+                            </td>
+                        </tr>
+
+            <tr style="text-align: center;">
+                <td style="color: #1b1919;font-family: Arial, sans-serif;font-size: 14px;" width="75%">
+                    Copyrights © Dorrance <br>
+
+                </td>
+            </tr>*@
+                        
+                   
+           
+        </table>
+
+        <br />
+        <div class="inbox-compose-btn" style="margin-left: 7%;margin-bottom:5%;">
+            <button type="submit" class="btn green" style=" background: #5cbdb6;color: #fff;"><i class="fa fa-check"></i>Send</button>
+            <a href="/CP/Authers/Index" style=" background: #9a9797; color: #fff;" class="btn">Discard</a>
+        </div>
+        </form>
+        }
+
+
+
+
+
+
+
+
+        <script src="~/Content/print.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
+
+        <script>
+            function printPdf() {
+                const filename = 'Orders.pdf';
+
+                html2canvas(document.querySelector('#bill'),
+                                        { scale: 1 }
+                                 ).then(canvas => {
+                                     let pdf = new jsPDF('p', 'mm', 'a4');
+                                     var x = pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 20, 15, 185, 170);
+                                     //console.log(x);
+                                     //console.log(canvas.toDataURL('image/png'));
+                                     pdf.save(filename);
+                                 });
+            }
+
+            function printPdf2(id) {
+                //printJS(id, 'pdf');
+                //var doc = new jsPDF()
+                //var tx = document.getElementById(id).innerHTML;
+                //doc.text(tx, 10, 10)
+                //doc.save('orders.pdf')
+
+                var doc = new jsPDF();
+                var elementHTML = $('#bill').html();
+                var specialElementHandlers = {
+                    '#elementH': function (element, renderer) {
+                        return true;
+                    }
+                };
+                doc.fromHTML(elementHTML, 15, 15, {
+                    'width': 170,
+                    'elementHandlers': specialElementHandlers
+                });
+
+                // Save the PDF
+                doc.save('sample-document.pdf');
+
+            }
+
+
+            function fnExcelReport(id) {
+                var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+                var textRange; var j = 0;
+                tab = document.getElementById(id); // id of table
+
+                for (j = 0 ; j < tab.rows.length ; j++) {
+                    tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+                    //tab_text=tab_text+"</tr>";
+                }
+
+                tab_text = tab_text + "</table>";
+                tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+                tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+                tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+                var ua = window.navigator.userAgent;
+                var msie = ua.indexOf("MSIE ");
+
+                if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+                {
+                    txtArea1.document.open("txt/html", "replace");
+                    txtArea1.document.write(tab_text);
+                    txtArea1.document.close();
+                    txtArea1.focus();
+                    sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+                }
+                else                 //other browser not tested on IE 11
+                    sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+                return (sa);
+            }
+
+        </script>

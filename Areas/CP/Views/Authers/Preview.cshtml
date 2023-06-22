@@ -1,0 +1,231 @@
+﻿@model dorranceCP.Models.authers
+@{
+    ViewBag.Title = "Preview Authors";
+    string url2 = "http://cp.dorrancepublishing.com/Content/Images/Original/";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+
+}
+@section css{
+    <style>
+          @@media screen (min-width: 300px) and (max-width: 600px){
+             .pageHeader {
+                 margin-top : 30% !important;
+             }
+                }
+        .page-header-fixed .page-container {
+            margin-top: 50px !important;
+        }
+
+        input {
+            height: 38px !important;
+        }
+        .pageHeader{
+            margin-top: 9%;
+        }
+          .selectric-wrapper {
+        width: 66% !important;
+        float: right !important;
+    }
+          .label{
+              color: #000 !important;
+                  font-weight: 500 !important;
+          }
+    </style>
+}
+
+
+
+<div class="pageHeader col-md-9" style="width:100%;">
+    <h4 style="font-size:17px;"><a href="/CP/Home/dashboard">Home</a> / <a href="/CP/Authers/">Authors</a> / View Author</h4>
+
+    <div class="row" style="margin-left: 1%;margin-top: 3%;">
+        <div class="pageHeader" style="width:100%;box-shadow: 1px 3px 4px 3px #dedede;padding: 3%;">
+            <div style="float:right !important;">
+                <a href="/CP/Books/BookAuthers/@Model.id" style="font-weight:bold !important;">Books &nbsp; / &nbsp; </a>
+                <a href="/CP/Orders/Show/@Model.id" style="font-weight:bold !important;">Orders</a>
+            </div>
+            <p style="font-size:20px;font-weight: 500;">Preview Author</p>
+            <hr />
+            <br />
+            <div class="addBookForm">
+                <div class="addBookLeft" style="width: 60% !important;">
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.name, "Author Name", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <input value="@Model.name" disabled class="form-control col-md-8 float-right" />
+                        </div>
+                    </div>
+                    @{ 
+                        string cont = "";
+                        var contract = db.ContractNumbersAuthors.Where(r => r.author_id == Model.id).FirstOrDefault();
+                        if(contract != null)
+                        {
+                            cont = contract.contract_number;
+                        }
+                        else
+                        {
+                            cont = Model.contract_numb;
+                        }
+                    }
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.contract_numb, "Contract Number", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <input value="@cont" disabled class="form-control col-md-8 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.email, "Author Email", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <input value="@Model.email" disabled class="form-control col-md-8 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.address, "Author Address", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <input value="@Model.address" disabled class="form-control col-md-8 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.address2, "Author Address 2", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <input value="@Model.address2" disabled class="form-control col-md-8 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.country_id, "Author Country", htmlAttributes: new { @class = "control-label col-md-4" })
+                            @Html.DropDownListFor(model => model.country_id, (SelectList)ViewBag.CountryList, "Author Country", htmlAttributes: new { @class = "select2_demo_1 form-control col-md-8 float-right", disabled = "disabled", required = "required" })
+                            @Html.ValidationMessageFor(model => model.country_id, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.city, "Author City", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <input value="@Model.city" disabled class="form-control col-md-8 float-right" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.state, "Author State", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <input value="@Model.state" disabled class="form-control col-md-8 float-right" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.zip, " ZIP", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <input value="@Model.zip" disabled class="form-control col-md-8 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.phone, "Author Phone", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <input value="@Model.phone" disabled class="form-control col-md-8 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @{ 
+                                var bks = db.book.Where(b => b.auther_id == Model.id && b.is_delete == false).Count();
+
+                            }
+                            @Html.LabelFor(model => model.num_books, "Number of Books ", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <input value="@bks" disabled class="form-control col-md-8 float-right" />
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group" style="margin-bottom: 9%;">
+                        @Html.LabelFor(model => model.image, "Photo", htmlAttributes: new { @class = "control-label col-md-8" })
+                        <div class="col-md-10">
+                            <img style="width: 34% !important;" src=@(String.IsNullOrEmpty(Model.image)? "/Content/assets_cp/images/uploadImage.png":url2+Model.image) />
+                        </div>
+                    </div>
+
+                </div>
+
+                @*<div class="form-group">
+                    <div class="col-md-offset-2 col-md-8">
+                        <input type="submit" value="add" class="btn btn-primary" />
+                        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-defult" })
+                    </div>
+                </div>*@
+            </div>
+
+            <br />
+           
+            @{
+                var conts = db.ContractNumbersAuthors.Where(r => r.author_id == Model.id).ToList();
+            }
+            <table class="table table-bordered table-striped" style="margin-bottom: 7%;">
+
+                <thead>
+                    <tr><th style="font-size: 19px !important;">Author Contract Numbers</th></tr>
+                    <tr>
+                        @*<th hidden style="display: none;"></th>*@
+                        <th style="text-align:left;">#</th>
+                        <th >Contract No.</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ var i = 0;}
+                    @if (conts.Count() > 0)
+            {
+                foreach (var item in conts)
+                {
+                    i = i + 1;
+
+                            <tr>
+                                <td hidden></td>
+
+                                <td width="5%">#@i</td>
+                                @*<td width="5%"><input style="width: 160% !important;" name="mycheckbox" class="form-control" type="checkbox" data-row="@item.id" id="chk"/></td>*@
+                                <td width="10%">@item.contract_number</td>
+
+                            </tr>
+                        }
+
+
+                    }
+                    else
+                    {
+                        <tr class="alert alert-info col-md-12">
+                            There is no data to display
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+           
+
+
+        </div>
+                </div>
+
+  
+            </div>
+
+       
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

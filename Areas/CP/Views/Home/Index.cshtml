@@ -1,0 +1,180 @@
+﻿
+@{
+    ViewBag.Title = "Send Message To Author";
+    string url2 = "http://portal.dorrancepublishing.com/Content/Images/Original/";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+
+}
+<style>
+    .form-group{
+        margin-bottom: 10px !important;
+    }
+    .selectric-wrapper{
+        display:none !important;
+    }
+    .chosen-container{
+        width:100% !important;
+    }
+
+    .chosen-select {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+    .chosen-choices{
+        display: block !important;
+    width: 100% !important;
+    height: calc(2.5em + 1.75rem + -4px) !important;
+    padding: 1.375rem 0.75rem !important;
+    font-size: 1rem !important;
+        /*display: block;
+    width: 100%;
+    height: calc(2.5em + 1.75rem + -4px);
+    padding: 1.375rem 0.75rem;
+    font-size: 1rem;*/
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: #495057 !important;
+    background-color: #f3f6f9 !important;
+    background-clip: padding-box !important;
+      background-color: #F3F6F9 !important;
+    border: .5px solid #AAAAAA !important;
+    /*height: 60px;*/
+    border-radius: 5px !important;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out !important;
+    }
+
+
+</style>
+
+@*<link href="/COntent/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="/COntent/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />*@
+@*<link href="~/Content/select2/select2.css" rel="stylesheet" type="text/css" />
+<link href="/Content/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />*@
+@*<link href="~/Content/chosen.css" rel="stylesheet" />*@
+@*<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>*@
+@*<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>*@
+
+
+<div class="pageBody">
+    <div class="container">
+        @Html.Partial("_msg")
+        <div>
+            <div class="pageHeader" style="margin-left: 2%;">
+                <h4><a href="/CP/Home/dashboard">Home</a> / Send Message To Author</h4>
+                <h2 class="pageTitle"> Send Message To Author</h2>
+                
+                <span>Welcome Back , <span>@(user != null ? user.Name : "")</span></span>
+            </div>
+@using (Html.BeginForm("send", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+    @Html.AntiForgeryToken()
+            <div class="MessagesBox">
+                <form class="MessagesForm">
+                    <div class="radioBox" hidden>
+                        <label for="now" class="radioLabel">
+                            <input type="radio" name="now" id="now" class="radioBtn" checked>Now
+                            <span class="checkmark"></span>
+                        </label>
+                        <label for="Schedule" class="radioLabel">
+                            <input type="radio" name="sc" id="Schedule"
+                                   class="radioBtn">Schedule
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="form-group select first" style="background: #f3f6f9 !important;">
+                        @*<select  multiple="multiple" required class="statesSelect advanceSerachSelect form-control" name="auth">
+                            <option value="0"  selected>All</option>
+                            @{
+                                var authers2 = db.authers.Where(w => w.is_delete == false).ToList();
+
+                                foreach (var c2 in authers2)
+                                {
+                                    <option value=@c2.id>@c2.name</option>
+                                }
+                            }
+                        </select>*@
+
+                        <select multiple="multiple" style="margin: 0 !important;padding: 11px 5px !important;" required class="form-control chosen-select statesSelect advanceSerachSelect" name="auth[]" tabindex="4" >
+                            <option value="0" selected>All</option>
+                            @{
+                                var authers2 = db.authers.Where(w => w.is_delete == false).ToList();
+
+                                foreach (var c2 in authers2)
+                                {
+                                    <option value=@c2.id>@c2.name</option>
+                                }
+                            }
+                        </select>
+
+                        @*<select class="mt-multiselect btn btn-default" multiple="multiple" data-label="left" data-select-all="true" data-width="100%" data-filter="true" data-action-onchange="true">
+                            <option value="1">Option 1</option>
+                            <option value="2" selected="selected">Option 2</option>
+                             Option 3 will be selected in advance ... 
+                            <option value="3" selected="selected">Option 3</option>
+                            <option value="4">Option 4</option>
+                            <option value="5">Option 5</option>
+                            <option value="6">Option 6</option>
+                        </select>*@
+
+                    </div>
+                    <div class="form-group select">
+                        <input required type="text" name="title" class="form-control" placeholder="Title">
+                    </div>
+                    <div class="form-group textarea">
+                        <textarea required name="message" style="height: 116px !important; margin-bottom: 4%;" id="" class="form-control" placeholder="Message"></textarea>
+                        <button type="submit" style="margin-top: -3%;height: unset;" class="btn sendMessageBtn">Send</button>
+
+                      </div>
+                </form>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+@*<script src="/Content/jquery.min.js" type="text/javascript"></script>
+<script src="/Content/bootstrap.min.js" type="text/javascript"></script>
+<script src="/Content/js.cookie.min.js" type="text/javascript"></script>
+<script src="/Content/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="/Content/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="/COntent/bootstrap-switch.min.js" type="text/javascript"></script>*@
+
+@*<script type="text/javascript" src="~/Content/select2/select2.min.js"></script>*@
+@*<script src="/Content/bootstrap-multiselect/js/bootstrap-multiselect.js" type="text/javascript"></script>*@
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN THEME GLOBAL SCRIPTS -->
+@*<script src="/Content/app.min.js" type="text/javascript"></script>*@
+<!-- END THEME GLOBAL SCRIPTS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+@*<script src="/Content/components-bootstrap-multiselect.min.js" type="text/javascript"></script>*@
+@*<script src="/Content/jquery.min.js" type="text/javascript"></script>
+<script src="~/Content/chosen.js"></script>
+<script>
+    $("select.chosen-select").chosen({
+        height: "55px",
+
+    });
+   
+    $(document).ready(function () {
+
+       
+        //alert("");
+        //$(".statesSelect").select2();
+    });
+</script>*@

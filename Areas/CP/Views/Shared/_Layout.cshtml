@@ -1,0 +1,841 @@
+﻿
+@{ var user = ViewBag.User as dorranceCP.Models.admin;
+                dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+                var currentController = ViewContext.RouteData.Values["controller"].ToString().ToLower();
+                var currentAction = ViewContext.RouteData.Values["action"].ToString().ToLower();
+                if (currentAction == "index")
+                {
+                    currentAction = "";
+                }
+                //var url = "/" + lang +"/cp/" + currentController + "/" + currentAction;
+                var url = "/CP/" + currentController + "/" + currentAction; }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewBag.Title | Control Panel </title>
+
+    <link href="~/Content/assets_cp/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/assets_cp/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/images/logo.png">
+    <link href="~/Content/assets_cp/css/selectric.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css">
+    <link href="https://cdn.lineicons.com/1.0.1/LineIcons.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css">
+    @*<link href="~/Content/chosen.css" rel="stylesheet" />*@
+    <link href="~/Content/assets_cp/css/style.css" rel="stylesheet">
+    <link href="~/Content/chosen.min.css" rel="stylesheet" />
+
+    @*@Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")*@
+    <style>
+        .addBookBtn, .AdvanceSearchBtn {
+            height: 50px !important;
+        }
+
+        .nav-item {
+            padding: 17px 24px !important;
+        }
+
+        .nav-link i {
+            padding-right: 2px !important;
+        }
+
+        . /*sideMenu{
+                width: 257px !important;
+        }*/
+        .close {
+            background: unset !important;
+            color: #000 !important;
+        }
+
+        .hv {
+            border-left: 3px solid #5BBDB7 !important;
+            background-color: rgba(91, 189, 183, .1) !important;
+            transition: all .5s !important;
+        }
+
+        input {
+            color: #000 !important;
+        }
+
+        table {
+            margin-top: 5% !important;
+        }
+
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0 !important;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield !important;
+        }
+
+        .table-responsive {
+            overflow: visible;
+        }
+
+        .profileImg {
+            height: 100% !important;
+        }
+
+
+        .badge-danger {
+            background-color: #d43f3a;
+        }
+
+        .badge-warning {
+            background-color: #d58512;
+        }
+
+        .badge-success {
+            background-color: #398439;
+        }
+
+        .badge-info {
+            background-color: #269abc;
+        }
+
+        .badge-inverse {
+            background-color: #333333;
+        }
+
+        .badge {
+            border-radius: 50%;
+            background: #4fa746;
+            ;
+            height: 2rem;
+            width: 2rem;
+            top: 1.5rem;
+            right: 1.5rem;
+            text-align: center;
+            line-height: 1.5rem;
+            font-size: 15px;
+            font-weight: 900;
+            color: white;
+            margin-left: 4%;
+        }
+
+        .generateBtn {
+            width: 125px !important;
+            height: 41px !important;
+            line-height: 27px !important;
+        }
+
+        .dashboard-stat.blue {
+            background-color: #3598dc;
+        }
+
+        .dashboard-stat.red {
+            background-color: #e7505a;
+        }
+
+        .dashboard-stat.green {
+            background-color: #32c5d2;
+        }
+
+        .dashboard-stat.purple {
+            background-color: #8E44AD;
+        }
+
+        .dashboard-stat {
+            display: block;
+            margin-bottom: 25px;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .dashboard-stat {
+            box-shadow: 0 2px 3px 2px rgba(0,0,0,.03);
+        }
+
+        .visual i.fa-users {
+            color: #5e9fe0 !important;
+        }
+
+        .visual i:hover {
+            color: #5e9fe0 !important;
+        }
+
+        .dashboard-stat .visual {
+            width: 80px;
+            height: 80px;
+            display: block;
+            float: left;
+            padding-top: 10px;
+            padding-left: 15px;
+            margin-bottom: 15px;
+            font-size: 35px;
+            line-height: 35px;
+        }
+
+        stat .visual > i {
+            color: #FFF;
+            opacity: .1;
+            filter: alpha(opacity=10);
+        }
+
+        .dashboard-stat.purple .visual > i {
+            color: #fff;
+            opacity: .1;
+        }
+
+        .dashboard-stat.green .visual > i {
+            color: #FFF;
+            opacity: .1;
+            filter: alpha(opacity=10);
+        }
+
+        .dashboard-stat.red .visual > i {
+            color: #fff;
+            opacity: .1;
+            filter: alpha(opacity=10);
+        }
+
+        .dashboard-stat .visual > i {
+            margin-left: -35px;
+            font-size: 110px;
+            line-height: 110px;
+        }
+
+        .dashboard-stat .details {
+            position: absolute;
+            right: 15px;
+            padding-right: 15px;
+        }
+
+        .number {
+            color: #FFF;
+        }
+
+        .dashboard-stat .details .number {
+            padding-top: 25px;
+            text-align: right;
+            font-size: 34px;
+            line-height: 36px;
+            letter-spacing: -1px;
+            margin-bottom: 0;
+            font-weight: 300;
+        }
+
+        .dashboard-stat .details .desc {
+            color: #FFF;
+            opacity: 1;
+            filter: alpha(opacity=100);
+        }
+
+        .dashboard-stat .details .desc {
+            text-align: right;
+            font-size: 16px;
+            letter-spacing: 0;
+            font-weight: 300;
+        }
+
+        .headerNav {
+            height: 77px !important;
+        }
+
+        #cke_editor1 {
+            display: none !important;
+        }
+
+        @@media screen (min-width: 300px) and (max-width: 600px) {
+
+            .table-responsive {
+                overflow: scroll !important;
+            }
+
+            body {
+                width: unset !important;
+            }
+
+            .pageHeader {
+                margin-top: 23% !important;
+            }
+        }
+
+        @@media (max-width: 1024px) and (min-width: 320px) {
+            .table-responsive {
+                overflow-x: scroll !important;
+            }
+        }
+
+        .tableHeader {
+            margin-top: 2% !important;
+        }
+
+        tbody tr {
+            background-color: #ffffff;
+        }
+
+        tbody tr {
+            height: 67px !important;
+            box-shadow: 0.47px 2.69px 10px rgba(119, 119, 119, .1);
+        }
+
+        .table {
+            border-collapse: separate;
+            border-spacing: 0px 15px;
+        }
+    </style>
+
+    <link href="~/Content/lod.css" rel="stylesheet" />
+
+    @RenderSection("css", required: false)
+
+
+
+
+</head>
+<body onload="myFunction()">
+    <div id="loader"></div>
+    @*<div style="display:none;" id="myDiv">*@
+    <div style="display:none;" id="sideMenu" class="align-items-start sideMenu">
+        <div class="logo">
+            <img src="~/Content/assets_cp/images/logo.png" alt="">
+            @*@if (user != null && user.ID != 0 )
+                {
+                    <div>  @user  -@user.Email - @user.AspNetUserId </div>
+                }
+                else
+                {
+                    ((dorranceCP.Areas.CP.Controllers.BaseController)this.ViewContext.Controller).gotologin();
+                }*@
+
+        </div>
+
+
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <div class="mobileMenu"><i></i><i></i><i></i></div>
+        </button>
+        <div class="menu navbar navbar-expand-lg nav ">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto" style="background: #fff;">
+
+                    @{ var links = db.Links.Where(x => x.ParentID == 0 && x.Show == true).OrderBy(x => x.OrderdId).ToList();
+                                    foreach (var link in links)
+                                    {
+                                        var haveAdminThisLink = user.Links.Count(x => x.ID == link.ID) > 0;
+                                        if (haveAdminThisLink && user != null)
+                                        {
+                                            var subLinks = db.Links.Where(x => x.ParentID == 0 && x.Show == true).ToList();
+                                            var haveAdminThisURL = db.Links.Where(x => x.Link.ToLower() == url.ToLower()).Count() > 0;
+                                            var k = link.Link.ToLower() == url.ToLower();
+                                            if (link.ID == 8)
+                                            {
+                                                var bks = db.FAQs.Where(w => w.is_read == false).Count();
+                        <input hidden id="bg" value="@bks" />
+                                                <li class="nav-item @(k ? "hv" : "")   bdge">
+                                                    @if (bks > 0)
+                                                    {
+                            <a href="@link.Link" class="nav-link"><i class="@link.Icon"></i> @link.TitleEn <span class="badge">@bks</span></a> }
+                                                    else
+                                                    {
+                            <a href="@link.Link" class="nav-link"><i class="@link.Icon"></i> @link.TitleEn</a>}
+                                                </li> }
+                                                                    else
+                                                                    {
+                                                <li class="nav-item @(k ? "hv" : "")">
+                                                    <a href="@link.Link" class="nav-link"><i class="@link.Icon"></i> @link.TitleEn</a>
+                                                </li> }
+                                                                }
+
+                                                            } }
+
+                    <li class="nav-item">
+                        <a href="/CP/Home/SignOut" class="nav-link"><i class="fa fa-sign-out"></i> LogOut</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div style="display:none;" class=" headerNav" id="headerNav">
+        <div class="container-fluid">
+            <div class="backhome float-left">
+                @*<a href="/CP/" title="back"><i class="lni-arrow-left"></i></a>*@
+            </div>
+            <div class="profileNav clearfix">
+                <div class="profileCont float-right settingsSec1">
+                    <div class="profileImg " style="cursor: pointer;">
+                        <img src="~/Content/assets_cp/images/1.png" alt="">
+                        <div class="settingBox1" style="top: 88%;right:1%; position: absolute;display:none;
+                                background: #e7e7e7;padding: 1%;color: #000;border: 1px solid #f7f7f7;">
+                            <ul>
+
+                                <li>
+                                    <a data-id="@user.ID" href="javascript:void(0);" class="rstp" style="color:#000;font-size: 14px;">Reset Password</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <h5 class="userName" style="cursor: pointer;">@user.Name </h5>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    @*@Html.Partial("_msg")*@
+    <div style="display:none;width:100%;" id="redrr">
+        @RenderBody()
+    </div>
+    <div style="display:none;" id="Footer" class="Footer text-center justify-content-center">
+        <span>Copyrights &copy; <span> Dorrance</span></span>
+    </div>
+
+    <div id="Confirm4" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" style="top:unset !important;padding:unset !important;margin:unset !important;right: 15px !important;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Confirm</h4>
+                </div>
+                <div class="modal-body" style="font-size:15px;">
+                    <p>Are you sure you want to reset total for this user ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger" style="color: #fff;cursor: pointer;"> Yes, Sure</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    <div id="Confirm" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" style="top:unset !important;padding:unset !important;margin:unset !important;right: 15px !important;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Delete</h4>
+                </div>
+                <div class="modal-body" style="font-size:15px;">
+                    <p>Are you sure you want to delete ... ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger" style="color: #fff;"> Yes, Sure</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    @*<select class="chosen-select" name="field[]" tabindex="4" multiple
+                data-placeholder="يمكنك اختيار أكثر من مجال ">
+            <option value='1'>option1</option>
+            <option value='2'>option 2</option>
+        </select>*@
+
+
+    <div id="ConfirmCancel" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" style="top:unset !important;padding:unset !important;margin:unset !important;right: 15px !important;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Cancel Order</h4>
+                </div>
+                <div class="modal-body" style="font-size:15px;">
+                    <p>Are you sure you want to cancel this Order... ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger" style="color: #fff;"> Yes, Sure</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <iframe id="txtArea1" style="display:none"></iframe>
+
+    <div id="iFrame" class="modal fade" tabindex="-1" role="dialog" style="height: 600px !important; overflow-y: hidden !important;">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" style=" padding: 0 !important;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal changePassModalAd" id="changePassModalAd" tabindex="-1" role="dialog" style="background: #5c5b5b !important;">
+        <div class="modal-dialog" role="document">
+
+            <div class="modal-content" style="border-radius: 1.3rem !important;">
+                <div id="myModalContentAd"></div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <script type="text/javascript" src="~/Content/assets_cp/js/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="~/Content/assets_cp/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Content/assets_cp/js/jquery.selectric.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+
+    <script type="text/javascript" src="~/Content/assets_cp/js/main.js"></script>
+    <script type="text/javascript" src="/Content/ckeditor/ckeditor.js"></script>
+
+    @*<script src="~/Content/chosen.js"></script>*@
+    <script src="~/Content/chosen.jquery.js"></script>
+    <script>
+        function fnExcelReport(id) {
+            var tab_text = "<head><meta charset='UTF-8'></head><table border='2px'><tr bgcolor='#87AFC6'>";
+            var textRange; var j = 0;
+            tab = document.getElementById(id); // id of table
+
+            for (j = 0; j < tab.rows.length; j++) {
+                tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+                //tab_text=tab_text+"</tr>";
+            }
+
+            tab_text = tab_text + "</table>";
+            tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+            tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+            tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+
+            if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+            {
+                txtArea1.document.open("txt/html", "replace");
+                txtArea1.document.write(tab_text);
+                txtArea1.document.close();
+                txtArea1.focus();
+                sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+            }
+            else                 //other browser not tested on IE 11
+                sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+            return (sa);
+        }
+
+        var myVar;
+
+        function myFunction() {
+            myVar = setTimeout(showPage, 1500);
+        }
+
+        function showPage() {
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("sideMenu").style.display = "block";
+            document.getElementById("Footer").style.display = "block";
+            document.getElementById("redrr").style.display = "contents";
+            document.getElementById("headerNav").style.display = "block";
+        }
+        $("select.chosen-select").chosen({
+            height: "55px",
+
+        });
+
+
+        $('select').selectric({
+            disableOnMobile: false,
+            nativeOnMobile: false,
+            dir: "ltr"
+        });
+        $('.selectric-wrapper button').append('<i class="fas fa-chevron-down"></i>');
+    </script>
+    @*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>*@
+    <script>
+        $(document).ready(function () {
+
+            //var sec = 30,
+            //  countDiv = document.getElementById("timer"),
+            //  secpass,
+              //countDown = setInterval(function () {
+              //    'use strict';
+
+              //    secpass();
+              //}, 1000);
+
+            //function secpass() {
+            //    'use strict';
+
+            //    //var min = Math.floor(sec / 30),
+            //    var remSec = sec % 30;
+
+            //    //if (remSec < 10) {
+
+            //    //    remSec = '0' + remSec;
+
+            //    //}
+            //    //if (min < 10) {
+
+            //    //    min = '0' + min;
+
+            //    //}
+            //    //countDiv.innerHTML = remSec;
+
+            //    if (sec > 0) {
+
+            //        sec = sec - 1;
+
+            //    } else {
+            //        //NProgress.start();
+            //       // location.reload();
+            //        //NProgress.start();
+            //        //clearInterval(countDown);
+            //        //NProgress.done();
+            //        //countDiv.innerHTML = 'countdown done';
+
+            //    }
+            //}
+
+            var selected = localStorage.getItem('selected');
+            if (selected) {
+                $(".len").val(selected);
+            }
+            $(".bdge").click(function () {
+                //alert("");
+                $.get("/CP/Home/badge");
+
+                @*alert("sad");
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "@Url.Action("badge", "Home")"
+
+            });*@
+            });
+        });
+
+
+
+        $(document).ready(function () {
+
+            $(".rstp").click(function () {
+                //alert("");
+                // debugger;
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                //var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("ResetPass", "Authers")",
+                    contentType: "application/json; charset=utf-8",
+                data: { "nid": id },
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    // alert(data);
+                    $('#myModalContentAd').html(data);
+                    //$('#myModal').modal(options);
+                    $('#changePassModalAd').modal('show');
+
+                },
+                error: function () {
+                    alert("Error Occrs");
+                }
+            });
+        });
+
+            var selected = localStorage.getItem('selected');
+            //alert(selected);
+            $("#ss").selectric('refresh').children("option:selected").val(selected);
+            $("#ss").selectric('refresh').val(selected);
+
+            if (selected) {
+                $("#ss").val(selected);
+            }
+
+
+
+            //document.querySelector("select").value = selected;
+
+
+            //$('.table').DataTable({
+            //    "ordering": false,
+            //    headerCallback: function (e, a, t, n, s) { e.getElementsByTagName("th")[0].innerHTML = '\n<label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">\n    <input type="checkbox" value="" class="m-group-checkable">\n   <span></span>\n   </label>' },
+
+            //    columnDefs: [{
+            //        targets: 0, width: "30px",
+            //        className: "dt-right", orderable: !1,
+            //        render: function (e, a, t, n) { return '\n     <label class="m-checkbox m-checkbox--single m-checkbox--solid m-checkbox--brand">\n   <input type="checkbox" value="" class="m-checkable">\n   <span></span>\n                        </label>' }
+            //    }]
+
+
+            //});
+
+                //$('#summernote').summernote({
+                //    tabsize: 2,
+                //    height: 100
+                //});
+
+                //$("#Confirm").modal("show");
+                $(document).on("click", ".Confirm", function () {
+                    $("#Confirm").modal("show");
+                    $("#Confirm .btn-danger").attr("href",
+                        $(this).attr("href"));
+                    return false;
+                });
+
+
+                $(document).on("click", ".Confirm4", function () {
+                    $("#Confirm4").modal("show");
+                    $("#Confirm4 .btn-danger").attr("href",
+                        $(this).attr("href"));
+                    return false;
+                });
+
+         $(".inputAuthor").click(function () {
+        var authorId = jQuery(".authorId").val();
+         $.ajax({
+                    url: "@Url.Action("getAuthorsList", "Books")",
+                    type: "GET",
+                    data: {"id":authorId},
+                    contentType: "application/json",
+                    success: function (data) {
+                        jQuery(".inputAuthor").hide();
+                        jQuery("#auther_id").html(data);
+                    },
+                    error: function () {
+                        alert("Error Occrs");
+                    }
+
+            });
+        });
+
+
+         $(".inputSku").click(function () {
+         $.ajax({
+                    url: "@Url.Action("getBooksSKUPartial", "Orders")",
+                    type: "GET",
+                    contentType: "application/json",
+                    success: function (data) {
+                        jQuery(".inputSku").hide();
+                        jQuery("#sku").html(data);
+                      var id = $(this).val();
+
+                     $.ajax({
+                            url: "@Url.Action("getAuthor", "Orders")",
+                            type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({ id: id }),
+                        success: function (response) {
+                            var nam = response.split("=")[0];
+                            var tit = response.split("=")[1];
+                            //return response;
+                            //alert(response);
+                            //console.log(response);
+                            document.getElementById("authId").value = nam;
+                            document.getElementById("edtit").value = tit;
+                          }
+                     });
+                    },
+                    error: function () {
+                        alert("Error Occrs");
+                    }
+
+            });
+        });
+
+
+          $(".inputCountry").click(function () {
+         $.ajax({
+                    url: "@Url.Action("getCountriesList", "Authers")",
+                    type: "GET",
+                    contentType: "application/json",
+                    success: function (data) {
+                        jQuery(".inputCountry").hide();
+                        jQuery("#auth_country").html(data);
+                    },
+                    error: function () {
+                        alert("Error Occrs");
+                    }
+
+            });
+        });
+
+         $(".inputBook").click(function () {
+         $.ajax({
+                    url: "@Url.Action("getBooksList", "Orders")",
+                    type: "GET",
+                    contentType: "application/json",
+                    success: function (data) {
+                        jQuery(".inputBook").hide();
+                        jQuery("#tit").html(data);
+                    },
+                    error: function () {
+                        alert("Error Occrs");
+                    }
+
+            });
+        });
+
+        $("#bookChange").change(function () {
+            var id = $(this).val();
+            //alert(id);
+            // $.get("/CP/Aqars/CountryList/" + id);
+            $.ajax({
+                url: "@Url.Action("getAuthor", "Orders")",
+                type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ id: id }),
+            success: function (response) {
+                var nam = response.split("=")[0];
+                var tit = response.split("=")[1];
+                //return response;
+                //alert(response);
+                //console.log(response);
+                document.getElementById("authId").value = nam;
+                document.getElementById("edtit").value = tit;
+
+
+                //document.getElementById("rr2").innerHTML = response;
+            }
+        });
+    });
+
+                $(document).on("click", ".ConfirmCancel", function () {
+                    $("#ConfirmCancel").modal("show");
+                    $("#ConfirmCancel .btn-danger").attr("href",
+                        $(this).attr("href"));
+                    return false;
+                });
+
+                $(document).on("click", ".iFrame", function () {
+                    $("#iFrame").modal("show");
+                    $("#iFrame .modal-title").html($(this).attr("title"));
+                    $("#iFrame .modal-body").html(
+                        "<iframe frameborder=0 width=100% height=400 src='"
+                        + $(this).attr("href") + "' ></iframe>");
+                    return false;
+                });
+
+                $(".nav-item").click(function () {
+                    $(".nav-item .active").addClass("hv");
+                    //$(this).parent().prev().find(".arrow").addClass("hv");
+                    //$(this).parent().prev().find(".arrow").before("<span class='selected'></span>");
+                })
+
+        });
+        $(".table-responsive").parent().css("width", "100%");
+
+
+    </script>
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")*@
+    @RenderSection("scripts", required: false)
+</body>
+</html>

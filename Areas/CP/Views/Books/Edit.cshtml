@@ -1,0 +1,270 @@
+﻿@model dorranceCP.Models.book
+@{
+    ViewBag.Title = "Edit Book";
+    string url2 = "http://cp.dorrancepublishing.com/Content/Images/Original/";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+
+
+}
+@section css{
+    <style>
+        .page-header-fixed .page-container {
+            margin-top: 50px !important;
+        }
+
+        input {
+            height: 38px !important;
+        }
+
+        .btn-primary {
+            color: #fff !important;
+        }
+
+        .btn-defult {
+            background: #ccc !important;
+        }
+        .selectric-wrapper {
+        width: 58% !important;
+        float: right !important;
+    }
+        label{
+            text-align:left;
+        }
+        .pageHeader span {
+            color: #bd0a25 !important;
+        }
+
+        select{
+            width: 58% !important;
+            height: 46px !important;
+            float: right !important;
+        }
+    </style>
+}
+
+
+
+<div class="pageHeader col-md-9" style="width:100%;margin-top: 9%;">
+    <h4 style="font-size:17px;"><a href="/CP/Home/dashboard">Home</a>/ <a href="/CP/Books/">Books</a>/ Edit Book</h4>
+
+    <div class="row" style="margin-left: 1%;margin-top: 3%;">
+        <div class="pageHeader" style="width:100%;box-shadow: 1px 3px 4px 3px #dedede;padding: 3%;">
+
+    <p style="font-size:20px;font-weight: 500;">Edit Book</p>
+    <hr />
+    <br />
+
+    @using (Html.BeginForm(null, null, FormMethod.Post,
+                                                    new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.id)
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="addBookForm">
+            <div class="addBookLeft" style="width: 50% !important;">
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.title, "Book Title", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control col-md-7 float-right", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.sub_title, "Book SubTitle", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.sub_title, new { htmlAttributes = new { @class = "form-control col-md-7 float-right" } })
+                        @Html.ValidationMessageFor(model => model.sub_title, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.isbn13, "SKU/ISBN", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.isbn13, new { htmlAttributes = new { @class = "form-control col-md-7 float-right", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.isbn13, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group" style="margin-bottom: 13%;">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.auther_id, "Author Name", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div style="margin-top: -6%;" class="form_field_wrap" id="auther_id">
+                            @*@Html.Partial("_getAuthorsPartial")*@
+                        </div>
+                        <input value="@Model.auther_id" class="form-control col-md-7 float-right authorId" hidden />
+                        <input value="@ViewBag.nameAuthor" class="form-control col-md-7 float-right inputAuthor" />
+                        
+                        @*@Html.DropDownListFor(model => model.auther_id, (SelectList)ViewBag.AutherList, "Auther Name", htmlAttributes: new { @class = "select2_demo_1 form-control col-md-7 float-right hidden", required = "required" })*@
+                        @Html.ValidationMessageFor(model => model.auther_id, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.additional_binding, "Additional Binding", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.additional_binding, new { htmlAttributes = new { @class = "form-control col-md-7 float-right" } })
+                        @Html.ValidationMessageFor(model => model.additional_binding, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.binding, "Binding", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.binding, new { htmlAttributes = new { @class = "form-control col-md-7 float-right" } })
+                        @Html.ValidationMessageFor(model => model.binding, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.bindings_due, "Binding Due", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.bindings_due, new { htmlAttributes = new { @class = "form-control col-md-7 float-right" } })
+                        @Html.ValidationMessageFor(model => model.bindings_due, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @*<div class="form-group">
+                @Html.LabelFor(model => model.earnings_scheme, "Earning Scheme", htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.earnings_scheme, new { htmlAttributes = new { @class = "form-control col-md-7 float-right", required = "required" } })
+                    @Html.ValidationMessageFor(model => model.earnings_scheme, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+                <div class="form-group" style="margin-bottom: 13%;">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.earnings_scheme, "Earning Scheme", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.DropDownListFor(model => model.earnings_scheme, (SelectList)ViewBag.earns, "Choose Scheme", htmlAttributes: new { @class = "select2_demo_1 form-control col-md-7 float-right", required = "required" })
+                        @Html.ValidationMessageFor(model => model.earnings_scheme, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.image, "Book Image", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <input type="file" name="img" class="col-md-7 float-right"/>
+                        @if (Model != null && !string.IsNullOrEmpty(Model.image))
+                        {
+                            <br />
+                            <img src="@url2@Model.image" class="img-thumbnail img-rounded" style="width: 34% !important;" />
+                        }
+                        else
+                        {
+                            <img style="width: 34% !important;" src="@(String.IsNullOrEmpty(Model.image)? "/Content/assets_cp/images/uploadImage.png":url2+Model.image)" />
+                        }
+                        @Html.ValidationMessageFor(model => Model.image, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 7%;margin-top: 12%;">
+                    <div class="col-md-12">
+                        <input type="submit" value="Save" class="btn btn-primary" style="color:#fff !important;" />
+                        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-defult", style = "background: #ccc;" })
+                    </div>
+                </div>
+
+            </div>
+            <div class="addBookRight" style="width: 50% !important;">
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.eisbn, "EISBN", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.eisbn, new { htmlAttributes = new { @class = "form-control col-md-7 float-right" } })
+                        @Html.ValidationMessageFor(model => model.eisbn, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.imprint, "Imprint", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.imprint, new { htmlAttributes = new { @class = "form-control col-md-7 float-right" } })
+                        @Html.ValidationMessageFor(model => model.imprint, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.retail_price, "Retail Price", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.retail_price, new { htmlAttributes = new { @class = "form-control col-md-7 float-right" } })
+                        @Html.ValidationMessageFor(model => model.retail_price, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.retail_price_usd_for_additonal_binding, "Retail Price For Additional Binding", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.retail_price_usd_for_additonal_binding, new { htmlAttributes = new { @class = "form-control col-md-7 float-right" } })
+                        @Html.ValidationMessageFor(model => model.retail_price_usd_for_additonal_binding, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+               
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.unpaid_earnings_amount, "Unpaid Earnings Amount", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.unpaid_earnings_amount, new { htmlAttributes = new { @class = "form-control col-md-7 float-right" , Value=(Model.unpaid_earnings_amount == null ? 0 : Model.unpaid_earnings_amount),type="number", @max="25", @min="0"} })
+                        @Html.ValidationMessageFor(model => model.unpaid_earnings_amount, "", new { @class = "text-danger",style= "color: #bd0a25 !important;" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.version, "Book Version", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.version, new { htmlAttributes = new { @class = "form-control col-md-7 float-right" } })
+                        @Html.ValidationMessageFor(model => model.version, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.isbn13_for_additional_binding, "ISBN For Additional Binding", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.isbn13_for_additional_binding, new { htmlAttributes = new { @class = "form-control col-md-7 float-right" } })
+                        @Html.ValidationMessageFor(model => model.isbn13_for_additional_binding, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @*<div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.Genre, "Category Book", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.Genre, new { htmlAttributes = new { @class = "form-control col-md-7 float-right" } })
+                        @Html.ValidationMessageFor(model => model.Genre, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.ebook_retail_price, "Ebook Retail Price", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.ebook_retail_price, new { htmlAttributes = new { @class = "form-control col-md-7 float-right" } })
+                        @Html.ValidationMessageFor(model => model.ebook_retail_price, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.date_finished_books_received, "Date Finished Received", htmlAttributes: new { @class = "control-label col-md-5" })
+                        @Html.EditorFor(model => model.date_finished_books_received, new { htmlAttributes = new { @class = "form-control col-md-7 float-right", type = "date" } })
+                        @Html.ValidationMessageFor(model => model.date_finished_books_received, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+            </div>
+
+           
+        </div>
+   
+        }
+   </div>
+ </div>
+</div>
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

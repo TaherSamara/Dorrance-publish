@@ -1,0 +1,185 @@
+﻿@model dorranceCP.Models.Orders
+@{
+    ViewBag.Title = "Order Details";
+    var order = ViewBag.item as dorranceCP.Models.Orders;
+    var billing = ViewBag.biling as dorranceCP.Models.BillingAddress;
+    var shipping = ViewBag.shipping as dorranceCP.Models.ShippingAddress;
+    string scountry = ViewBag.scountry;
+    string bcountry = ViewBag.bcountry;
+}
+
+<style>
+    .OrderDtailsGroup {
+        margin-bottom: 30px !important;
+    }
+        .OrderDtailsGroup p {
+            font-size: 15px !important;
+        }
+</style>
+<div class="pageBody">
+    <div class="whiteOverlay">
+    </div>
+    <div class="container" style="margin-left: 1%;">
+        <div class="row">
+            <div class="pageHeader orderDetailsHeader clearfix" style="width:100%;">
+                <h4><a href="/CP/Home/dashboard">Home</a><a href="/CP/Orders/">/ Orders /</a>Order Details </h4>
+                <h2 class="pageTitle">Order Details</h2>
+            </div>
+            <div class="col-md-6 no-padding-left">
+                <div class="orderDeailsBox" style="height: 450px !important;">
+                    <h2 class="bookDetailsTitle">
+                        Order Details
+                    </h2>
+                    <div class="OrderDtailsGroup row firstGroup">
+                        <div class="col-md-6">
+                            <p> Order #</p>
+                        </div>
+                        <div class="col-md-6">
+                            <span>@order.order_number</span>
+                        </div>
+                    </div>
+                    <div class="OrderDtailsGroup row ">
+                        <div class="col-md-6">
+                            <p>SKU</p>
+                        </div>
+                        <div class="col-md-6">
+                            <span>@order.sku</span>
+                        </div>
+                    </div>
+                    <div class="OrderDtailsGroup row ">
+                        <div class="col-md-6">
+                            <p> Book Title</p>
+                        </div>
+                        <div class="col-md-6">
+                            <span>@order.product</span>
+                        </div>
+                    </div>
+                    <div class="OrderDtailsGroup row ">
+                        <div class="col-md-6">
+                            <p> QTY</p>
+                        </div>
+                        <div class="col-md-6">
+                            <span>@order.quantity_ordered</span>
+                        </div>
+                    </div>
+                    <div class="OrderDtailsGroup row ">
+                        <div class="col-md-6">
+                            <p> Total Received for Order</p>
+                        </div>
+                        <div class="col-md-6">
+                            <span>$ @order.total_price</span>
+                        </div>
+                    </div>
+                    <div class="OrderDtailsGroup row ">
+                        <div class="col-md-6">
+                            <p>Earnings Type</p>
+                        </div>
+                        <div class="col-md-6">
+                            <span>@order.local_sort_text1</span>
+                        </div>
+                    </div>
+                    <div class="OrderDtailsGroup row ">
+                        <div class="col-md-6">
+                            <p>Order Date</p>
+                        </div>
+                        <div class="col-md-6">
+                            <span>@order.order_date</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 no-padding-right">
+                <div class="orderDeailsBox" style="height: 450px !important;">
+                    <h2 class="bookDetailsTitle">
+                        Author Information
+                    </h2>
+                    <div class="OrderDtailsGroup row firstGroup">
+                        <div class="col-md-6">
+                            <p> Name</p>
+                        </div>
+                        <div class="col-md-6">
+                            <span>@order.authers.name</span>
+                        </div>
+                    </div>
+                    <div class="OrderDtailsGroup row ">
+                        <div class="col-md-6">
+                            <p>Email</p>
+                        </div>
+                        <div class="col-md-6">
+                            <span>@order.authers.email</span>
+                        </div>
+                    </div>
+                    <div class="OrderDtailsGroup row ">
+                        <div class="col-md-6">
+                            <p> Phone Number</p>
+                        </div>
+                        <div class="col-md-6">
+                            <span>@order.authers.phone </span>
+                        </div>
+                    </div>
+                    <div class="OrderDtailsGroup row ">
+                        <div class="col-md-6">
+                            <p> Country</p>
+                        </div>
+                        <div class="col-md-6">
+                            <span>@(order.authers == null ? order.ship_country : order.authers.country.country_en_name)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 no-padding-left">
+                <div class="orderDeailsBox">
+                    <h2 class="bookDetailsTitle">
+                        Billing Address
+                    </h2>
+                    @if (billing != null)
+                    {
+
+                    <div class="AddressDetails">
+                        <p> @billing.BillingFirstName</p>
+                        <p>
+                            @billing.BillingStreet
+                        </p>
+                        <p>@billing.BillingAddress1</p>
+                        <p>@billing.BillingAddress2</p>
+                        <p>@bcountry</p>
+                        <p>T: @billing.Telephone</p>
+                        <p> F: @billing.Fax</p>
+                    </div>
+                    }
+                    else
+                    {
+                        <div style="padding: 3%;color: #ababab;">No Data</div>
+                    }
+                </div>
+            </div>
+            @*<div class="col-md-6 no-padding-right">
+                <div class="orderDeailsBox">
+                    <h2 class="bookDetailsTitle">
+                        Shipping Address
+                    </h2>
+                    @if (shipping != null)
+                    {
+
+                        <div class="AddressDetails">
+                            <p> @shipping.ShippingFirstName</p>
+                            <p>
+                                @shipping.ShippingStreet
+                            </p>
+                            <p>@shipping.ShippingAddress1</p>
+                            <p>@shipping.ShippingAddress2</p>
+                            <p>@scountry</p>
+                            <p>T: @shipping.Telephone</p>
+                            <p> F: @shipping.Fax</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="padding: 3%;color: #ababab;">No Data</div>
+                    }
+                </div>
+            </div>*@
+        </div>
+    </div>
+</div>
+

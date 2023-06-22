@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Dorrance </title>
+    <link href="~/Content/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/assets/css/animate.min.css" rel="stylesheet">
+    <link href="~/Content/assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/assets/css/lightbox.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" href="~/Content/assets/images/logo.png">
+    <link href="~/Content/assets/css/style.css" rel="stylesheet">
+
+    @*@Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")*@
+    <style>
+       
+
+        input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield !important;
+}
+    </style>
+</head>
+<body>
+   
+        @RenderBody()
+    
+
+    <script type="text/javascript" src="~/Content/assets/js/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="~/Content/assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Content/assets/js/main.js"></script>
+@*@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+*@
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>
+

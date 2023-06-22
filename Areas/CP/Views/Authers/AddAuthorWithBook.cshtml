@@ -1,0 +1,380 @@
+﻿
+@{
+    ViewBag.Title = "Add Author With Book";
+    string url2 = "http://cp.dorrancepublishing.com/Content/Images/Original/";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+
+}
+@section css{
+
+    <style>
+        .fade:not(.show) {
+            opacity: 0 !important;
+            display: none !important;
+        }
+
+        .bod {
+            border-bottom: 3px solid #5cbdb6 !important;
+        }
+
+        .pageHeader span{
+            font-size:16px !important;
+        }
+        input {
+            height: 43px !important;
+        }
+         .chosen-container-single {
+        width: 417px !important;
+    }
+           .chosen-select {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+    .chosen-choices{
+        display: block !important;
+    width: 100% !important;
+    height: calc(2.5em + 1.75rem + -4px) !important;
+    padding: 1.375rem 0.75rem !important;
+    font-size: 1rem !important;
+        /*display: block;
+    width: 100%;
+    height: calc(2.5em + 1.75rem + -4px);
+    padding: 1.375rem 0.75rem;
+    font-size: 1rem;*/
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: #495057 !important;
+    background-color: #f3f6f9 !important;
+    background-clip: padding-box !important;
+      background-color: #F3F6F9 !important;
+    border: .5px solid #AAAAAA !important;
+    /*height: 60px;*/
+    border-radius: 5px !important;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out !important;
+    }
+      .selectric-wrapper{
+        display:none !important;
+    }
+
+         .chosen-single{
+             height: calc(1.5em + 1.75rem + -4px) !important;
+    padding: 0.475rem 0.75rem !important;
+         }
+    </style>
+
+}
+
+
+<div class="form-horizontal col-md-9" style="margin-top: 9%;">
+
+    @Html.Partial("_msg")
+    <div class="clearfix">
+        <div class="float-left">
+            <h6><a style="color:#007bff !important;" href="/CP/Home/dashboard">Home</a> / <a href="/CP/Authers/">Authors</a> / Add Authors</h6>
+            <h2 class="pageTitle">Authors’ accounts</h2>
+
+
+            <span>Welcome Back , <span>@(user != null ? user.Name : "")</span></span>
+        </div>
+    </div>
+    @*<h4 style="font-size:17px;"><a href="/CP/Authers/">Home</a> / Add Author</h4>*@
+
+    <div class="row" style="margin-left: 1%;margin-top: 3%;">
+        <div class="pageHeader" style="width:100%;box-shadow: 1px 3px 4px 3px #dedede;padding: 3%;">
+
+
+            <div class="tabbable-line">
+              
+
+                <div class="tab-content">
+                    @using (Html.BeginForm("AddAuthorWithBook", "Authers", FormMethod.Post,
+                new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="tab-pane active" id="tab_1" style="display:block;">
+
+                            <div class="addBookForm">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                                <div class="addBookLeft">
+                                    <h4 style="font-size: 19px !important;">Author Details</h4>
+                                    <div class="form-group" style="margin-top: 30px;">
+                                        <input type="text" name="auth_name" class="form-control" placeholder="Author Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <input  type="text" name="contract_numb" class="form-control" placeholder="Contract Number">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" id="emm" name="auth_email" class="form-control" placeholder="Email">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="number" name="auth_phone" class="form-control" placeholder="Phone">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="auth_address" class="form-control" placeholder="Address">
+                                    </div>
+                                    <div class="form-group ">
+                                        <input type="text" name="auth_address2" class="form-control" placeholder="Address 2">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="city_address" class="form-control" placeholder="City">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="state_address" class="form-control" placeholder="State">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="zip_address" class="form-control" placeholder="ZIP">
+                                    </div>
+                                    @*<div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Country">
+                                        </div>*@
+
+                                    <div class="form-group">
+                                        <div class="form_field_wrap" id="auth_country">
+
+                                        </div>
+                                        <input value="Select Country" class="form-control inputCountry" />
+
+                                        @*<select name="auth_country">
+                                            <option value="0">Country</option>
+                                            @{
+                                                var country = db.country.Where(w => w.visible_on_list == true).ToList();
+
+                                                foreach (var c in country)
+                                                {
+                                                    <option value=@c.id>@c.country_en_name</option>
+                                                }
+                                            }
+                                        </select>*@
+                                        @*<select name="auth_country" tabindex="4" class="form-control advanceSerachSelect chosen-select statesSelect">
+                                            <option value="0">Country</option>
+                                          @{
+                                              var country = db.country.Where(w => w.visible_on_list == true).ToList();
+
+                                              foreach (var c in country)
+                                              {
+                                                <option value=@c.id>@c.country_en_name</option>
+                                              }
+                                        }
+                                            <option selected>Country</option>
+
+                                        </select>*@
+                                    </div>
+
+                                </div>
+                                <div class="vl"></div>
+                                <div class="addBookRight">
+
+                                    <div class="AddBookImg">
+                                        <label for="uploadImg" id="uploadImgLabel">
+                                            <img src="~/Content/assets_cp/images/uploadImage.png"
+                                                 alt="uploadImage.png">
+                                        </label>
+                                        <input type="file" name="img" id="img">
+                                        <span style="font-size:15px !important;" class="uploadImgText">Author Image</span>
+                                    </div>
+                                    <a style="font-size: 16px;margin-top: 113px !important;position: absolute !important;cursor:pointer;font-size: 14px;width: 20% !important;padding: 14px !important;color: #fff !important;" class="btn addBookBtn rr">Continue to Book Details</a>
+                                    <button style="width: 11% !important;font-size: 16px !important; margin-left: -12% !important;margin-top: 112px !important;position: absolute !important;" class="btn addBookBtn" type="submit">Save</button>
+
+                                    @*<a style="font-size: 16px;margin-top: 100px !important;position: absolute !important;font-size: 16px; width: 22%;margin-left: -10%;" class="btn addBookBtn">Continue to Book Details</a>*@
+                                </div>
+                            </div>
+                        </div>
+                            <div class="tab-pane" id="tab_2" style="display:none">
+                                <div class="addBookLeft">
+                                    <h4 style="font-size: 19px !important;">Book Details</h4>
+
+                                    <div class="form-group" style="margin-top: 30px;">
+                                        <input type="text" name="sku" class="form-control" placeholder="SKU/ISBN">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="title" class="form-control" placeholder="Book Title">
+                                    </div>
+                                    <div class="form-group">
+                                        @*<select name="auth_sc">
+                                            <option value="">Earnings Type</option>
+                                            @{
+                                                var sc = db.scheme_2.ToList();
+
+                                                foreach (var c in sc)
+                                                {
+                                                    <option value="@c.text">@c.text</option>
+                                                }
+                                            }
+                                        </select>*@
+                                        <select name="auth_sc" tabindex="4" class="form-control advanceSerachSelect chosen-select statesSelect">
+                                            <option value="">Earnings Type</option>
+                                            @{
+                                                var sc = db.scheme_2.ToList();
+
+                                                foreach (var c in sc)
+                                                {
+                                                    <option value="@c.text">@c.text</option>
+                                                }
+                                            }
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <input title="Publish Date" type="date" name="pub" class="form-control" placeholder="Pub Date">
+                                    </div>
+                                    @*<div class="form-group">
+                                        <input type="text" name="gen" class="form-control" placeholder="Genre">
+                                    </div>*@
+                                    <div class="form-group">
+                                        <input type="text" name="ver" class="form-control" placeholder="Book Version">
+                                    </div>
+                                    <div class="form-group " id="dtt" >
+                                        @*<select name="auther_id">
+                                            <option value=@ViewBag.id>Author Name</option>
+                                            @{
+                                                var authers = db.authers.Where(w => w.is_delete == false).ToList();
+
+                                                foreach (var c in authers)
+                                                {
+                                                    <option value="@c.id">@c.name</option>
+                                                }
+                                            }
+                                        </select>*@
+                                        <div class="form_field_wrap" id="auther_id">
+                                        </div>
+                                        <input value="Select Author" class="form-control inputAuthor" />
+
+                                        @*<select name="auther_id" tabindex="4" class="form-control advanceSerachSelect chosen-select statesSelect">
+                                            <option  selected>Author Name</option>
+                                            @{
+                                                var authers = db.authers.Where(w => w.is_delete == false).ToList();
+
+                                                foreach (var c in authers)
+                                                {
+                                                    <option value="@c.id">@c.name</option>
+                                                }
+                                            }
+
+                                        </select>*@
+                                    </div>
+
+                                </div>
+                                <div class="vl"></div>
+                                <div class="addBookRight">
+
+                                    <div class="AddBookImg">
+                                        <label for="uploadImg" id="uploadImgLabel">
+                                            <img src="/Content/assets_cp/images/uploadImage.png"
+                                                 alt="">
+                                        </label>
+                                        <input type="file" id="img2" name="img2">
+                                        <span style="font-size:15px !important;" class="uploadImgText">Book Image</span>
+                                    </div>
+                                    <a style="width: 10% !important;font-size: 16px !important;margin-left: -10% !important;margin-top: 112px !important;position: absolute !important;cursor:pointer;padding: 12px;color: #fff !important;" class="btn addBookBtn addBookBtn_back">Back</a>
+                                    <button style="width: 11% !important;font-size: 16px !important; margin-left: 2% !important;margin-top: 112px !important;position: absolute !important;" class="btn addBookBtn" type="submit">Save</button>
+                                </div>
+
+
+
+                            </div>
+
+
+
+
+                                                }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+@section Scripts{
+
+
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>*@
+    <script>
+
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("sideMenu").style.display = "block";
+        document.getElementById("Footer").style.display = "block";
+        document.getElementById("redrr").style.display = "contents";
+        document.getElementById("headerNav").style.display = "block";
+
+                function opent(cityName, ele) {
+                    var i;
+                    var x = document.getElementsByClassName("tab-pane");
+                    for (i = 0; i < x.length; i++) {
+                        x[i].style.display = "none";
+                    }
+                    document.getElementById(cityName).style.display = "block";
+                    //document.getElementById(cityName).css("border", "thick solid #5cbdb6");
+                    //$(".t2").css("border-bottom", "unset");
+                    $(ele).css("border-bottom", "3px solid #5cbdb6");
+                    if ($(ele).hasClass("bod")) {
+                        $(ele).removeClass("bod");
+                        $(ele).find("li").addClass("bod");
+                    }
+                    else {
+                        $(ele).addClass("bod");
+                    }
+                    //$(".t1").css("border-bottom", "unset");
+                }
+
+                function myFunction() {
+                    $(".t2").css("border-bottom", "3px solid #5cbdb6");
+                    $(".t1").css("border-bottom", "unset");
+                    //document.getElementById("myCheck").click(); // Click on the checkbox
+                }
+                $(document).ready(function () {
+
+
+
+
+                    $(".rr").click(function () {
+                        opent("tab_2");
+                        //$(".t2").css("border-bottom", "3px solid #5cbdb6");
+                        //$(".t1").css("border-bottom", "unset")
+
+                    });
+
+                    $("#emm").change(function () {
+                        //alert("The text has been changed.");
+
+                        var emm = document.getElementById("emm").value;
+                        if (emm != "" || emm != null) {
+                           
+                            document.getElementById("dtt").style.display = "none";
+                        }
+
+                    });
+
+                    $(".addBookBtn_back").click(function () {
+                        opent("tab_1");
+                        //$(".t2").css("border-bottom", "3px solid #5cbdb6");
+                        //$(".t1").css("border-bottom", "unset")
+
+                    });
+                });
+    </script>
+
+}

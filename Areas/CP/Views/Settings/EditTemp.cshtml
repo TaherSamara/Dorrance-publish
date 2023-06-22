@@ -1,0 +1,199 @@
+﻿@model dorranceCP.Models.EmailTemplate
+
+@{
+    ViewBag.Title = "Edit Email Template";
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+
+}
+@section css{
+    <style>
+        .page-header-fixed .page-container {
+            margin-top: 50px !important;
+        }
+    </style>
+}
+
+@*<div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="/CP/Home/">Home</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+
+            <li>
+                <a href="#">@ViewBag.Title</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+
+        </ul>
+
+    </div>*@
+
+
+
+@using (Html.BeginForm("EditTemp", "Settings", FormMethod.Post, new
+{
+    enctype = "multipart/form-data",
+    @class = "inbox-compose form-horizontal",
+    style = "    margin-top: 10%;"
+}))
+
+{
+    @*@Html.Partial("_msg")*@
+
+    <div class="pageBody" style="overflow:hidden !important;background-color:unset !important;padding-top: 0 !important;">
+        <div class="whiteOverlay">
+
+        </div>
+        <div class="container">
+            @Html.Partial("_msg")
+            <div>
+                <div class="pageHeader" style="width:100%;margin-left: 2%;">
+                    <div class="float-left">
+                        <h4><a href="/CP/Home/dashboard">Home</a> / Settings</h4>
+                        <h2 class="pageTitle">
+                            Email Template
+                        </h2>
+                    </div>
+                </div>
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.id)
+
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td style="padding: 10px 0 30px 0;">
+                            <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border: 1px solid #cccccc; border-collapse: collapse;">
+                                <tr>
+                                    @*<td align="center" bgcolor="#70bbd9" style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
+                                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/h1.gif" alt="Creating Email Magic" width="300" height="230" style="display: block;" />
+                                        </td>*@
+                                    <td align="center" style="color: #153643;font-size: 28px;font-weight: bold;font-family: Arial, sans-serif;">
+                                        <img src="http://portal.dorrancepublishing.com/Content/logo%201.png" alt="Creating Email Magic" width="300" height="230" style="display: block;width: 40% !important;height: 20% !important;" />
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td bgcolor="#ffffff" style="padding: 0 30px 0 30px;">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                            
+                                            <tr>
+                                                <td style="color:#153643; font-family:Arial, sans-serif; font-size: 24px;">
+                                                    @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", type = "text", placeholder = "Template Name", style = "background: #fff;margin-bottom: 4%;", required = "required" } })
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
+                                                    @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control", type = "text" ,style = "background: #fff;",required = "required" , placeholder = "subjcet" } })  
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
+                                                    @Html.TextAreaFor(model => model.msg, new { @class = "form-control ckeditor", rows = 4, style = "background: #fff;height: 120px;", required = "required", placeholder = "Message" })
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                </tr>
+                               @*@if (Model.id == 6)
+                               {
+                                <tr>
+                                    <td bgcolor="#ffffff" style="padding: 0 30px 40px 30px;">
+                                        Start your journey in Dorrance by downloading the App by clicking the applicable link below!
+                                        <br />
+                                        Download from the Apple App Store here:
+                                        <br />
+                                        <a href="link1" target="_blank"><img style="width:20%;" src="http://cp.dorrancepublishing.com/Content/ios_btn.png" /></a>
+                                        <br />
+                                        Download from the Google Play Store here:
+                                        <br />
+                                        <a href="link2" target="_blank"><img style="width:20%;" src="http://cp.dorrancepublishing.com/Content/play-store.png" /></a>
+                                        <br />You Can Open Your Account on Dorrance Website here :<br /><a href="http://portal.dorrancepublishing.com/Account/Login" target="_blank">Dorrance Website Click here !</a>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td bgcolor="#aaa" style="padding: 10px 30px 30px 30px;">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                            <tr>
+                                                <td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;" width="75%">
+                                                    Copyrights &copy; Dorrance <br />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                               }*@
+
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <br />
+                <div class="inbox-compose-btn">
+                    <button type="submit"  class="btn green" style=" background: #5cbdb6;color: #fff;"><i class="fa fa-check"></i>Send</button>
+                    <a href="/CP/Sliders/Index" style=" background: #9a9797; color: #fff;" class="btn">Discard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script id="template-upload" type="text/x-tmpl">
+        {% for (var i=0, file; file=o.files[i]; i++) { %}
+        <tr class="template-upload fade">
+            <td class="name" width="30%"><span>{%=file.name%}</span></td>
+            <td class="size" width="40%"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            {% if (file.error) { %}
+            <td class="error" width="20%" colspan="2"><span class="label label-danger">Error</span> {%=file.error%}</td>
+            {% } else if (o.files.valid && !i) { %}
+            <td>
+                <p class="size">{%=o.formatFileSize(file.size)%}</p>
+                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                </div>
+            </td>
+            {% } else { %}
+            <td colspan="2"></td>
+            {% } %}
+            <td class="cancel" width="10%" align="right">
+                {% if (!i) { %}
+                <button class="btn btn-sm red cancel">
+                    <i class="fa fa-ban"></i>
+                    <span>Cancel</span>
+                </button>
+                {% } %}
+            </td>
+        </tr>
+        {% } %}
+    </script>
+        <script id="template-download" type="text/x-tmpl">
+            {% for (var i=0, file; file=o.files[i]; i++) { %}
+            <tr class="template-download fade">
+                {% if (file.error) { %}
+                <td class="name" width="30%"><span>{%=file.name%}</span></td>
+                <td class="size" width="40%"><span>{%=o.formatFileSize(file.size)%}</span></td>
+                <td class="error" width="30%" colspan="2"><span class="label label-danger">Error</span> {%=file.error%}</td>
+                {% } else { %}
+                <td class="name" width="30%">
+                    <a href="{%=file.url%}" title="{%=file.name%}" data-gallery="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
+                </td>
+                <td class="size" width="40%"><span>{%=o.formatFileSize(file.size)%}</span></td>
+                <td colspan="2"></td>
+                {% } %}
+                <td class="delete" width="10%" align="right">
+                    <button class="btn default btn-sm" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}" {% if (file.delete_with_credentials) { %} data-xhr-fields='{"withCredentials":true}' {% } %}>
+                        <i class="fa fa-times"></i>
+                    </button>
+                </td>
+            </tr>
+            {% } %}
+        </script>
+
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

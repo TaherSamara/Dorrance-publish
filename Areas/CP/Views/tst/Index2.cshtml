@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Index2";
+}
+
+<h2>Index2</h2>
+
+@*@using (Html.BeginForm("Index2", "tst", FormMethod.Post,
+                                                    new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="addBookForm" style="text-align:center;">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+        <div class="AddBookImg">
+            <label for="uploadImg" id="uploadImgLabel">
+                <img src="~/Content/assets_cp/images/uploadImage.png"
+                     alt="uploadImage.png">
+            </label>
+            <input required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style=" user-select: text !important;" type="file" name="FileUpload">
+            <span class="uploadImgText">File</span>
+        </div>
+
+    </div>
+
+                <button class="btn addBookBtn" type="submit" style="width: 25%;margin-top: 10% !important;position: relative !important;bottom: -76px !important;">Save</button>
+
+
+}*@
+
+
+@using (Html.BeginForm("Index2", "tst", FormMethod.Post, new
+{
+    enctype = "multipart/form-data"
+}))
+{ <table style="margin-top: 80%;"> <tr> <td> File: </td> <td> <input type = "file"
+    name = "FileUpload" /> </td> </tr> <tr> <td colspan = "2"> 
+    <input type = "submit" name = "Submit"value = "Submit" /> </td> </tr> 
+    </table>
+    }

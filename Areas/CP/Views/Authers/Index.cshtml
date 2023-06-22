@@ -1,0 +1,1365 @@
+﻿@model IEnumerable<dorranceCP.Models.authers>
+
+@{
+    ViewBag.Title = "Authors";
+    string url2 = "http://cp.dorrancepublishing.com/Content/Images/Original/";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+    var periods = ViewBag.Periods as List<dorranceCP.Models.Periods>;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+}
+
+@section css{
+    <style>
+        table.dataTable tbody td {
+            padding: 8px 4px !important;
+        }
+
+        .selectric-advanceSerachSelect {
+            width: 20% !important;
+            margin: 2px !important;
+        }
+
+        .addBookForm .form-group {
+            margin-bottom: 10px !important;
+        }
+
+        .margin-topForm {
+            margin-top: 0 !important;
+        }
+
+        .table thead tr th {
+            font-size: 15px !important;
+        }
+
+        .autImg {
+            float: left !important;
+        }
+
+        td h4 {
+            /*line-height: 34px;*/
+            verticle-alight: unset !important;
+        }
+
+        .numOfBook {
+            width: 20% !important;
+        }
+
+        .generateCreateButtons {
+            margin-top: 20px;
+        }
+
+        /*.table thead tr th {
+                    padding: 17px !important;
+                }*/
+
+        .settingBox1 li {
+            padding: 15px 0;
+            border-bottom: .5px solid #E6E6E6;
+            width: 100%;
+        }
+
+        .settingsSec1 {
+            position: relative;
+        }
+
+        .settingBox1 {
+            display: none;
+            background-color: white;
+            padding: 0 15px;
+            width: 225px;
+            border-radius: 5px;
+            position: absolute;
+            top: 40%;
+            z-index: 99999999;
+            right: 20%;
+            box-shadow: 1px 3px 30px 2px rgba(0,0,0,.16);
+        }
+
+        .container {
+            max-width: 95% !important;
+        }
+
+        .chosen-container-single {
+            width: 205px !important;
+        }
+
+        .chosen-select {
+            display: block;
+            width: 100%;
+            height: calc(1.5em + .75rem + 2px);
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+
+        .chosen-choices {
+            display: block !important;
+            width: 100% !important;
+            height: calc(2.5em + 1.75rem + -4px) !important;
+            padding: 1.375rem 0.75rem !important;
+            font-size: 1rem !important;
+            /*display: block;
+            width: 100%;
+            height: calc(2.5em + 1.75rem + -4px);
+            padding: 1.375rem 0.75rem;
+            font-size: 1rem;*/
+            font-weight: 400 !important;
+            line-height: 1.5 !important;
+            color: #495057 !important;
+            background-color: #f3f6f9 !important;
+            background-clip: padding-box !important;
+            background-color: #F3F6F9 !important;
+            border: .5px solid #AAAAAA !important;
+            /*height: 60px;*/
+            border-radius: 5px !important;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out !important;
+        }
+
+        .selectric-advanceSerachSelect, .selectric-chosen-select {
+            display: none !important;
+        }
+
+        .len {
+            display: block !important;
+        }
+
+        .chosen-single {
+            height: calc(1.5em + 1.75rem + -4px) !important;
+            padding: 0.475rem 0.75rem !important;
+        }
+
+        .selectric-len {
+            width: 124% !important;
+        }
+
+        .selectric-len {
+            width: 80% !important;
+        }
+        /*switch togggle*/
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+        .slider {
+            position: relative;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 26px;
+                width: 26px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+        /*input:checked + .slider {
+          background-color: #4fa746;
+        }*/
+
+        input:checked + .exc {
+            background-color: #4fa746 !important;
+        }
+
+        input:checked + .pf {
+            background-color: #9c0909 !important;
+        }
+
+        input:checked + .ema {
+            background-color: #1325b7 !important;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        select {
+            width: 20% !important;
+            margin: 3px !important;
+        }
+
+        /* Rounded sliders */
+        /*.slider.round {
+          border-radius: 34px;
+        }*/
+
+        /*.slider.round:before {
+          border-radius: 50%;
+        }*/
+
+    </style>
+}
+
+<div class="pageBody" style="overflow:unset !important;">
+    <div class="whiteOverlay">
+
+    </div>
+    <div class="container">
+        @Html.Partial("_msg")
+        <div class="row">
+            <div class="pageHeader" style="width:100%;margin-left: 1%;">
+                <div class="clearfix">
+                    <div class="float-left">
+                        <h4><a href="/CP/Home/dashboard">Home</a> / Authors</h4>
+                        <h2 class="pageTitle">Authors’ accounts</h2>
+
+
+                        <span>Welcome Back , <span>@(user != null ? user.Name : "")</span></span>
+                    </div>
+                    <div class="paginationBox float-right" style="margin-right: 0 !important;">
+                        <div class="generateCreateButtons">
+                            @*<a data-toggle="modal" data-target="#AuthorModal2" style="margin-right: 3px !important;width: 112px !important;" href="#" class="btn generateBtn btnMargin disabled">Invoices</a>*@
+                            @*<a data-toggle="modal" data-target="#AddNewFile2" style="margin-right: 3px !important;width: 146px !important;" href="#" class="btn generateBtn btnMargin">Import Old Authors</a>*@
+                            <a data-toggle="modal" data-target="#AddNewFile" style="margin-right: 3px !important;width: 127px !important;" href="#" class="btn generateBtn btnMargin">Import Authors</a>
+                            <a href="/CP/Authers/AddAuthorWithBook" style="width: 120px !important;" class="btn generateBtn">
+                                + Create Author
+                            </a>
+
+                            @*<a href="#" style="width: 120px !important;" class="btn generateBtn" data-toggle="modal" data-target="#AddNewBook">
+                                    + Create Author
+                                </a>*@
+                            @*<a  href="/CP/Authers/Add" style="width: 112px !important;" class="btn generateBtn"> + Creat Author</a>*@
+                        </div>
+                    </div>
+                </div>
+
+                <input hidden style="display:none;" value="@ViewBag.len" class="ln" />
+                <input hidden style="display:none;" value="@ViewBag.PageId" class="pag" />
+                <div class="clearfix tableHeader" style="width:100%;margin-top:0 !important;">
+
+                    <form method="get">
+                        <div class="searchPagination clearfix">
+                            <div class="AdvanceSearch float-left" style="width: 100% !important;margin-top:0 !important;">
+                                <div>
+                                    <input style="width: 20%;margin: 3px;" value="@ViewBag.num" name="num" type="text" class="form-control num" placeholder="Contract No.">
+                                    <input style="width: 20%;margin: 3px;" value="@ViewBag.nam" name="nam" type="text" class="form-control nam" placeholder="Name">
+                                    <input style="width: 20%;margin: 3px;" value="@ViewBag.em" name="em" type="text" class="form-control em" placeholder="Email">
+                                    <input style="width: 20%;margin: 3px;" value="@ViewBag.addr" name="addr" type="text" class="form-control searchByAuthor addr" placeholder="Address">
+
+                                </div>
+                                <div class="form-group clearfix">
+                                    <input style="width: 20%;margin: 3px;" value="@ViewBag.phone" name="phone" type="text" class="form-control phone" placeholder="Phone">
+                                    <input style="width: 20%;margin: 3px;" value="@ViewBag.totf" name="totf" type="number" class="form-control totf" placeholder="Total From For Last Period">
+                                    <input style="width: 20%;margin: 3px;" value="@ViewBag.tott" name="tott" type="number" class="form-control tott" placeholder="Total To For Last Period">
+                                    <div class="form_field_wrap" id="auth_country">
+
+                                    </div>
+                                    <input style="width: 20%;margin: 3px;" value="Select Country" class="form-control inputCountry" />
+
+                                    @*<select value="@ViewBag.coun" name="coun" tabindex="4" class="form-control advanceSerachSelect chosen-select statesSelect">
+                                            <option data-option-array-index="@ViewBag.coun" value="@ViewBag.coun" selected>Country</option>
+                                            @{
+                                                var country2 = db.country.Where(w => w.visible_on_list == true).ToList();
+
+                                                foreach (var c2 in country2)
+                                                {
+                                                    <option value=@c2.id>@c2.country_en_name</option>
+                                                }
+                                            }
+                                            <option data-option-array-index="@ViewBag.coun" value="@ViewBag.coun" selected>Country</option>
+
+                                        </select>*@
+                                    @*<select hidden  value="@ViewBag.coun" style="margin-left: 6px;width: 20%;" name="coun" class="advanceSerachSelect form-control">
+                                            <option value="0">Country</option>
+                                            @{
+                                                var country2 = db.country.Where(w => w.visible_on_list == true).ToList();
+
+                                                foreach (var c2 in country2)
+                                                {
+                                                    <option value=@c2.id>@c2.country_en_name</option>
+                                                }
+                                            }
+                                        </select>*@
+                                    <button type="submit" class="btn AdvanceSearchBtn " style="margin-top:0 !important;width: 5%;" title="Search"><i class="fa fa-search"></i></button>
+                                    <a href="/CP/Authers/" type="submit" class="btn AdvanceSearchBtn" style="margin-top:0 !important;width: 5%;" title="Refresh"><i class="fa fa-refresh"></i></a>
+
+                                </div>
+
+                                @*<div class="form-group clearfix">
+
+                                    </div>*@
+
+                            </div>
+
+                        </div>
+                        @*<div class="searchBox float-left">
+                                <input autofocus value="@ViewBag.q"
+                                       name="q" type="text" class="search"
+                                       placeholder="search ...">
+
+                                <button style="color: #f3f6f9;border: none;position: absolute;left: 0;top: 35%;background-color: transparent;"
+                                        type="submit">
+                                    <i class="fa fa-search" style="top: 36% !important;"></i>
+                                </button>
+                            </div>*@
+                    </form>
+                    <div>
+                        <label>
+                            Show Per Page
+                            <br />
+                            <select name="slct_length" id="ss" aria-controls="example" class="len">
+                                <option value="10">10</option>
+                                <option value="50" selected>50</option>
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                                <option value="300">300</option>
+                                <option value="500">500</option>
+                                @*<option value="1000">1000</option>*@
+                            </select>
+                        </label>
+                    </div>
+
+                    @Html.Partial("_paging")
+                    @* paging *@
+
+                    <br />
+
+                    @*<a style="cursor:pointer;margin-left: -38%;color: #fff;margin-top: 3%;font-size: 13px;" onClick="fnExcelReport('html_table');" class="btn btn-success"><i class="fa fa-file-excel-o"></i> Spreadsheet for accounting</a>
+
+                        <a style="cursor:pointer;margin-top: 3%;color: #fff;font-size: 13px;" onClick="printPdf('bill');" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i> Document of statements</a>
+
+                        <a  id="email" style="float: right;cursor:pointer;color: #fff;margin-top: 3%;font-size: 13px;" class="btn btn-primary"><i class="fa fa-envelope"></i> Email statements to author</a>*@
+
+
+                    @*<div class="float-right">
+                            <a id="excel" style="cursor:pointer;margin-right: 1%;color: #fff;margin-bottom: 4%; margin-top:3%;font-size: 13px;" class="btn btn-success"><i class="fa fa-file-excel-o"></i> Spreadsheet for accounting</a>
+
+                            <a style="cursor:pointer;margin-right: 1%;color: #fff;margin-bottom: 4%;font-size: 13px;" onClick="printPdf('bill');" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i> Document of statements</a>
+
+                            <a id="email" style="cursor:pointer;color: #fff;margin-bottom: 4%;font-size: 13px;" class="btn btn-primary"><i class="fa fa-envelope"></i> Email statements to author</a>
+                        </div>*@
+
+
+                </div>
+            </div>
+            @if (Model.Count() > 0)
+            {
+                <div style="width:100%;">
+                    <div>
+                        <a href="/CP/Authers/SendToAll" id="sendEmailToAll" title="Send email to all" style="cursor:pointer;color: #fff;margin-top: 2%;float: left;font-size: 15px;" class="btn btn-info Confirm2">Send email to all</a>
+                    </div>
+                    <div>
+                        <a  href="/CP/Authers/NewMasterReset" class="btn btn-danger Confirm2" style="margin-left: 10px;cursor:pointer; color: #fff; margin-top: 2%; float: left; font-size: 15px;">Reset all (perivous period)</a>
+                    </div>
+                    <div>
+                        <a id="sender" title="Spreadsheet for accounting" style="cursor:pointer;color: #fff;margin-top: 3%;float: right;font-size: 13px;" class="btn btn-success">send </a>
+                    </div>
+                    <div style="float: right;margin-top: 4%;margin-right: 2%;">
+                        <span class="emailTable">
+                            <label title="Spreadsheet for accounting">
+                                Spreadsheet
+                                <input type="checkbox" title="Spreadsheet for accounting" class="excel" style="width: 18px;height: 18px;" id="excell" />   @*onchange="toggleCheck()"*@
+                                <span class=" exc" title="Spreadsheet for accounting"></span>
+                            </label>
+                        </span>
+
+                        <span class="emailTable" title="Document of statements">
+                            <label title="Document of statements">
+                                Document
+                                <input type="checkbox" class="pdf" title="Document of statements" style="width: 18px;height: 18px;" id="pdff" />   @*onchange="toggleCheck()"*@
+                                <span class=" pf" title="Document of statements"></span>
+                            </label>
+                        </span>
+
+
+                        <span class="emailTable" title="Email statements to author">
+                            <label title="Email statements to author">
+                                Email
+                                <input type="checkbox" class="email" style="width: 18px;height: 18px;" id="emm" title="Email statements to author" />   @*onchange="toggleCheck()"*@
+                                <span class="ema" title="Email statements to author"></span>
+                            </label>
+                        </span>
+
+                        <!--<span class="emailTable" title="Master Reset">
+                        <label title="Master Reset">
+                            Master Reset
+                            <input type="checkbox" style="width: 18px;height: 18px;" class="reset_master" id="reset_master" title="Master Reset" />-->
+                        @*onchange="toggleCheck()"*@
+                        <!--<span class="reset_master" title="Master Reset"></span>
+                            </label>
+                        </span>-->
+
+                    </div>
+                    @*<a id="email" title="Email statements to author" style="float: right;cursor:pointer;color: #fff;margin-left: 3px;margin-top: 3%;font-size: 13px;" class="btn btn-primary"><i class="fa fa-envelope"></i> </a>
+                        <a id="pdf" title="Document of statements" style="cursor:pointer;margin-top: 3%;color: #fff;margin-left: 3px;float: right;font-size: 13px;" class="btn btn-danger"><i class="fa fa-file-pdf-o"></i> </a>
+                        <a id="excel" title="Spreadsheet for accounting" style="cursor:pointer;/* margin-left: 3px; */color: #fff;margin-top: 3%;float: right;font-size: 13px;" class="btn btn-success"><i class="fa fa-file-excel-o"></i> </a>*@
+                    <div class="table-responsive scr">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    @*<th hidden style="display: none;"></th>*@
+                                    <th width="5%" style="display:none">#No</th>
+                                    <th>
+                                    <td width="10%"><input style="width: 20px;height: 20px;position: unset !important;" name="mycheckbox" class="form-control" type="checkbox" id="chk" /></td></th>
+                                    <td width="13%">Contract No.</td>
+                                    <th width="18%">Author Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th width="17%">Address</th>
+                                    <th width="10%">Country</th>
+                                    <th class="numOfBook">No. of Books</th>
+                                    <th class="numOfBook">Total</th>
+                                    <th>Reset</th>
+                                    <th style="width: 9% !important;">Settings</th>
+                                    @*<th style="width: 9% !important;">generate</th>*@
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var i = 0;}
+                                @foreach (var item in Model)
+                                {
+                                    i = i + 1;
+                                    var bks = db.book.Where(b => b.auther_id == item.id && b.is_delete == false).Count();
+                                    string cn = "";
+                                    if (item.country_id != 0 && item.country_id != null)
+                                    {
+                                        cn = db.country.Where(r => r.id == item.country_id).FirstOrDefault().country_en_name;
+                                    }
+                                    var contr = db.ContractNumbersAuthors.Where(b => b.author_id == item.id).FirstOrDefault();
+                                    <tr>
+                                        <td hidden></td>
+                                        <td width="5%">#@i</td>
+                                        <td id="iid" hidden>@item.id</td>
+                                        <td width="5%">@Html.CheckBox(item.id.ToString(), false, new { @class = "ckb", Id = item.id, style = "z-index: 100000 !important;opacity: 1 !important;width: 20px;height: 20px;" })</td>
+                                        @*<td width="5%"><input style="width: 160% !important;" name="mycheckbox" class="form-control" type="checkbox" data-row="@item.id" id="chk"/></td>*@
+                                        <td width="13%">
+                                            @(contr != null ? contr.contract_number : item.contract_numb)
+
+                                        </td>
+                                        <td width="30%" class="clearfix">
+                                            @if (item.is_send_invite == false)
+                                            {
+                                                <i class="fa fa-dot-circle-o" title="not invited" style="color: #FF9800;float: left;"></i>
+                                            }
+                                            <a href="/CP/Authers/Preview/@item.id">
+                                                <div class="autImg" style="margin-bottom: 10%;margin-top: 7%;"><img style="width: 100% !important;" src=@(String.IsNullOrEmpty(item.image)? "/Content/book.png" : url2+item.image) alt=""></div>
+                                                <h4 title="@item.name" style="display: inline-flex;width: 30%;" maxlength="10">@item.name</h4>
+                                            </a>
+                                            @*@(item.name.Length > 10 ? item.name.Substring(0, 10) + ".." : item.name)*@
+
+                                        </td>
+                                        <td class="emailTable">
+                                            <a href="/CP/Authers/Preview/@item.id" maxlength="10" title="@item.email">
+                                                @(item.email.Length > 10 ? item.email.Substring(0, 10) + ".." : item.email)
+                                            </a>
+                                        </td>
+                                        <td>@item.phone</td>
+                                        <td width="17%" style="word-break:break-all;" title="@item.address">
+
+                                            @(item.address.Length > 10 ? item.address.Substring(0, 10) + ".." : item.address)
+                                        </td>
+                                        <td width="10%">@cn</td>
+
+
+                                        <td class="numberTable" style="text-align: center;"><a href="/CP/Books/BookAuthers/@item.id">@bks</a></td>
+                                        <td><a href="/CP/Authers/EarningsAuthor/@item.id"> $@(item.total_last_period == null ? "0" : item.total_last_period.Value.ToString("0.00"))</a></td>
+                                        @if (item.total_last_period >= 25)
+                                        {
+                                            <td><a class="btn btn-warning Confirm4" style="padding: 2px;font-size: 12px;" href="/CP/Authers/ResetTotal/@item.id">Reset</a></td>
+                                        }
+                                        else
+                                        {
+                                            <td>&nbsp; &nbsp;</td>
+                                        }
+                                        <td width=3% class="settingsSec" style="cursor: pointer;">
+                                            <i class="fa fa-ellipsis-v"></i>
+                                            <div class="settingBox">
+                                                <ul>
+                                                    <li>
+                                                        <a href="/CP/Authers/Preview/@item.id"><i class="fa fa-eye"></i>Preview</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/CP/Authers/Edit/@item.id"><i class="fa fa-pencil"></i>Edit</a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a data-id="@item.id" href="javascript:void(0);" class="shownotify"><i class="fa fa-refresh"></i>Reset Password</a>
+                                                    </li>
+                                                    <li>
+                                                        <a data-id="@item.id" href="javascript:void(0);" class="changeEmail"> <i class="fa fa-refresh"></i>Change Email</a>
+                                                    </li>
+                                                    <li>
+                                                        <a data-id="@item.id" href="javascript:void(0);" class="showInvite"><i class="fa fa-envelope"></i>Invite Author</a>
+                                                    </li>
+                                                    @*<li>
+                                                            <a href="/CP/Authers/InviteAuthor/@item.id"><i class="fa fa-envelope"></i>Invite Author</a>
+                                                        </li>*@
+                                                    <li>
+                                                        <a href="/CP/Authers/Delete/@item.id" class="Confirm2"> <i class="fa fa-trash"></i> Delete</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/CP/Books/BookAuthers/@item.id" target="_blank"><i class="fa fa-book"></i>Books</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/CP/Orders/Show/@item.id" target="_blank"> <i class="fa fa-list-alt"></i>Orders</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/CP/Authers/EarningsAuthorExcel/@item.id" target="_blank"><i class="fa fa-list-alt"></i>Earnings Details</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/CP/Authers/bookDetailes2/?authid=@item.id" target="_blank"><i class="fa fa-list-alt"></i>Author Page</a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        @*<td>
+                                                <a id="my_modal" style="text-align: center;margin-right: 3px !important;width: 140px !important;height: 35px !important;line-height: 21px !important;" href="/CP/Authers/generate/@item.id" class="btn generateBtn btnMargin">Earning Statement</a>
+
+                                            </td>*@
+                                        @*<td width=3% class="settingsSec1" style="cursor: pointer;">
+                                                <i class="fa fa-download"></i>
+                                                <div class="settingBox1">
+                                                    <ul>
+                                                        <li>
+                                                            <a onClick="fnExcelReport('html_table');"><i class="fa fa-eye"></i>Spreadsheet for accounting</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/CP/Authers/Pdf/@item.id"><i class="fa fa-pencil"></i>Document of statements</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/CP/Authers/Email/@item.id" class="Confirm"> <i class="fa fa-trash"></i> Email statements to author</a>
+                                                        </li>
+
+
+                                                    </ul>
+                                                </div>
+                                            </td>*@
+
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <div class="alert alert-info col-md-12">
+                    There is no data to display
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="modal changePassModal" id="changePassModal" tabindex="-1" role="dialog" style="background: #5c5b5b !important;">
+    <div class="modal-dialog" role="document">
+
+        <div class="modal-content" style="border-radius: 1.3rem !important;">
+            <div id="myModalContent"></div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal EmailModal" id="EmailModal" tabindex="-1" role="dialog" style="background: #5c5b5b !important;padding-right: 0 !important;">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content" style="border-radius: 1.3rem !important;">
+            <div id="EmailContent"></div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal changeEmailModal" id="changeEmailModal" tabindex="-1" role="dialog" style="background: #5c5b5b !important;">
+    <div class="modal-dialog" role="document">
+
+        <div class="modal-content" style="border-radius: 1.3rem !important;">
+            <div id="myModalContentEmail"></div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="AuthorModal2" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="padding: 17%;">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="AuthorModalSec">
+                <a href="/CP/Authers/Excel/">Spreadsheet for accounting</a>
+            </div>
+            <div class="AuthorModalSec">
+                <a href="#">Document of statements</a>
+            </div>
+            <div class="AuthorModalSec">
+                <a href="#">Email statements to author</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*"<table id='bill' class='table table-bordered' style='line-height: .9 !important;'><thead>
+    <tr style='text-align: center;'>
+    <td style='width: 100%;'>
+        <img style='text-align:center;width: 14%;' src='http://portal.dorrancepublishing.com/Content/logo%201.png' /></td>
+    </tr>
+    <tr style='text-align: center;'>
+    <td style='width: 100%;'>
+        <h3>Dorrance Publishing Company Earnings Statement</h3><br>
+        <hr/>
+        </td>
+    </tr>
+    <tr>
+    <th style='float:left;font-size: 15px !important;width:unset !important;'>Ms. Violet  Bowling</th>
+    <th style='width:100%;float: left;font-size: 15px !important;width: 100%;'>Title : Colors of an Apple</th>
+    </tr><tr>
+    <th style='text-align: left;font-size: 15px !important;width: 100%;'>616  School Street <br />New Haven</th></tr><tr><th style='width: 100%;float: left;text-align: left;margin-right: -86%;font-size: 15px !important;'>Statement period : 11/1/2020 to 4/30/2020<br /></th></tr><tr><th style='float: left;text-align: left;font-weight:bold !important;font-size: 15px !important;'>Earnings Detail </th></tr><tr class='row' style='float: left;display: block !important;'><th style='background: #d0d0d0 !important;width: 144px !important;font-size: 15px !important;'>Date</th><th style='background: #d0d0d0 !important;width: 195px !important;font-size: 15px !important;'>Edititon</th><th style='background: #d0d0d0 !important;width: 167px !important;font-size: 15px !important;'>Sales Type</th><th style='background: #d0d0d0 !important;width: 70px !important;font-size: 15px !important;'>Qty</th><th style='background: #d0d0d0 !important;width: 70px !important;font-size: 15px !important;'>Sales</th><th style='background: #d0d0d0 !important;width: 70px !important;font-size: 15px !important;'>Rate</th><th style='background: #d0d0d0 !important;width: 70px !important;font-size: 15px !important;'>Earnings</th></tr></thead><tbody><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/26/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/26/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/26/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/26/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/26/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>80% Sales</td><td style='font-size: 13px !important;'>$8</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>80% Sales</td><td style='font-size: 13px !important;'>$8</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>80% Sales</td><td style='font-size: 13px !important;'>$8</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>80% Sales</td><td style='font-size: 13px !important;'>$8</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>80% Sales</td><td style='font-size: 13px !important;'>$8</td></tr><tr><td colspan='7' style='text-align:left;font-size: 13px !important;background: #d0d0d0 !important;'>Summary</td></tr><tr><td colspan='6' style='text-align:left;font-size: 13px !important;'>Net royalties payable for the period</td><td colspan='6' style='font-size: 13px !important;padding-right: 11% !important;'>$85</td></tr><tr><td colspan='7' style='text-align:left;font-size: 8px !important;'>Important to note: Per your publishing services agreement, earnings are paid when total earnings exceed $25.00</td>
+    </tr></tbody></table><br /><br />"*@
+@*"<table id='bill' class='table table-bordered' style='line-height: .9 !important;'><thead>
+    <tr style='text-align: center;'><td style='width: 100%;'><img style='text-align:center;width: 14%;' src='http://portal.dorrancepublishing.com/Content/logo%201.png' /></td></tr><tr style='text-align: center;'><td style='width: 100%;'><h3>Dorrance Publishing Company Earnings Statement</h3></td></tr> <tr><th style='float:left;font-size: 15px !important;width:unset !important;'>Ms. Violet  Bowling</th><th style='width:100%;float: left;font-size: 15px !important;width: 100%;'>Title : Colors of an Apple</th></tr><tr><th style='text-align: left;font-size: 15px !important;width: 100%;'>616  School Street <br />New Haven</th></tr><tr><th style='width: 100%;float: left;text-align: left;margin-right: -86%;font-size: 15px !important;'>Statement period : 11/1/2020 to 4/30/2020<br /></th></tr><tr><th style='float: left;text-align: left;font-weight:bold !important;font-size: 15px !important;'>Earnings Detail </th></tr><tr class='row' style='float: left;display: block !important;'><th style='background: #d0d0d0 !important;width: 144px !important;font-size: 15px !important;'>Date</th><th style='background: #d0d0d0 !important;width: 195px !important;font-size: 15px !important;'>Edititon</th><th style='background: #d0d0d0 !important;width: 167px !important;font-size: 15px !important;'>Sales Type</th><th style='background: #d0d0d0 !important;width: 70px !important;font-size: 15px !important;'>Qty</th><th style='background: #d0d0d0 !important;width: 70px !important;font-size: 15px !important;'>Sales</th><th style='background: #d0d0d0 !important;width: 70px !important;font-size: 15px !important;'>Rate</th><th style='background: #d0d0d0 !important;width: 70px !important;font-size: 15px !important;'>Earnings</th></tr></thead><tbody><tr style='display:block;'>
+    <td style='font-size: 13px !important;width: 190px;'>3/26/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td>
+    <td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td>
+    <td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/26/2020 12:00:00 ص</td>
+    <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td>
+    <td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td>
+    <td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr>
+    <tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/26/2020 12:00:00 ص</td>
+    <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td>
+    <td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td>
+    <td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/26/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/26/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>80% Sales</td><td style='font-size: 13px !important;'>$8</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>80% Sales</td><td style='font-size: 13px !important;'>$8</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>80% Sales</td><td style='font-size: 13px !important;'>$8</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>80% Sales</td><td style='font-size: 13px !important;'>$8</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>80% Sales</td><td style='font-size: 13px !important;'>$8</td></tr><tr><td colspan='7' style='text-align:left;font-size: 13px !important;background: #d0d0d0 !important;'>Summary</td></tr><tr><td colspan='6' style='text-align:left;font-size: 13px !important;'>Net royalties payable for the period</td><td colspan='6' style='font-size: 13px !important;padding-right: 11% !important;'>$85</td></tr><tr><td colspan='7' style='text-align:left;font-size: 8px !important;'>Important to note: Per your publishing services agreement, earnings are paid when total earnings exceed $25.00</td></tr></tbody>
+    </table><br /><br />"*@
+
+@*"<table id='bill' class='table table-bordered' style='line-height: .9 !important;'><thead ><tr style='text-align: center;'><td style='width: 100%;'><img style='text-align:center;width: 14%;'src='http://portal.dorrancepublishing.com/Content/logo%201.png' /></td></tr><tr style='text-align: center;'><td style='width: 100%;'><h3>Dorrance Publishing Company Earnings Statement</h3></td></tr> <tr><th style='float:left;font-size: 15px !important;width:unset !important;'>Ms. Violet  Bowling</th><th style='width:100%;float: left;font-size: 15px !important;width: 100%;'>Title : Colors of an Apple</th></tr><tr><th style='text-align: left;font-size: 15px !important;width: 100%;'>616  School Street <br />New Haven</th></tr><tr><th style='width: 100%;float: left;text-align: left;margin-right: -86%;font-size: 15px !important;'>Statement period : 11/1/2020 to 4/30/2020<br /></th></tr><tr><th style='float: left;text-align: left;font-weight:bold !important;font-size: 15px !important;'>Earnings Detail </th></tr><tr class='row' style='float: left;display: block !important;'><th style='background: #d0d0d0 !important;width: 144px !important;font-size: 15px !important;'>Date</th><th style='background: #d0d0d0 !important;width: 195px !important;font-size: 15px !important;'>Edititon</th><th style='background: #d0d0d0 !important;width: 167px !important;font-size: 15px !important;'>Sales Type</th><th style='background: #d0d0d0 !important;width: 70px !important;font-size: 15px !important;'>Qty</th><th style='background: #d0d0d0 !important;width: 70px !important;font-size: 15px !important;'>Sales</th><th style='background: #d0d0d0 !important;width: 70px !important;font-size: 15px !important;'>Rate</th><th style='background: #d0d0d0 !important;width: 70px !important;font-size: 15px !important;'>Earnings</th></tr></thead><tbody><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/26/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/26/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/26/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/26/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/26/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>80% Sales</td><td style='font-size: 13px !important;'>$8</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>80% Sales</td><td style='font-size: 13px !important;'>$8</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>80% Sales</td><td style='font-size: 13px !important;'>$8</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>80% Sales</td><td style='font-size: 13px !important;'>$8</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>45% Sales</td><td style='font-size: 13px !important;'>$4.5</td></tr><tr style='display:block;'><td style='font-size: 13px !important;width: 190px;'>3/28/2020 12:00:00 ص</td> <td style='font-size: 13px !important;width: 166px;'>998-2-3525-1317-3</td><td style='font-size: 13px !important; width: 195px;'>LSI ACS WEB-7662538-1</td><td style='font-size: 13px !important;width: 61px;'>1</td><td style='font-size: 13px !important; width: 51px;'>$10</td><td style='font-size: 13px !important;width: 83px;'>80% Sales</td><td style='font-size: 13px !important;'>$8</td></tr><tr><td colspan='7'style='text-align:left;font-size: 13px !important;background: #d0d0d0 !important;'>Summary</td></tr><tr><td colspan='6' style='text-align:left;font-size: 13px !important;'>Net royalties payable for the period</td><td colspan='6' style='font-size: 13px !important;padding-right: 11% !important;'>$85</td></tr><tr><td colspan='7' style='text-align:left;font-size: 8px !important;'>Important to note: Per your publishing services agreement, earnings are paid when total earnings exceed $25.00</td></tr></tbody></table><br /><br />"*@
+
+<div class="modal fade" id="AddNewBook" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h5 class="AddBookTitle"> Add New Author</h5>
+
+            @using (Html.BeginForm("Add", "Authers", FormMethod.Post,
+                                        new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="addBookForm">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                    <div class="addBookLeft">
+
+                        <div class="form-group margin-topForm">
+                            <input required type="text" name="auth_name" class="form-control" placeholder="Author Name">
+
+
+                        </div>
+                        <div class="form-group">
+                            <input required type="email" name="auth_email" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <input required type="number" name="auth_phone" class="form-control" placeholder="Phone">
+                        </div>
+                        <div class="form-group">
+                            <input required type="text" name="auth_address" class="form-control" placeholder="Address">
+                        </div>
+                        <div class="form-group ">
+                            <input type="text" name="auth_address2" class="form-control" placeholder="Address 2">
+                        </div>
+                        @*<div class="form-group">
+                                <input type="text" class="form-control" placeholder="Country">
+                            </div>*@
+
+                        <div class="form-group">
+                            <select required name="auth_country">
+                                <option value="">Country</option>
+                                @{
+                                    var country = db.country.Where(w => w.visible_on_list == true).ToList();
+
+                                    foreach (var c in country)
+                                    {
+                                        <option value="@c.id">@c.country_en_name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="vl"></div>
+                    <div class="addBookRight">
+                        <div class="AddBookImg">
+                            <label for="uploadImg" id="uploadImgLabel">
+                                <img src="~/Content/assets_cp/images/uploadImage.png"
+                                     alt="uploadImage.png">
+                            </label>
+                            <input type="file" name="img">
+                            <span class="uploadImgText">Author Image</span>
+                        </div>
+
+                        <button style=" width: 89% !important;height:50px !important; float:right;" class="btn addBookBtn" type="submit">Add</button>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+<div id="Confirm2" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" style="top:unset !important;padding:unset !important;margin:unset !important;right: 15px !important;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Confirm</h4>
+            </div>
+            <div class="modal-body" style="font-size:15px;">
+                <p>Are you sure you want to achive this operation ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger" style="color: #fff;cursor: pointer;"> Yes, Sure</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+<div id="reset_master_data" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm</h4>
+            </div>
+            <div class="modal-body" style="font-size:15px;">
+                <p>Are you sure you want to reset master?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="master_cancel" type="button" class="btn btn-default">Cancel</button>
+                <a id="continue" class="btn btn-info" style="color: #fff;cursor: pointer;">Continue</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="AddNewFile" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="padding: 7%;">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h5 class="AddBookTitle">
+                Import Authors <br />
+                <a style="font-size:13px;" href="/Content/authersNew.xlsx"><span style="font-size:10px;">you can view here </span> Authors Template</a>
+            </h5>
+
+            @using (Html.BeginForm("Index2", "Authers", FormMethod.Post,
+                                        new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="addBookForm">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+                    <div class="AddBookImg">
+                        <label for="uploadImg" id="uploadImgLabel">
+                            <img src="~/Content/assets_cp/images/uploadImage.png"
+                                 alt="uploadImage.png">
+                        </label>
+                        <input required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="user-select:text !important;" type="file" name="FileUpload">
+                        <span class="uploadImgText">File</span>
+                    </div>
+
+                    <button class="btn addBookBtn imp" style="width: 25%;" type="submit">Save</button>
+                </div>}
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<div class="modal fade" id="AddNewFile2" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="padding: 7%;">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h5 class="AddBookTitle">Import Authors</h5>
+            <a href="/Content/authersNew.xlsx">Authors Template</a>
+            @using (Html.BeginForm("IndexOld2", "Authers", FormMethod.Post,
+                                        new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="addBookForm">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+                    <div class="AddBookImg">
+                        <label for="uploadImg" id="uploadImgLabel">
+                            <img src="~/Content/assets_cp/images/uploadImage.png"
+                                 alt="uploadImage.png">
+                        </label>
+                        <input required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="user-select:text !important;" type="file" name="FileUpload">
+                        <span class="uploadImgText">File</span>
+                    </div>
+
+                    <button class="btn addBookBtn imp" style="width: 25%;" type="submit">Save</button>
+                </div>
+
+            }
+        </div>
+    </div>
+
+
+</div>
+@section Scripts{
+
+    @*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>*@
+    <script>
+        jQuery(document).ready(function () {
+
+            var vl = $(".ln").val();
+            var selected = localStorage.getItem('selected');
+            if (selected) {
+                $("#ss").val(vl);
+            }
+            $("#ss").change(function () {
+                localStorage.setItem('selected', vl);
+            });
+            $("#ss").selectric('refresh').val(vl);
+            $("#ss").selectric('refresh').children("option:selected").val(vl);
+
+
+            //localStorage.setItem('selected', $(this).val());
+
+
+            //var vl = $(".ln").val();
+
+            //document.getElementById('ss').value = vl;
+
+            //$(".len").val(vl);
+            //$(".selectric p.label").val(vl);
+
+            //var vl = $(".ln").val();
+
+            $(document).on("click", ".Confirm4", function () {
+                //alert("ff");
+                $("#Confirm4").modal("show");
+                $("#Confirm4 .btn-danger").attr("href",
+                    $(this).attr("href"));
+                return false;
+            });
+        });
+
+        $(document).ready(function () {
+            //var vl = $(".ln").val();
+            //document.getElementById('ss').value = vl;
+            //$(".len").children("option:selected").val(vl);
+
+            //$(".len").val(vl);
+            //$("select.selectric p.label").val(vl);
+
+            var vl = $(".ln").val();
+            var selected = localStorage.getItem('selected');
+            if (selected) {
+                $("#ss").val(vl);
+            }
+            $("#ss").change(function () {
+                localStorage.setItem('selected', vl);
+            });
+
+            //$("#ss").innerHTML = vl;
+            $(document).on("click", ".Confirm2", function () {
+                $("#Confirm2").modal("show");
+                $("#Confirm2 .btn-danger").attr("href",
+                    $(this).attr("href"));
+                return false;
+            });
+
+            //$(document).on("click", ".reset_master_data", function () {
+            //    $("#reset_master_data #continue").click(function () {
+            //        alert('ttt');
+            //    })
+            //});
+
+            $("#reset_master").change(function (event) {
+                if (this.checked) {
+                    $("#reset_master_data").modal("show");
+                }
+            });
+
+            $("#continue").click(function () {
+                $("#reset_master_data").modal("hide");
+            });
+
+            $("#master_cancel").click(function () {
+                rst = 0;
+                $('#reset_master').prop('checked', false);
+                $("#reset_master_data").modal("hide");
+            });
+
+            $(document).on("click", ".btn-danger", function () {
+                //alert("y");
+                //f();
+            });
+
+            $(document).on("click", ".btn-default", function () {
+                //alert("no");
+                $("#Confirm2").modal("hide");
+                //$("#reset_master_data").modal("hide");
+            });
+
+            $(".len").change(function () {
+                var selectedval = $(this).children("option:selected").val();
+
+                var num = $('.num').val();
+                var nam = $('.nam').val();
+                var addr = $('.addr').val();
+                var phone = $('.phone').val();
+                var em = $('.em').val();
+                var tott = $('.tott').val();
+                var totf = $('.totf').val();
+                var pag = $('.pag').val();
+
+                //var vl = $(".ln").val();
+                //$(".len").children("option:selected").val(vl);
+                //$("#ss").innerHTML = vl;
+
+                //var vl = $(".ln").val();
+                //var selected = localStorage.getItem('selected');
+                //if (selected) {
+                //    $("#ss").val(selected);
+                //}
+                //$("#ss").change(function () {
+                localStorage.setItem('selected', selectedval);
+                //});
+
+                $("#ss").selectric('refresh').val(vl);
+                $("#ss").selectric('refresh').children("option:selected").val(vl);
+
+                window.location.replace("/CP/Authers/Index/?slct_length=" + selectedval + "&num=" + num + "&nam=" + nam + "&addr=" + addr
+                        +"&phone="+ phone+"&em="+em+"&tott="+tott+"&totf="+ totf
+                        + "&PageId=" + pag + "&coun=0");
+
+                @*alert(selectedval)
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("Index", "Authers")",
+                    contentType: "application/json; charset=utf-8",
+                    data: {
+                        "slct_length": selectedval, "num": num, "nam": nam, "addr": addr
+                        , "phone": phone, "em": em, "tott": tott, "totf": totf
+                        , "PageId": pag, "coun" : 0
+                    },
+                datatype: "json"
+                });*@
+            });
+
+            $(".showInvite").click(function () {
+
+                // debugger;
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                //alert(id);
+                //var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("TempEmail", "Authers")",
+                    contentType: "application/json; charset=utf-8",
+                data: { "nid": id },
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                     //alert(data);
+                    $('#EmailContent').html(data);
+                    //$('#myModal').modal(options);
+                    $('#EmailModal').modal('show');
+
+                },
+                error: function () {
+                    alert("Error Occrs");
+                }
+            });
+        });
+            @*href = "/CP/Authers/ResetEmail/@item.id"*@
+            $(".shownotify").click(function () {
+                //alert("");
+                // debugger;
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                //var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("Notify", "Authers")",
+                    contentType: "application/json; charset=utf-8",
+                data: { "nid": id },
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    // alert(data);
+                    $('#myModalContent').html(data);
+                    //$('#myModal').modal(options);
+                    $('#changePassModal').modal('show');
+
+                },
+                error: function () {
+                    alert("Error Occrs");
+                }
+            });
+            });
+
+            $(".changeEmail").click(function () {
+                //alert("");
+                // debugger;
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                //var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("ChangeEmailModal", "Authers")",
+                    contentType: "application/json; charset=utf-8",
+                data: { "nid": id },
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    // alert(data);
+                    $('#myModalContentEmail').html(data);
+                    //$('#myModal').modal(options);
+                    $('#changeEmailModal').modal('show');
+
+                },
+                error: function () {
+                    alert("Error Occrs");
+                }
+            });
+            });
+
+            $("#ok").click(function () {
+                //var id1 = $(this).val();
+                var newpass = $("#newpass").val();
+                var confirm = $("#confirm").val();
+                var inputF = document.getElementById("r");
+                //var newpass = document.getElementById("newpass");
+                //var confirm = document.getElementById("confirm");
+
+                //alert("newpass " + newpass);
+                //alert("newpass1 " + newpass1);
+                // $.get("/CP/Aqars/CountryList/" + id);
+                $.ajax({
+                    url: "@Url.Action("ChangePassword", "Account2")",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ new_password: newpass, confirmed_password: confirm }),
+                    success: function (response) {
+                    //alert(response);
+                    //console.log(response);
+                    if (response == "Password Changed Successfully") {
+                        inputF.setAttribute("style", "font-size:small;width: 100%;text-align:center;color:#31b14c;font-weight:bold;border:none;");
+                        inputF.value = response.toString();
+                        newpass.value = "";
+                        confirm.value = "";
+                        inputF.value = "";
+                        //$('#changePassModal').modal('hide');
+                        window.location.href = "@Url.Action("SignOut", "Home")";
+
+                    } else {
+                        inputF.setAttribute("style", "font-size:small;width: 100%;;text-align:center;color:#e24d62;font-weight:bold;border:none;");
+                        inputF.value = response.toString();
+
+                    }
+                }
+            });
+        });
+
+            $('#my_modal').on('show.bs.modal', function (e) {
+
+            //get data-id attribute of the clicked element
+            var bookId = $(e.relatedTarget).data('user-id');
+
+            //alert(bookId);
+            //populate the textbox
+            //$(e.currentTarget).find('input[name="bookId"]').val(bookId);
+
+        });
+            //$('input[type="checkbox"]').click(function () {
+                //if ($(this).prop("checked") == true) {
+                //    var i = $(".iid").val();;
+        var x = [];
+        //$("input[name='mycheckbox']").click(function (event) {
+
+        //    var row = $(event.target).data('row');
+
+        //    x.join(row);
+        //    console.log(x);
+        //});
+
+
+        // Listen for click on toggle checkbox
+        $('#chk').click(function (event) {
+            if (this.checked) {
+                // Iterate each checkbox
+                $('.ckb:checkbox').each(function () {
+                    this.checked = true;
+                });
+            } else {
+                $('.ckb:checkbox').each(function () {
+                    this.checked = false;
+                });
+            }
+        });
+
+        $("#excel").click(function () {
+            var checkedIds = [];
+            var weights = [];
+
+            $('table > tbody  > tr').each(function () {
+                if($(this).find('input[type="checkbox"]').is(":checked")){
+                    checkedIds.push($(this).find('input[type="checkbox"]').attr('Id'));   // get id's of user
+                   // weights.push($(this).find('select').val());
+                }
+                //console.log("we : " + weights);
+                //console.log("chk : " + checkedIds);
+
+            });
+
+            // console.log(weights); weights throws errors
+
+            @*$.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "@Url.Action("generate2", "Authers")",
+                data: { Ids: checkedIds }
+
+            });*@
+            if (checkedIds != null && checkedIds != "") {
+                window.location.replace("/CP/Authers/ExcelExp/?Ids=" + checkedIds);
+            } else {
+                alert("Please Select Authors");
+            }
+            //$.get("/CP/Authers/generate2/?Ids=" + checkedIds);//, function (data) {
+            //$("#rData").html(data);
+        });
+
+        $("#sender").click(function () {
+
+                //if (document.getElementById("emm").checked == true) {
+                   var checkedIds = [];
+                    var weights = [];
+
+                    $('table > tbody  > tr').each(function () {
+                        if($(this).find('input[type="checkbox"]').is(":checked")){
+                            checkedIds.push($(this).find('input[type="checkbox"]').attr('Id'));   // get id's of user
+                            // weights.push($(this).find('select').val());
+                        }
+                        //console.log("chk : " + checkedIds);
+
+                    });
+                    var ex = 0;
+                    var pd = 0;
+                    var em1 = 0;
+                    var rst = 0;
+                    if(document.getElementById("excell").checked == true){
+                        ex = 1;
+                    }
+
+                    if(document.getElementById("pdff").checked == true){
+                        pd = 1;
+                    }
+
+                    if(document.getElementById("emm").checked == true){
+                        em1 = 1;
+                    }
+
+                    //if (document.getElementById("reset_master").checked == true) {
+                    //    rst = 1;
+                    //}
+
+
+                    if (checkedIds != null && checkedIds != "") {
+                        window.location.replace("/CP/Authers/TaskExport/?Ids=" + checkedIds + "&ex=" + ex + "&pd=" + pd + "&em=" + em1 +"&rst="+rst);
+                    } else {
+                        alert("Please Select Authors");
+                    }
+                    //alert("ya");
+
+            });
+
+
+
+            @*if (checkedIds != null && checkedIds != "") {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "@Url.Action("TaskExport", "Authers")",
+                    data: { Ids: checkedIds,
+                    ex: ex,
+                    pd: pd,
+                    em: em1,
+                    rst:rst
+                    }
+
+            });*@
+
+        $("#email").click(function () {
+            var checkedIds = [];
+            var weights = [];
+
+            $('table > tbody  > tr').each(function () {
+                if($(this).find('input[type="checkbox"]').is(":checked")){
+                    checkedIds.push($(this).find('input[type="checkbox"]').attr('Id'));   // get id's of user
+                    // weights.push($(this).find('select').val());
+                }
+                //console.log("we : " + weights);
+                //console.log("chk : " + checkedIds);
+
+            });
+
+            // console.log(weights); weights throws errors
+
+            @*$.ajax({
+         type: "POST",
+         contentType: "application/json",
+         url: "@Url.Action("generate2", "Authers")",
+                data: { Ids: checkedIds }
+
+        });*@
+            if (checkedIds != null && checkedIds != "") {
+                window.location.replace("/CP/Authers/Email/?Ids=" + checkedIds);
+            } else {
+                alert("Please Select Authors");
+            }
+        //$.get("/CP/Authers/generate2/?Ids=" + checkedIds);//, function (data) {
+        //$("#rData").html(data);
+        });
+
+
+        //    $("#reset_master").click(function () {
+        //        var checkedIds = [];
+        //        var weights = [];
+
+        //        $('table > tbody  > tr').each(function () {
+        //            if($(this).find('input[type="checkbox"]').is(":checked")){
+        //                checkedIds.push($(this).find('input[type="checkbox"]').attr('Id'));   // get id's of user
+        //                // weights.push($(this).find('select').val());
+        //            }
+        //            //console.log("we : " + weights);
+        //            //console.log("chk : " + checkedIds);
+
+        //        });
+
+        //        // console.log(weights); weights throws errors
+
+        //        if (checkedIds != null && checkedIds != "") {
+        //        window.location.replace("/CP/Authers/MasterReset/?Ids=" + checkedIds);
+        //    } else {
+        //        alert("Please Select Authors");
+        //}
+        //$.get("/CP/Authers/generate2/?Ids=" + checkedIds);//, function (data) {
+        //$("#rData").html(data);
+        //});
+
+        $("#pdf").click(function () {
+            var checkedIds = [];
+            var weights = [];
+
+            $('table > tbody  > tr').each(function () {
+                if($(this).find('input[type="checkbox"]').is(":checked")){
+                    checkedIds.push($(this).find('input[type="checkbox"]').attr('Id'));   // get id's of user
+                    // weights.push($(this).find('select').val());
+                }
+                //console.log("we : " + weights);
+                //console.log("chk : " + checkedIds);
+
+            });
+
+            // console.log(weights); weights throws errors
+
+          @*$.ajax({
+              type: "POST",
+              contentType: "application/json",
+              url: "@Url.Action("generate2", "Authers")",
+                data: { Ids: checkedIds }
+
+        });*@
+            if (checkedIds != null && checkedIds != "") {
+                window.location.replace("/CP/Authers/generate/?Ids=" + checkedIds);
+            } else {
+                alert("Please Select Authors");
+    }
+        //$.get("/CP/Authers/generate2/?Ids=" + checkedIds);//, function (data) {
+        //$("#rData").html(data);
+    });
+
+
+
+            @*$.ajax({
+                url: "@Url.Action("Statistics", "Home")",
+                type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ from: from, to: to, sku: sk }),
+            success: function (response) {
+                //alert(response);
+                document.getElementById("rr2").innerHTML = response;
+
+            }*@
+    });
+
+                //}
+                //$('.table').on('click', ':checkbox', function () {
+                //    var i = $(this).closest('tr').find('.iid').text();
+                //    x = x + " " + i;
+                //    alert(x);
+
+                //});
+                //else if ($(this).prop("checked") == false) {
+                //    alert("Checkbox is unchecked.");
+                //}
+            //});
+
+
+
+        //$(document).on("chk", ".ConfirmCancel", function () {
+        //    $("#ConfirmCancel").modal("show");
+        //    $("#ConfirmCancel .btn-danger").attr("href",
+        //        $(this).attr("href"));
+        //    return false;
+        //});
+    //});
+    </script>
+}
+

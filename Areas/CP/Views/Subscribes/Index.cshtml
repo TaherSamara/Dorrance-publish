@@ -1,0 +1,141 @@
+﻿@model IEnumerable<dorranceCP.Models.Subscribe>
+
+@{
+    ViewBag.Title = "Subscribers";
+    string url2 = "http://portal.dorrancepublishing.com/Content/Images/Original/";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+
+}
+
+@section css{
+
+    <style>
+        .table thead tr th {
+            font-size: 15px !important;
+        }
+
+        .numOfBook {
+            width: 20% !important;
+        }
+
+         .container{
+            max-width: 95% !important;
+        }
+        /*.table thead tr th {
+            padding: 17px !important;
+        }*/
+    </style>
+
+}
+
+<div class="pageBody" style="overflow:hidden !important;">
+    <div class="whiteOverlay">
+
+    </div>
+    <div class="container">
+        @Html.Partial("_msg")
+        <div class="row">
+            <div class="pageHeader" style="width:100%;margin-left: 1%;">
+                <div>
+                <h4><a href="/CP/">Home</a> / Subscribers</h4>
+                <h2 class="pageTitle">Subscribers</h2>
+                <span>Welcome Back , <span>@(user != null ? user.Name : "")</span></span>
+                </div>
+                <div class="clearfix tableHeader" style="width:100%;">
+                    <form method="get">
+                        <div class="searchBox float-left">
+                            @*<input type="text" class="search" value="search...">*@
+                            <input autofocus value="@ViewBag.q"
+                                   name="q" type="text" class="search"
+                                   placeholder="search ...">
+
+                            <button style="color: #f3f6f9;border: none;position: absolute;left: 0;top: 35%;background-color: transparent;"
+                                    type="submit">
+                                <i class="fa fa-search" style="top: 36% !important;"></i>
+                            </button>
+                        </div>
+                    </form>
+                   
+                       @Html.Partial("_paging")
+                   
+                    
+                </div>
+                </div>
+            @if (Model.Count() > 0)
+            {
+                <div style="width:100%;">
+                    <div class="table-responsive scr">
+                        <table class="table table-checkable" >
+                            <thead>
+                                <tr>
+                                    <th hidden></th>
+                                    <th width="5%">#No</th>
+                                    <th width="18%">Email</th>
+                                    <th width="18%">Date</th>
+                                    <th style="width: 9% !important;">Settings</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var i = 0;}
+                                @foreach (var item in Model)
+                                {
+                                    
+                                    i = i + 1;
+                                    <tr>
+                                        <td hidden></td>
+
+                                        <td width="5%">#@i</td>
+                                        <td class="emailTable">@item.email</td>
+                                        <td>@item.date.Value.ToString("dd/MM/yyyy")</td>
+                                       
+                                        <td width=3% class="settingsSec" style="cursor: pointer;">
+                                            <i class="fa fa-ellipsis-v"></i>
+                                            <div class="settingBox">
+                                                <ul>
+                                                   
+                                                    <li>
+                                                        <a href="/CP/Subscribes/Delete/@item.id" class="Confirm"> <i class="fa fa-trash"></i> Delete</a>
+                                                    </li>
+                                                   
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-info col-md-12">
+                                            There is no data to display
+
+                                        </div>
+                                    }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+@section Scripts{
+    
+   
+    }
+
+
+
+
+
+

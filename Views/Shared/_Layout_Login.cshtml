@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    @*<title>new Solutions </title>*@
+    <title>@ViewBag.Title - Dorrance</title>
+    <link href="~/Content/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/assets/css/animate.min.css" rel="stylesheet">
+    <link href="~/Content/assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/assets/css/lightbox.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" href="~/Content/assets/images/logo.png">
+    <link href="~/Content/assets/css/style.css" rel="stylesheet">
+    @*@Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")*@
+
+    <style>
+          @@media screen and (max-width: 400px) {
+            .mainHero {
+                padding-bottom: 0 !important;
+            }
+            .fa-eye-slash {
+                right: 20% !important;
+                top: 63% !important;
+            }
+        }
+
+        @@media screen and (max-width: 650px) {
+            .mainHero {
+                padding-bottom: 0 !important;
+            }
+            .fa-eye-slash {
+                 right: 20% !important;
+                 top: 50% !important;
+            }
+
+
+        }
+
+        @@media screen (min-width: 300px) and (max-width: 600px){
+             .fa-eye-slash {
+                right: 20% !important;
+                top: 63% !important;
+             }
+             .mainHero {
+                padding-bottom: 0 !important;
+            }
+            
+        }
+        input{
+            color:#000 !important;
+        }
+    </style>
+</head>
+<body id="main">
+    <div class="whiteFooter">
+        <img src="~/Content/assets/images/white.png" alt="">
+    </div>
+    @{ 
+        dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+        var slide = db.Slider.Where(s => s.type == 1).FirstOrDefault();
+    }
+    <div class="overlay">
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="logo">
+                    <img src="~/Content/logo.png" alt="">
+                </div>
+                <div class="mainHero" style="padding-bottom: 37%;">
+                    <h1 style="width: 100%;">
+                        @slide.title
+                    </h1>
+                    <p style="width: 50%;">@slide.description</p>
+                    <a href="/Home/home2" class="btn signBtn" style="height:unset !important ;">Home</a>
+
+                </div>
+     
+
+                
+            </div>
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-5">
+
+                @RenderBody()
+
+            </div>
+        </div>
+        @*<p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>*@
+    </div>
+    <script type="text/javascript" src="~/Content/assets/js/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="~/Content/assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Content/assets/js/main.js"></script>
+    <script>
+    function myFunction() {
+  var x = document.getElementById("password");
+  if (x.type == "text") {
+    x.type = "password";
+    $("#showHide").addClass("fa-eye-slash");
+    $("#showHide").removeClass("fa-eye");
+  }
+  else {
+    x.type = "text";
+    $("#showHide").removeClass("fa-eye-slash");
+    $("#showHide").addClass("fa-eye");
+  }
+}
+    </script>
+
+    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")*@
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+

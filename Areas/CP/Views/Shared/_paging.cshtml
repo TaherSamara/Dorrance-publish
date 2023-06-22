@@ -1,0 +1,96 @@
+﻿<style>
+    .page-item{
+            font-size: 10px !important;
+    }
+    i{
+       font-size: 15px !important;
+    }
+     nav{
+         float: right;
+    right: 0;
+    margin-right: 0;
+    bottom: 78%;
+        margin-bottom: -2% !important;
+    }
+     
+    .active {
+        /*color: #5abdb7 !important;*/
+        border: 0;
+        /*background-color: white !important;*/
+        color: #fff !important;
+        border: 0;
+        background-color: #5abdb7 !important;
+        width: 28px;
+        height: 28px;
+    }
+</style>
+@{
+    int PageId = (int)ViewBag.PageId;
+    int PageCount = (int)ViewBag.PageCount;
+    string BaseURL = ViewBag.BaseURL;
+    var seprator = "/";
+    if (BaseURL.Contains("?"))
+    {
+        seprator = "&PageId=";
+    }
+    if (PageCount > 1)
+    {
+        int MaxPageCount = 5;
+        int Min = 1;
+        int Max = MaxPageCount * 2;
+        if (PageId > MaxPageCount)
+        {
+            Min = PageId - MaxPageCount;
+            Max = PageId + MaxPageCount;
+        }
+        if (Max > PageCount)
+        {
+            Max = PageCount;
+        }
+        <nav aria-label="Page navigation clearfix">
+
+            <ul class="pagination float-right">
+                @if (PageId > 1)
+                {
+                    @*<li class="page-item">
+                        <a class="page-link" href="#">
+                            <i class="lni-angle-double-left"></i>
+                        </a>
+                    </li>*@
+                    @*<li class="page-item"><a class="page-link" href="@BaseURL@(seprator)1"><i style="font-size: 10px !important;" class="page-link lni-angle-double-left"></i><i style="font-size: 10px !important;" class="page-link lni-angle-double-left"></i></a></li>*@
+                    <li class="page-item"><a class="page-link" href="@BaseURL@(seprator)@(PageId-1)"><i style="font-size: 10px !important;" class="page-link lni-angle-double-left"></i></a></li>
+                }
+                else
+                {
+                    @*<li class="page-item disabled"><span><i style="font-size: 10px !important;" class="page-link lni-angle-double-left"></i><i style="font-size: 10px !important;" class="page-link lni-angle-double-left"></i></span></li>*@
+                    <li class="page-item disabled"><span style="color: #dde1ea !important;"><i style="font-size: 10px !important;" class="page-link lni-angle-double-left"></i></span></li>
+                }
+                @for (int i = Min; i <= Max; i++)
+                {
+                    if (i == PageId)
+                    {
+                        <li class="page-item active"><span style="color: #dde1ea !important;">@i</span></li>
+                    }
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" href="@BaseURL@(seprator)@i">@i</a></li>
+                    }
+                }
+                @if (PageId < PageCount)
+                {
+                    @*<li class="page-item"><a class="page-link" href="@BaseURL@(seprator)@(PageId+1)"><i style="font-size: 10px !important;" class="page-link lni-angle-double-right"></i></a></li>*@
+                    <li class="page-item"><a class="page-link" href="@BaseURL@(seprator)@(PageCount)"><i style="font-size: 10px !important;" class="page-link lni-angle-double-right"></i></a></li>
+                }
+                else
+                {
+                    @*<li class="page-item disabled"><span><i style="font-size: 10px !important;" class="lni-angle-double-right page-link"></i></span></li>*@
+                    <li class="page-item disabled"><span style="color: #dde1ea !important;"><i style="font-size: 10px !important;" class="lni-angle-double-right page-link"></i></span></li>
+                }
+            </ul>
+            <div style="color: #80858a;font-weight: 550;font-size: 10px;" class="pgg">
+                Page @PageId of @PageCount
+            </div>
+        </nav>
+            }
+            }
+

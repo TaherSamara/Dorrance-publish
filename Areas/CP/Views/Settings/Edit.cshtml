@@ -1,0 +1,85 @@
+﻿@model dorranceCP.Models.settings
+
+
+@{
+    ViewBag.Title = "Edit Settings";
+    string url2 = "http://portal.dorrancepublishing.com/Content/Images/Original/";
+}
+
+<style>
+    input {
+        height: 38px !important;
+    }
+</style>
+
+                    <div class="pageHeader col-md-9" style="width:100%;margin-top: 5%;">
+                        <div class="row" style="margin-left: 1%;margin-top: 3%;">
+                            <div class="pageHeader" style="width:100%;box-shadow: 1px 3px 4px 3px #dedede;padding: 3%;">
+                                <h4><a href="/CP/Home/dashboard">Home</a> / Settings</h4>
+
+
+                                @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.HiddenFor(model => model.id)
+
+                                    <div class="form-horizontal col-md-8" style="margin-top:4%;float: left;">
+
+
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="tabbable-line">
+
+                                                    <div class="tab-content">
+
+                                                        <div class="tab-pane active">
+                                                            <div class="form-group">
+                                                                @Html.LabelFor(model => model.text, "Text", htmlAttributes: new { @class = "control-label col-md-3" })
+                                                                <div class="col-md-10">
+                                                                    @Html.EditorFor(model => model.text, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                                                                    @Html.ValidationMessageFor(model => model.text, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+
+
+
+
+                                                            <div class="form-group">
+                                                                @Html.LabelFor(model => model.value, "Value", htmlAttributes: new { @class = "control-label col-md-3" })
+                                                                <div class="col-md-10">
+                                                                    @Html.EditorFor(model => model.value, new { htmlAttributes = new { @class = "form-control", required = "required", title = " " } })
+                                                                    @Html.ValidationMessageFor(model => model.value, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+
+
+
+
+
+                                                            <div class="form-group" style="margin-bottom: 21%;margin-top: 11%;">
+                                                                <div class="col-md-offset-2 col-md-10">
+                                                                    <input type="submit" value="Save" class="btn btn-primary" style="color:#fff !important;" />
+                                                                    <a href="/CP/Sliders/" class="btn btn-default">Cancel</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    @section Scripts {
+                        @Scripts.Render("~/bundles/jqueryval")
+                    }

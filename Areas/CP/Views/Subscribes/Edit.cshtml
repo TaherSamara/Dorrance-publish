@@ -1,0 +1,79 @@
+﻿@model dorranceCP.Models.FAQs
+
+
+@{
+    ViewBag.Title = "Edit FAQs";
+    string url2 = "http://portal.dorrancepublishing.com/Content/Images/Original/";
+}
+
+<style>
+     input {
+            height: 38px !important;
+        }
+</style>
+
+<div class="pageHeader col-md-8" style="width:100%;margin-top: 9%;">
+    <div class="row" style="margin-left: 1%;">
+        <div class="pageHeader" style="width:100%;">
+            <h4><a href="/CP/">Home</a> / FAQs</h4>
+
+
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.id)
+
+                <div class="form-horizontal col-md-8" style="margin-top:4%;">
+
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tabbable-line">
+
+                                <div class="tab-content">
+
+                                    <div class="tab-pane active">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.question, "Question", htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.question, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                                                @Html.ValidationMessageFor(model => model.question, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.answer, "Answer", htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-10">
+                                                @Html.TextAreaFor(model => model.answer, new { @class = "form-control", rows = 4, style = "width: 100%;", required = "required", title = " " })
+                                                @Html.ValidationMessageFor(model => model.answer, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group" style="margin-bottom: 21%;margin-top: 11%;">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" value="Save" class="btn btn-primary" />
+                                                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-defult" })
+                                            </div>
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            
+
+
+        </div>
+            }
+    </div>
+</div>
+
+    </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

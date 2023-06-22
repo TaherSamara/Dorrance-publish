@@ -1,0 +1,103 @@
+﻿@model dorranceCP.Models.Slider
+
+
+@{
+    ViewBag.Title = "Edit Slides";
+    string url2 = "http://cp.dorrancepublishing.com/Content/Images/Original/";
+}
+
+<style>
+     input {
+            height: 38px !important;
+        }
+      .btn-primary{
+         color: #fff !important;
+     }
+     .btn-defult{
+         background: #ccc !important;
+     }
+     
+</style>
+
+<div class="pageHeader col-md-8" style="width:100%;margin-top: 9%;">
+    <div class="row" style="margin-left: 1%;">
+        <div class="pageHeader" style="width:100%;">
+            <h4><a href="/CP/">Home</a> / Slides</h4>
+
+
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.id)
+
+                <div class="form-horizontal col-md-8" style="margin-top:4%;">
+
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tabbable-line">
+
+                                <div class="tab-content">
+
+                                    <div class="tab-pane active">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.title, "Title", htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                                                @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.description, "Description", htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-10">
+                                                @Html.TextAreaFor(model => model.description, new { @class = "form-control", rows = 4,style= "width: 100%;", required = "required",  title = " "  })
+                                                @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        @if (Model.type == 0)
+                                        {
+                                        <div class="form-group" style="margin-top: 12%;">
+                                            @Html.LabelFor(model => model.image, "Slide Image", htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-8">
+                                                <input type="file" name="img" />
+                                                @if (Model != null && !string.IsNullOrEmpty(Model.image))
+                                                {
+                                                    <br />
+                                                    <img src="@url2@Model.image" class="img-thumbnail img-rounded" style="width: 34% !important;" />
+                                                }
+                                                @Html.ValidationMessageFor(model => Model.image, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        }
+
+
+
+                                    <div class="form-group" style="margin-bottom: 21%;margin-top: 11%;">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <input type="submit" value="Save" class="btn btn-primary" />
+                                            @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-defult" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            
+
+
+        </div>
+            }
+    </div>
+</div>
+
+    </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,241 @@
+﻿@model IEnumerable<dorranceCP.Models.Orders>
+@{
+    ViewBag.Title = "Show Orders";
+    string url2 = "http://portal.dorrancepublishing.com/Content/Images/Original/";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+
+}
+<style>
+    .table thead tr th {
+        font-size: 16px !important;
+    }
+   nav{
+           margin-right: 80px !important;
+   }
+</style>
+
+<div class="pageBody">
+    <div class="whiteOverlay">
+    </div>
+    <div class="container">
+        @Html.Partial("_msg")
+        <div class="row">
+            <div class="pageHeader" style="width:100%;margin-left: 1%;">
+                <div class="clearfix">
+                    <div class="float-left">
+                        <h4><a href="/CP/Home/dashboard">Home</a> / Orders</h4>
+                        <h2 class="pageTitle">Orders</h2>
+                        <span>welcome Back,<span>@(user != null ? user.Name : "")</span></span>
+                     </div>
+                    </div>
+                     <div class="clearfix tableHeader" style="width:100%;margin-top: 2%;">
+                            @*<form method="get">
+                        <div class="searchPagination clearfix">
+                            <div class="AdvanceSearch float-left" style="margin-left:6%;">
+                                <span>Advanced filter</span>
+                                <div class="form-group clearfix">
+                                    <input type="text" class="form-control" placeholder="Order Number">
+                                    <select class="advanceSerachSelect form-control" name="id" id="list">
+                                        <option value="" selected>Filter by author</option>
+                                        @{
+                                        var authers2 = db.authers.Where(w => w.is_delete == false).ToList();
+
+                                        foreach (var c2 in authers2)
+                                        {
+                                    <option value=@c2.id>@c2.name</option>
+                                        }
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="form-group clearfix">
+                                    <input type="text" class="form-control searchByAuthor" placeholder="SKU/ISBN">
+                                    <select class="advanceSerachSelect form-control">
+                                        <option value="">Book Title</option>
+                                    </select>
+                                </div>*@
+                            <form method="get">
+                                <div class="searchBox float-left">
+                                    @*<input type="text" class="search" value="search...">*@
+                                    <input style="width: unset !important;" autofocus value="@ViewBag.q"
+                                           name="q" type="text" class="search"
+                                           placeholder="search ...">
+                                    <button style="color: #f3f6f9;border: none;position: absolute;left: 0;top: 35%;background-color: transparent;"
+                                            type="submit">
+                                        <i class="fa fa-search" style="top: 36% !important;"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+
+                            @Html.Partial("_paging")
+                         </div>
+</div>
+
+                            @if (Model.Count() > 0)
+            {
+                                <div style="width: 100%;">
+                                    <div class="table-responsive">
+                                        <table class="table" style="width: 942px !important;">
+                                            <thead>
+                                                <tr>
+                                                    <th hidden></th>
+                                                    <th width=3%>#No</th>
+                                                    <th width=10%>order No</th>
+                                                    <th>SKU/ISPN</th>
+                                                    <th width=11%>Book Title</th>
+                                                    <th>QTY</th>
+                                                    <th style="width: 8% !important;">Price</th>
+                                                    <th>Order Date</th>
+                                                    <th>Edition</th>
+                                                    <th>name</th>
+                                                    <th>comments</th>
+                                                    <th>Settings</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{ var i = 0;}
+                                                @foreach (var item in Model)
+                                                {
+                                                    i = i + 1;
+                                                    <tr>
+                                                        <td hidden></td>
+                                                        <td width=5%>#@i</td>
+                                                        <td>
+                                                            @item.order_number
+                                                        </td>
+                                                        <td>@item.sku</td>
+                                                        <td>@item.product</td>
+                                                        <td>@item.quantity_ordered</td>
+                                                        <td style="width: 80px !important;">$@item.total_price</td>
+                                                        <td>@item.order_date.Value.ToString("MM/dd/yyyy")</td>
+                                                        <td>edition</td>
+                                                        <td>@item.Name</td>
+                                                        <td>@item.comments</td>
+                                                        <td width=3% class="settingsSec">
+                                                            <a href="javascript:;"
+                                                               class="float-right settings"><i class="fa fa-ellipsis-v"></i></a>
+                                                            <div class="settingBox">
+                                                                <ul>
+                                                                    <li>
+                                                                        <a href="/CP/Orders/Details/@item.id"><i class="fa fa-eye"></i>view Order</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="/CP/Orders/Delete/@item.id"> <i class="fa fa-trash"></i> Delete</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="alert alert-info col-md-12">
+                                                            There is no data to display
+
+                                                        </div>
+                                                    }
+                        </div>
+                    </div>
+                </div>
+           
+    
+
+
+
+<div class="modal fade" id="AddNewBook" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h5 class="AddBookTitle"> Add New Book</h5>
+            @using (Html.BeginForm("Add", "Books", FormMethod.Post,
+           new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="addBookForm">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="addBookLeft">
+                        <div class="AddBookImg">
+                            <label for="uploadImg" id="uploadImgLabel">
+                                <img src="/Content/assets_cp/images/uploadImage.png"
+                                     alt="">
+                            </label>
+                            <input type="file" id="img">
+                            <span class="uploadImgText">Book Image</span>
+                        </div>
+                        <div class="form-group margin-topForm">
+                            <input type="text" name="sku" class="form-control" placeholder="SKU/ISPN">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="title" class="form-control" placeholder="Book Title">
+                        </div>
+                        <div class="form-group">
+                            <select name="auther_id">
+                                <option value=@ViewBag.id>Author Name</option>
+                                @{
+                                    var authers = db.authers.AsNoTracking().Where(w => w.is_delete == false).ToList();
+
+                                    foreach (var c in authers)
+                                    {
+                                        <option value=@c.id>@c.name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="vl"></div>
+                    <div class="addBookRight">
+
+                        <div class="form-group">
+                            <input type="text" name="pub" class="form-control" placeholder="Pub Date">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="gen" class="form-control" placeholder="Genre">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="ver" class="form-control" placeholder="Book Version">
+                        </div>
+
+                        <button class="btn addBookBtn" type="submit">Save</button>
+                    </div>
+                </div>
+                                    }
+        </div>
+    </div>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $("#list").change(function () {
+            var id = $(this).val();
+            alert(id);
+            // $.get("/CP/Aqars/CountryList/" + id);
+            $.ajax({
+                url: "@Url.Action("Index", "Books")",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ id: id }),
+                success: function (response) {
+                    return response;
+                    //alert(response);
+                    //console.log(response);
+                    //document.getElementById("rr2").innerHTML = response;
+                }
+            });
+        });
+    });
+</script>
+
+
+
+

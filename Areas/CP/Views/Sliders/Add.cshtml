@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Dorrance Email Template";
+    string url2 = "http://portal.dorrancepublishing.com/Content/Images/Original/";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+    string title = "Message Title";// ViewBag.title2;
+    string msg = "Message Text Message Text Message Text Message Text Message Text Message Text Message Text Message Text Message Text Message Text";// ViewBag.msg;
+    DateTime dt = DateTime.UtcNow;
+
+
+
+}
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Dorrance Email Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body style="margin: 0; padding: 0;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td style="padding: 10px 0 30px 0;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border: 1px solid #cccccc; border-collapse: collapse;">
+                    <tr>
+                        @*<td align="center" bgcolor="#70bbd9" style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/h1.gif" alt="Creating Email Magic" width="300" height="230" style="display: block;" />
+                        </td>*@
+                        <td align="center" style="color: #153643;font-size: 28px;font-weight: bold;font-family: Arial, sans-serif;">
+                            <img src="http://portal.dorrancepublishing.com/Content/logo%201.png" alt="Creating Email Magic" width="300" height="230" style="display: block;width: 40% !important;height: 20% !important;" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td bgcolor="#ffffff" style="padding: 40px 30px 0 30px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
+                                        <b>@title</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
+                                        @msg
+                                    </td>
+                                </tr>
+                                
+                            </table>
+                        </td>
+                    </tr>
+                    @*<tr>
+                        <td bgcolor="#ffffff" style="padding: 0 30px 40px 30px;">
+                            Start your journey in Dorrance by downloading the App by clicking the applicable link below!
+                            <br />
+                            Download from the Apple App Store here:
+                            <br />
+                            <a href="link1" target="_blank"><img style="width:20%;" src="http://cp.dorrancepublishing.com/Content/ios_btn.png" /></a>
+                            <br />
+                            Download from the Google Play Store here:
+                            <br />
+                            <a href="link2" target="_blank"><img style="width:20%;" src="http://cp.dorrancepublishing.com/Content/play-store.png" /></a>
+                            <br />You Can Open Your Account on Dorrance Website here :<br /><a href="http://portal.dorrancepublishing.com/Account/Login" target="_blank">Dorrance Website Click here !</a>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#aaa" style="padding: 10px 30px 30px 30px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;" width="75%">
+                                        Copyrights &copy; Dorrance <br />
+                                    </td>                                   
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>*@
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+

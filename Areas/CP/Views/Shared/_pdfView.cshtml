@@ -1,0 +1,438 @@
+﻿
+@{
+    ViewBag.Title = "generate";
+    var adm = ViewBag.adm as IEnumerable<dorranceCP.Models.Orders>;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+    int id = ViewBag.uid;
+    var suh = db.authers.Where(y => y.id == id).FirstOrDefault();
+}
+<style>
+    th,td{
+        color: #000 !important;
+        font-size:13px !important;
+    }
+    .alert{
+           margin-left: -17% !important;
+    text-align: left !important;
+   
+    }
+    td{width: 100%;}
+    .dataTables_wrapper {
+    
+    margin-top: -2% !important; 
+
+}
+
+    table {
+    margin-top: 11% !important;
+}
+</style>
+
+
+<div style="text-align:right;margin-top: 9%;margin-left: 11%;" class="col-md-8">
+   
+
+    @{
+        DateTime dt = DateTime.UtcNow;
+        double total_current = 0;
+        double total_last = 0;
+        var bookdet2 = db.book.Where(w => w.auther_id == id && w.is_delete == false).ToList();
+        var usr = db.authers.Where(d => d.id == id).FirstOrDefault();
+
+        foreach (var c in bookdet2)
+        {
+            <table id="bill" class="table table-bordered" style="line-height: .9 !important;margin-top: 11% !important;">
+
+                @{var s = c.isbn13;
+                    var bk = c;
+
+                    //var books1 = db.Orders.Where(x => x.auther_id == id && x.sku == s && x.is_delete == false).ToList();
+                    //if (books1 != null)
+                    //{
+                    //    foreach (var c in books1)
+                    //    {
+                    //        var bk = db.book.Where(d => d.isbn13 == c.sku).FirstOrDefault();
+                    //var im = bk != null ? (String.IsNullOrEmpty(bk.image) ? "" : url + bk.image) : "";
+                    //calculate earning
+
+                    //List<earn> e = new List<earn>();
+
+                    var current_orders = db.Orders.Where(x => x.is_delete == false && x.sku == c.isbn13 && (x.order_date.Value.Month > 4 && x.order_date.Value.Month < 11)).OrderByDescending(x => x.id).ToList();
+                    if (current_orders.Count() > 0)
+                    {
+
+                        foreach (var c2 in current_orders)
+                        {
+                            var earn_order = c2.local_sort_text1;
+                            var earn_book = bk.earnings_scheme;
+                            var sc1 = db.scheme_1.Where(s1 => s1.text.Contains(earn_order)).FirstOrDefault();
+                            var sc1_id = 0;
+                            if (sc1 != null)
+                            {
+                                sc1_id = sc1.id;
+                            }
+                            var sc2 = db.scheme_2.Where(s2 => s2.text.Contains(earn_book)).FirstOrDefault();
+                            var sc2_id = 0;
+                            if (sc2 != null)
+                            {
+                                sc2_id = sc2.id;
+                            }
+                            var sc2_list = db.scheme_2.ToList();
+                            //var order_period = c.order_date.Value.Month;
+                            //var current_period = dt.Month;
+
+
+                            foreach (var f in sc2_list)
+                            {
+                                var earning_ratio = db.Earnings.Where(er => er.id_scheme_1 == sc1_id && er.id_scheme_2 == f.id && er.sku == c.isbn13).FirstOrDefault();
+                                double v = 0;
+                                if (earning_ratio != null)
+                                {
+                                    v = Convert.ToDouble((earning_ratio.value / 100) * c2.total_price);
+                                }
+                                total_current = total_current + v;
+
+                            }
+                        }
+                    }
+                    else
+                    {
+
+                        var sc2_list = db.scheme_2.ToList();
+                        //var order_period = c.order_date.Value.Month;
+                        //var current_period = dt.Month;
+
+
+                        foreach (var f in sc2_list)
+                        {
+                            //var earning_ratio = db.Earnings.Where(er => er.id_scheme_1 == sc1_id && er.id_scheme_2 == f.id && er.sku == c.sku).FirstOrDefault();
+                            //double v = 0;
+                            //if (earning_ratio != null)
+                            //{
+                            //    v = Convert.ToDouble((earning_ratio.value / 100) * c.total_price);
+                            //}
+                            total_current = 0;
+
+                        }
+
+                    }
+
+
+
+                    var last_orders = db.Orders.Where(x => x.is_delete == false && x.sku == c.isbn13 && ((x.order_date.Value.Month < 5 && x.order_date.Value.Month > 0) || (x.order_date.Value.Month > 10 && x.order_date.Value.Month <= 12))).OrderByDescending(x => x.id).ToList();
+                    if (last_orders.Count() > 0)
+                    {
+                        foreach (var last in last_orders)
+                        {
+
+                            var earn_order = last.local_sort_text1;
+                            var earn_book = bk.earnings_scheme;
+
+                            var sc1_last = db.scheme_1.Where(s1 => s1.text.Contains(earn_order)).FirstOrDefault();
+                            var sc1_last_id = 0;
+                            if (sc1_last != null)
+                            {
+                                sc1_last_id = sc1_last.id;
+                            }
+                            var sc2_last = db.scheme_2.Where(s2 => s2.text.Contains(earn_book)).FirstOrDefault();
+                            var sc2_last_id = 0;
+                            if (sc2_last != null)
+                            {
+                                sc2_last_id = sc2_last.id;
+                            }
+
+                            var sc2_list_last = db.scheme_2.ToList();
+                            //double total_last = 0;
+                            var order_period = last.order_date.Value.Month;
+                            //var current_period = dt.Month;
+
+
+                            foreach (var f in sc2_list_last)
+                            {
+                                var earning_ratio = db.Earnings.Where(er => er.id_scheme_1 == sc1_last_id && er.id_scheme_2 == f.id && er.sku == c.isbn13).FirstOrDefault();
+                                double v = 0;
+                                if (earning_ratio != null)
+                                {
+                                    v = Convert.ToDouble((earning_ratio.value / 100) * last.total_price);
+                                }
+                                total_last = total_last + v;
+
+                            }
+                        }
+
+
+                    }
+                    else
+                    {
+
+                        var sc2_list = db.scheme_2.ToList();
+                        //var order_period = c.order_date.Value.Month;
+                        //var current_period = dt.Month;
+
+
+                        foreach (var f in sc2_list)
+                        {
+                            //var earning_ratio = db.Earnings.Where(er => er.id_scheme_1 == sc1_id && er.id_scheme_2 == f.id && er.sku == c.sku).FirstOrDefault();
+                            //double v = 0;
+                            //if (earning_ratio != null)
+                            //{
+                            //    v = Convert.ToDouble((earning_ratio.value / 100) * c.total_price);
+                            //}
+                            total_last = 0;
+
+                        }
+
+                    }
+
+
+
+
+                    double total_current1 = 0;
+                    double total_last1 = 0;
+                    var date1 = "";
+                    //if(dt.Month )
+                    if (dt.Month > 4 && dt.Month < 11)
+                    {
+                        total_current1 = total_current;
+                        total_last1 = total_last;
+                        date1 = "5/1/" + dt.Year + "to" + "10/31/" + dt.Year;
+                    }
+                    else
+                    {
+                        total_current1 = total_last;
+                        total_last1 = total_current;
+                        date1 = "11/1/" + dt.Year + "to" + "4/30/" + dt.Year;
+
+
+                    }
+
+
+                    if ((dt.Month < 5 && dt.Month > 0) || (dt.Month > 10 && dt.Month <= 12))
+                    {
+                        total_current1 = total_last;
+                        total_last1 = total_current;
+                        date1 = "11/1/" + dt.Year + " to " + "4/30/" + dt.Year;
+
+                    }
+                    else
+                    {
+                        total_current1 = total_current;
+                        total_last1 = total_last;
+                        date1 = "5/1/" + dt.Year + " to " + "10/31/" + dt.Year;
+
+                    }
+                }
+
+                <thead>
+                    <img style="text-align:center;width: 14%;margin-right:45% !important;" src="http://portal.dorrancepublishing.com/Content/logo%201.png" />
+                    <h5 style="
+                                width: 100%;
+                                text-align: center;
+                               ">
+                        Dorrance Publishing Company Earnings Statement
+                    </h5>
+
+                        <hr style="background: #000;text-align: center;width: 100%;">
+
+
+                        @*<tr style="text-align: center;">
+                            <td style="width: 100%;">
+
+
+                                Dorrance Publishing Company Earnings Statement
+                    </h5>
+                        
+                         </td>*@
+                            
+                    @*<tr>
+                        <td style="width: 100%;">
+                            <h3>Dorrance Publishing Company Earnings Statement</h3>
+                            <hr style="background: #000;" />
+                            </td>
+
+                         </tr>*@
+                    <tr>
+                        <th style="float:left;font-size: 15px !important;">@usr.name</th>
+                        <th style="width:100%;text-align: left;font-size: 15px !important;">Title : @c.title</th>
+                        @*
+                        <th>@c.title</th>*@
+                    </tr>
+                    <tr>
+                        <th style="text-align: left;font-size: 15px !important;">@usr.address <br />@usr.address2 </th>
+                        @*
+                        <th>Statement period : @date1</th>*@
+                    </tr>
+                    <tr>
+                        <th style="float: left;text-align: left;margin-right: -86%;font-size: 15px !important;">Statement period : @date1 <br /></th>
+                    </tr>
+                    <tr><th style="float: left;text-align: left;font-weight:bold !important;font-size: 15px !important;">Earnings Detail </th></tr>
+                    <tr class="row" style="float: left;display: contents !important;">
+                        <th hidden></th>
+                        <th style="background: #d0d0d0 !important;width: 20% !important;text-align: left;font-size: 15px !important;">Date</th>
+                        <th style="background: #d0d0d0 !important;width: 20% !important;text-align: left;font-size: 15px !important;">Edititon</th>
+                        <th style="background: #d0d0d0 !important;width: 20% !important;text-align: left;font-size: 15px !important;">Sales Type</th>
+                        <th style="background: #d0d0d0 !important;width: 20% !important;text-align: left;font-size: 15px !important;">Qty</th>
+                        <th style="background: #d0d0d0 !important;width: 20% !important;text-align: left;font-size: 15px !important;">Sales</th>
+                        <th style="background: #d0d0d0 !important;width: 20% !important;text-align: left;font-size: 15px !important;">Rate</th>
+                        <th style="background: #d0d0d0 !important;width: 20% !important;text-align: left;font-size: 15px !important;">Earnings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var or = (dt.Month > 4 && dt.Month < 11) ? current_orders : last_orders;
+                    }
+                    @foreach (var item in or)
+                    {
+                        var req = db.book.Where(w => w.isbn13 == item.sku && w.is_delete == false).FirstOrDefault();
+
+                        //var ord = db.Orders.Where(sk => sk.sku == n.sku).FirstOrDefault();
+
+                        var earn_order = item.local_sort_text1;
+                        var earn_book = req.earnings_scheme;
+                        var sc = db.scheme_1.Where(s1 => s1.text.Contains(earn_order)).FirstOrDefault();
+                        var sc_id = 0;
+                        if (sc != null)
+                        {
+                            sc_id = sc.id;
+                        }
+                        var sc3 = db.scheme_2.Where(s2 => s2.text.Contains(earn_book)).FirstOrDefault();
+                        var sc3_id = 0;
+                        if (sc3 != null)
+                        {
+                            sc3_id = sc3.id;
+                        }
+                        var sc3_list = db.scheme_2.ToList();
+                        //var order_period = c.order_date.Value.Month;
+                        //var current_period = dt.Month;
+
+                        double p = 0;
+                        double ern = 0;
+                        foreach (var f in sc3_list)
+                        {
+                            var earning_ratio = db.Earnings.Where(er => er.id_scheme_1 == sc_id && er.id_scheme_2 == f.id && er.sku == item.sku).FirstOrDefault();
+                            double v = 0;
+                            if (earning_ratio != null)
+                            {
+                                v = Convert.ToDouble((earning_ratio.value / 100) * item.total_price);
+                                ern = ern + Convert.ToDouble(earning_ratio.value);
+
+                            }
+                            p = p + v;
+                        }
+
+
+                        <tr>
+                            <td hidden style="width:0 !important"></td>
+                            <td style="font-size: 13px !important;width: 20%;text-align: left;">@item.order_date</td>
+                            <td style="font-size: 13px !important;width: 20%;text-align: left;">@req.eisbn</td>
+                            <td style="font-size: 13px !important; width: 20%;text-align: left;">@item.comments</td>
+                            <td style="font-size: 13px !important;width: 20%;text-align: left;">@item.quantity_ordered</td>
+                            <td style="font-size: 13px !important;width: 20%;text-align: left;">@item.total_price</td>
+                            <td style="font-size: 13px !important;width: 20%;text-align: left;">@ern % Sales</td>
+                            <td style="font-size: 13px !important;width: 20%;text-align: left;">@p</td>
+                        </tr>
+                              }
+
+                    <tr hidden><td colspan="7" hidden style="text-align:left;font-size: 13px !important;background: #d0d0d0 !important;color:#fff;">Summary</td></tr>
+                    <tr><td colspan="7" style="text-align:left;font-size: 13px !important;">Net royalties payable for the period</td><td colspan="6" style="font-size: 13px !important;padding-right: 11% !important;">$@((or == current_orders) ? total_current : total_last)</td></tr>
+                    <tr><td colspan="7" style="text-align:left;font-size: 8px !important;">Important to note: Per your publishing services agreement, earnings are paid when total earnings exceed $25.00</td></tr>
+
+                </tbody>
+            </table>
+
+            <br />
+            <br />
+            <br />
+                        }
+    }
+</div>
+
+    <style>
+        .dataTables_wrapper{
+            line-height: .9 !important;
+            margin-top: -10% !important;
+        }
+    </style>
+
+ 
+
+
+
+<script src="~/Content/print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
+
+<script>
+    function printPdf() {
+        const filename  = 'Orders.pdf';
+
+        html2canvas(document.querySelector('#bill'),
+								{scale: 1}
+						 ).then(canvas => {
+						     let pdf = new jsPDF('p', 'mm', 'a4');
+						     var x = pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 20, 15, 185, 170);
+						     //console.log(x);
+						     //console.log(canvas.toDataURL('image/png'));
+						     pdf.save(filename);
+						 });
+    }
+
+    function printPdf2(id) {
+        //printJS(id, 'pdf');
+        //var doc = new jsPDF()
+        //var tx = document.getElementById(id).innerHTML;
+        //doc.text(tx, 10, 10)
+        //doc.save('orders.pdf')
+
+        var doc = new jsPDF();
+        var elementHTML = $('#bill').html();
+        var specialElementHandlers = {
+            '#elementH': function (element, renderer) {
+                return true;
+            }
+        };
+        doc.fromHTML(elementHTML, 15, 15, {
+            'width': 170,
+            'elementHandlers': specialElementHandlers
+        });
+
+        // Save the PDF
+        doc.save('sample-document.pdf');
+
+    }
+
+    
+    function fnExcelReport(id) {
+        var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+        var textRange; var j = 0;
+        tab = document.getElementById(id); // id of table
+
+        for (j = 0 ; j < tab.rows.length ; j++) {
+            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+
+        tab_text = tab_text + "</table>";
+        tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+        tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+        tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html", "replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+        }
+        else                 //other browser not tested on IE 11
+            sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+        return (sa);
+    }
+
+</script>

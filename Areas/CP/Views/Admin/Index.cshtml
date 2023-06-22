@@ -1,0 +1,165 @@
+﻿@model IEnumerable<dorranceCP.Models.admin>
+
+@{
+    ViewBag.Title = "Admins";
+    string url2 = "http://portal.dorrancepublishing.com/Content/Images/Original/";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+
+}
+
+@section css{
+
+    <style>
+        .table thead tr th {
+            font-size: 15px !important;
+        }
+
+        .numOfBook {
+            width: 20% !important;
+        }
+
+           .container{
+            max-width: 95% !important;
+        }
+        /*.table thead tr th {
+            padding: 17px !important;
+        }*/
+    </style>
+
+}
+
+<div class="pageBody" style="overflow:hidden !important;">
+    <div class="whiteOverlay">
+
+    </div>
+
+    <div class="container">
+        @Html.Partial("_msg")
+        <div class="row">
+            <div class="pageHeader" style="width:100%;margin-left: 1%;">
+                <div class="clearfix">
+                    <div class="float-left">
+                        <h4><a href="/CP/Home/dashboard">Home</a> / Admins</h4>
+                        <h2 class="pageTitle">Admins’ accounts</h2>
+                        <span>Welcome Back , <span>@(user != null ? user.Name : "")</span></span>
+
+                    </div>
+
+                    <div class="paginationBox float-right" style="margin-right: 0 !important;">
+
+                        <a href="/CP/Admin/Add" class="btn generateBtn">
+                            <i class="fa fa-plus"></i>
+                            Add Admin
+                        </a>
+                        @* paging *@
+
+                    </div>
+       </div>
+                    <div class="clearfix tableHeader" style="width:100%;">
+                        <form method="get">
+                            <div class="searchBox float-left">
+                                @*<input type="text" class="search" value="search...">*@
+                                <input autofocus value="@ViewBag.q"
+                                       name="q" type="text" class="search"
+                                       placeholder="search ...">
+
+                                <button style="color: #f3f6f9;border: none;position: absolute;left: 0;top: 35%;background-color: transparent;"
+                                        type="submit">
+                                    <i class="fa fa-search" style="top: 36% !important;"></i>
+                                </button>
+                            </div>
+                        </form>
+
+                        @Html.Partial("_paging")
+
+                    </div>
+                </div>
+            @if (Model.Count() > 0)
+            {
+                <div style="width:100%;">
+                    <div class="table-responsive scr">
+                        <table class="table table-checkable" style="width: 990px !important;">
+                            <thead>
+                                <tr>
+                                    <th hidden></th>
+                                    <th width="5%">#No</th>
+                                    <th width="18%">Admin Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th width="17%">Address</th>
+
+                                    <th style="width: 9% !important;">Settings</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var i = 0;}
+                                @foreach (var item in Model)
+                                {
+                                    i = i + 1;
+                                    <tr>
+                                        <td hidden></td>
+
+                                        <td width="5%">#@i</td>
+                                        <td width="18%">
+                                            @*<div class="autImg"><img style="width: 100% !important;" src=@(String.IsNullOrEmpty(item.image)? "/Content/assets_cp/images/uploadImage.png":url2+item.image) alt=""></div>*@
+                                            <h4>@item.Name</h4>
+                                        </td>
+                                        <td class="emailTable">@item.Email</td>
+                                        <td>@item.Mobile</td>
+                                        <td width="17%" style="word-break:break-all;">
+                                            @item.Address
+                                        </td>
+                                        <td width=3% class="settingsSec" style="cursor: pointer;">
+                                            <i class="fa fa-ellipsis-v"></i>
+                                            <div class="settingBox">
+                                                <ul>
+                                                    <li>
+                                                        <a class="iFrame" href="/CP/Admin/Permission/@item.ID"><i class="fa fa-lock"></i>Permission</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/CP/Admin/Edit/@item.ID"><i class="fa fa-pencil"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/CP/Admin/Delete/@item.ID" class="Confirm"> <i class="fa fa-trash"></i> Delete</a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+             }
+             else
+             {
+               <div class="alert alert-info col-md-12">
+                                            There is no data to display
+
+                                        </div>
+             }
+        </div>
+
+
+
+        
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+

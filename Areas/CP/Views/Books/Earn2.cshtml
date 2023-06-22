@@ -1,0 +1,278 @@
+﻿
+@{
+    ViewBag.Title = " General Earnings";
+    string url2 = "http://cp.dorrancepublishing.com/Content/Images/Original/";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+    // string sku = ViewBag.sk;
+}
+
+<div class="pageBody">
+    <div class="whiteOverlay">
+    </div>
+    <div class="container">
+        @*@Html.Partial("_msg")*@
+@*@using (Html.BeginForm(null, null, FormMethod.Post,
+                                                   new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()*@
+        <div class="row">
+            <div class="pageHeader clearfix" style="width:100%;margin-left:1%;">
+                <!--       <div class="generateCreateButtons float-right">
+                    <a href="#" class="btn generateBtn"> + Import
+                        Order</a>
+                </div>-->
+                <h4><a href="/CP/">Home</a> / Earning </h4>
+                <h2 class="pageTitle">General Earnings </h2>
+                <span>Welcome Back , <span>@(user != null ? user.Name : "")</span></span>
+                <!--
+                <div class="clearfix tableHeader" style="width:100%;">
+
+                        <div class="searchPagination clearfix">
+                        <div class="AdvanceSearch float-left">
+                            <span>Advanced filter</span>
+                            <div class="form-group clearfix">
+                                <input type="text" class="form-control" placeholder="Order Number">
+                                <select class="advanceSerachSelect form-control">
+                                    <option value="">Author Name</option>
+                                </select>
+                            </div>
+                            <div class="form-group clearfix">
+                                <input type="text" class="form-control searchByAuthor" placeholder="SKU/ISPN">
+                                <select class="advanceSerachSelect form-control">
+                                    <option value="">Book Title</option>
+                                </select>
+                            </div>
+                            <div class="searchBox  bookSearch">
+                                <input type="text" class="search" value="search...">
+                                <i class="fa fa-search"></i>
+                            </div>
+                        </div>
+                        <button class="btn AdvanceSearchBtn float-left">Search</button>
+                    </div>
+
+
+                    <div class="paginationBox orderPagination float-right">
+                        <nav aria-label="Page navigation clearfix">
+                            <ul class="pagination">
+                                <li class="page-item"><a class="page-link" href="#">
+                                        <i class="lni-angle-double-left"></i></a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#"><i
+                                            class="lni-angle-double-right"></i></a></li>
+                            </ul>
+                        </nav>
+                    </div>
+
+
+
+                </div>
+                  -->
+            </div>
+            <div>
+
+    @*//@Html.HiddenFor(model => model.id)*@
+
+ 
+    @{var sc = db.scheme_1.ToList();
+    }
+           @*<input hidden value="@sku" name="sku" id="sku"/>*@
+                <div class="table-responsive scr">
+                    <table class="table table-checkable" id="tableEarning">
+                        <thead>
+                            <tr>
+                                <th width=3% hidden></th>
+                                <th width=15%>Earning Scheme</th>
+                             @{
+
+                                 foreach (var f in sc)
+                                 {
+                                    <th style="font-size: 15px !important;">@f.text</th>
+                                 }
+                                 }
+                            </tr>
+                        </thead>
+                        <tbody>
+                               @{
+                                   var sc2 = db.scheme_2.ToList();
+                                   //foreach (var f in sc)
+                                   //{
+                                   var all_earn = db.Earnings.AsNoTracking().Where(r => r.sku == null).ToList();
+                                   foreach (var f2 in sc2)
+                                   {
+                                           var earn2 = all_earn.Where(r =>  r.id_scheme_2 == f2.id).ToList();
+                                           <tr>
+                                            <td width=3% hidden></td>
+
+                                            <td width=15%>@f2.text</td>
+                                             @foreach (var s2 in earn2)
+                                             {
+                                             <td>
+                                                <input  id="s_@s2.id_scheme_1@s2.id_scheme_2" name="s_@s2.id_scheme_1@s2.id_scheme_2" value=@(s2.value) type="text" class="form-control" placeholder="20"> <span> %</span>
+                                             </td>
+                                             }
+                                            </tr>
+
+                                   }
+                                       @*} name=s_@f@f2*@
+
+                                   }
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                                   
+
+
+             </div>
+            <div class="sure">
+                <button class="btn confirmBtn Confirm3">Save</button>
+                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-defult" })
+            </div>
+        </div>
+                                   
+    </div>
+</div>
+<div id="Confirm3" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" style="top:unset !important;padding:unset !important;margin:unset !important;right: 15px !important;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Confirm</h4>
+            </div>
+            <div class="modal-body" style="font-size:15px;">
+                <p>Are you sure you want to Save this ... ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger" style="color: #fff;cursor: pointer;"> Yes, Sure</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div id="reslt2" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" style="top:unset !important;padding:unset !important;margin:unset !important;right: 15px !important;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body" style="font-size:15px;">
+                <p>Saved Successfully</p>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>*@
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<div id="err2" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" style="top:unset !important;padding:unset !important;margin:unset !important;right: 15px !important;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body" style="font-size:15px;">
+                <p>Error Occurs</p>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>*@
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+@*<script type="text/javascript">
+            $("body").on("submit", "#Form1", function () {
+                return confirm("Do you want to submit?");
+            });
+    </script>
+
+        <script type="text/javascript">
+                window.onload = function () {
+                    alert('@ViewBag.Message');
+                };
+        </script>*@
+<script type="text/javascript">
+//function confirm() {
+//if(confirm("Are you sure to continue?"))
+//return true;
+//else
+//return false;
+    //}
+
+
+    $(document).on("click", ".Confirm3", function () {
+
+        $("#Confirm3").modal("show");
+        //$("#Confirm2 .btn-danger").attr("href",
+        //    $(this).attr("href"));
+        //return false;
+    });
+
+
+    $(document).on("click", ".btn-danger", function () {
+        //alert("y");
+        f2();
+    });
+
+    $(document).on("click", ".btn-default", function () {
+        //alert("no");
+        $("#Confirm3").modal("hide");
+    });
+
+    function f2() {
+        //var id1 = $(this).val();
+        
+
+        var s_11 = $("#s_11").val();var s_21 = $("#s_21").val();var s_31 = $("#s_31").val(); var s_41 = $("#s_41").val();var s_51 = $("#s_51").val(); var s_61 =$("#s_61").val();
+        var s_12 = $("#s_12").val(); var s_22 = $("#s_22").val(); var s_32 = $("#s_32").val(); var s_42 = $("#s_42").val(); var s_52 = $("#s_52").val(); var s_62 = $("#s_62").val();
+        var s_13 = $("#s_13").val(); var s_23 = $("#s_23").val(); var s_33 = $("#s_33").val(); var s_43 = $("#s_43").val(); var s_53 = $("#s_53").val(); var s_63 = $("#s_63").val();
+        var s_14 = $("#s_14").val(); var s_24 = $("#s_24").val(); var s_34 = $("#s_34").val(); var s_44 = $("#s_44").val(); var s_54 = $("#s_54").val(); var s_64 = $("#s_64").val();
+        var s_15 = $("#s_15").val(); var s_25 = $("#s_25").val(); var s_35 = $("#s_35").val(); var s_45 = $("#s_45").val(); var s_55 = $("#s_55").val(); var s_65 = $("#s_65").val();
+
+
+
+        // $.get("/CP/Aqars/CountryList/" + id);
+        $.ajax({
+            url: "@Url.Action("Earn2", "Books")",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                          s_11: s_11, s_21: s_21, s_31: s_31, s_41: s_41, s_51: s_51, s_61: s_61
+                        , s_12: s_12, s_22: s_22, s_32: s_32, s_42: s_42, s_52: s_52, s_62: s_62
+                        , s_13: s_13, s_23: s_23, s_33: s_33, s_43: s_43, s_53: s_53, s_63: s_63
+                        , s_14: s_14, s_24: s_24, s_34: s_34, s_44: s_44, s_54: s_54, s_64: s_64
+                        , s_15: s_15, s_25: s_25, s_35: s_35, s_45: s_45, s_55: s_55, s_65: s_65
+            }),
+            success: function (response) {
+
+               //alert(response);
+                //console.log(response);
+                if (response == "Saved successfully") {
+                    $("#Confirm3").modal("hide");
+                    $("#reslt2").modal("show");
+                    //alert("y");
+                } else {
+                    $("#Confirm3").modal("hide");
+                    $("#err2").modal("show");
+
+                }
+            }
+        });
+    }
+
+    //});
+    //});
+
+</script>

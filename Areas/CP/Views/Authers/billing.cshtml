@@ -1,0 +1,121 @@
+﻿@model dorranceCP.Models.BillingAddress
+
+
+@{
+    ViewBag.Title = "Billing";
+    string url2 = "http://cp.dorrancepublishing.com/Content/Images/Original/";
+}
+
+<style>
+     input {
+            height: 38px !important;
+        }
+      .btn-primary{
+         color: #fff !important;
+     }
+     .btn-defult{
+         background: #ccc !important;
+     }
+    .selectric-wrapper {
+        width: 66% !important;
+        float: right !important;
+    }
+</style>
+
+<div class="pageHeader col-md-9" style="width:100%;margin-top: 9%;">
+    <h4 style="font-size:17px;"><a href="/CP/Home/dashboard">Home</a> / <a href="/CP/Authers/">Authors</a> / Billing Address</h4>
+
+    <div class="row" style="margin-left: 1%;margin-top: 3%;">
+        <div class="pageHeader" style="width:100%;box-shadow: 1px 3px 4px 3px #dedede;padding: 3%;" >
+           
+             <p style="font-size:20px;font-weight: 500;">Billing Address</p>
+            <hr />
+             <br />
+           
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.auther_id)
+
+        <div class="addBookForm">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+            <div class="addBookLeft" style="width: 60% !important;">
+                @*<div class="tabbable-line">
+
+                    <div class="tab-content">
+
+                        <div class="tab-pane active">*@
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.BillingFirstName, "Name", htmlAttributes: new { @class = "control-label col-md-4" })
+                        @Html.EditorFor(model => model.BillingFirstName, new { htmlAttributes = new { @class = "form-control col-md-8 float-right", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.BillingFirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.BillingAddress1, "Billing Address", htmlAttributes: new { @class = "control-label col-md-4" })
+                        @Html.EditorFor(model => model.BillingAddress1, new { htmlAttributes = new { @class = "form-control col-md-8 float-right", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.BillingAddress1, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+               
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.Telephone, "Telephone", htmlAttributes: new { @class = "control-label col-md-4" })
+                        @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control col-md-8 float-right",type="number"} })
+                        @Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.Fax, "Fax", htmlAttributes: new { @class = "control-label col-md-4" })
+                        @Html.EditorFor(model => model.Fax, new { htmlAttributes = new { @class = "form-control col-md-8 float-right", type = "number" } })
+                        @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.BillingStreet, "Billing Street", htmlAttributes: new { @class = "control-label col-md-4" })
+                        @Html.EditorFor(model => model.BillingStreet, new { htmlAttributes = new { @class = "form-control col-md-8 float-right" } })
+                        @Html.ValidationMessageFor(model => model.BillingStreet, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.BillingCountry, "Billing Country", htmlAttributes: new { @class = "control-label col-md-4" })
+                        @Html.DropDownListFor(model => model.BillingCountry, (SelectList)ViewBag.CountryList, "Author Country", htmlAttributes: new { @class = "select2_demo_1 form-control col-md-8 float-right", required = "required" })
+                        @Html.ValidationMessageFor(model => model.BillingCountry, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 7%;margin-top: 11%;">
+                    <div class="col-md-offset-2 col-md-12">
+                        <input type="submit" value="Save" class="btn btn-primary" style="color:#fff !important;" />
+                        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-defult", style = "background: #ccc;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+
+    }
+
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

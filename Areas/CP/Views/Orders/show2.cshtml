@@ -1,0 +1,161 @@
+﻿@model IEnumerable<dorranceCP.Models.Temp_Orders>
+@{
+    ViewBag.Title = "Orders";
+    string url2 = "http://portal.dorrancepublishing.com/Content/Images/Original/";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+    DateTime dt = DateTime.UtcNow;
+}
+<style>
+    .table thead tr th {
+        font-size: 16px !important;
+    }
+      .container{
+            max-width: 95% !important;
+        }
+      th,td{
+          text-align:center;
+      }
+
+        .chosen-container-single {
+        width: 390px !important;
+    }
+           .chosen-select {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+    .chosen-choices{
+        display: block !important;
+    width: 100% !important;
+    height: calc(2.5em + 1.75rem + -4px) !important;
+    padding: 1.375rem 0.75rem !important;
+    font-size: 1rem !important;
+        /*display: block;
+    width: 100%;
+    height: calc(2.5em + 1.75rem + -4px);
+    padding: 1.375rem 0.75rem;
+    font-size: 1rem;*/
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: #495057 !important;
+    background-color: #f3f6f9 !important;
+    background-clip: padding-box !important;
+      background-color: #F3F6F9 !important;
+    border: .5px solid #AAAAAA !important;
+    /*height: 60px;*/
+    border-radius: 5px !important;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out !important;
+    }
+      .selectric-wrapper{
+        display:none !important;
+            margin-left: 3%;
+    }
+
+         .chosen-single{
+             height: calc(1.5em + 1.75rem + -4px) !important;
+    padding: 0.475rem 0.75rem !important;
+         }
+</style>
+
+<div class="pageBody">
+    <div class="whiteOverlay">
+    </div>
+    <div class="container">
+        @Html.Partial("_msg")
+        <div class="row">
+            <div class="pageHeader" style="width:100%;margin-left: 1%;padding-right: 6%;">
+                <div class="generateCreateButtons float-right">
+                    <a href="#" class="btn generateBtn" data-toggle="modal" data-target="#AddNewBook">
+                        + Add
+                        Order
+                    </a>
+                     <a href="#" class="btn generateBtn" data-toggle="modal" data-target="#AddNewFile">
+                        + Import
+                        Orders
+                    </a>
+                </div>
+                <button onClick="fnExcelReport('htadd');" style="width: 120px !important;" class="btn generateBtn">
+                    + Export
+                </button>
+                <div>
+                <h4><a href="/CP/Home/dashboard">Home</a> / Orders</h4>
+                <h2 class="pageTitle">Orders</h2>
+                <span>Welcome Back , <span>@(user != null ? user.Name : "")</span></span>
+                </div>
+                 
+            </div>
+
+            @if (Model.Count() > 0)
+            {
+                    <div >
+                        <table id="htadd" >
+                            <thead>
+                                <tr>
+                                    							
+
+                                    <th width=3%>Sale Type</th>
+                                    <th width=10%>Invoice Number</th>
+                                    <th style="width: 188px !important;">Date</th>
+                                    <th style="width: 167px !important;" width=11%>ISBN</th>
+                                    <th>Edition Title</th>
+                                    <th style="width: 64px !important;">Qty</th>
+                                    <th>Amt</th>
+                                    <th>Customer</th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var i = 0;}
+                                @foreach (var item in Model)
+                                {
+                                   
+                                    <tr>
+                                        <td width=5%>#@item.local_sort_text1</td>
+                                        <td>
+                                            @item.order_number
+                                        </td>
+                                        <td>@item.order_date</td>
+                                        <td>@item.sku</td>
+                                        <td>@item.product</td>
+                                        <td>@item.quantity_ordered</td>
+                                        <td>$@item.total_price</td>
+                                        <td>@item.Name</td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+               
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-info col-md-12">
+                                            There is no data to display
+
+                                        </div>                                 
+                                    }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+

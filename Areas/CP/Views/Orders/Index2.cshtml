@@ -1,0 +1,159 @@
+﻿
+@{
+    ViewBag.Title = "Orders";
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+    var all = ViewBag.vw as IEnumerable<dorranceCP.Models.Orders>;
+}
+
+
+<style>
+    .table thead tr th {
+        font-size: 16px !important;
+    }
+
+    .container {
+        max-width: 95% !important;
+    }
+    td{
+        color: #fff !important;
+    }
+   
+</style>
+
+<div class="pageBody">
+    <div class="whiteOverlay">
+    </div>
+    <div class="container">
+        @Html.Partial("_msg")
+        <div class="row">
+            <div class="pageHeader" style="width:100%;margin-left: 1%;padding-right: 6%;">
+                <div class="generateCreateButtons float-right">
+                    <a href="/CP/Orders/" class="btn generateBtn"> 
+                        Return to Orders
+                    </a>
+                </div>
+                <button onClick="fnExcelReport('htadd');" style="width: 120px !important;float: right;" class="btn generateBtn">
+                    + Export
+                </button>
+                 <div>
+                    <h4><a href="/CP/">Home</a> / Orders</h4>
+                    <h2 class="pageTitle">Orders</h2>
+                </div>
+                
+            </div>
+           @if(all != null) { 
+            if (all.Count() > 0 )
+            {
+                <div style="width: 100%;">
+                    <div>
+                        <p class="float-right">@ViewBag.sum</p>
+                        <br />
+                        <br />
+                        <table id="htadd">
+                            <thead>
+                                <tr>                                   
+
+                                    <th width=15%>Sale Type</th>
+                                    <th width=10%>Invoice Number</th>
+                                    <th width=10%>Date</th>
+                                    <th style="width: 167px !important;" width=11%>ISBN</th>
+                                    <th>Edition Title</th>
+                                    <th style="width: 64px !important;">Qty</th>
+                                    <th>Amt</th>
+                                    <th>Customer</th>
+                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var i = 0;}
+                                @foreach (var item in all)
+                                {
+                                    i = i + 1;
+                                    string color = "red";
+                                    if (item.cancelled == true)
+                                    {
+                                        color = "green";
+                                        <tr style="background-color:red;color:#fff;">
+                                            <td>
+                                                @item.local_sort_text1
+                                            </td>
+                                            <td>@item.order_number</td>
+                                            <td>@item.order_date</td>
+                                            <td>@item.sku</td>
+                                            <td>$ @item.product</td>
+                                            <td>@item.quantity_ordered</td>
+                                            <td>@item.total_price</td>
+                                            <td>@item.Name</td>
+                                        </tr>
+
+                                    }
+                                    else
+                                    {
+                                        <tr style="background-color:green;color:#fff;">                                           
+                                            <td>
+                                                @item.local_sort_text1
+                                            </td>
+                                            <td>@item.order_number</td>
+                                            <td>@item.order_date</td>
+                                            <td>@item.sku</td>
+                                            <td>$ @item.product</td>
+                                            <td>@item.quantity_ordered</td>
+                                            <td>@item.total_price</td>
+                                            <td>@item.Name</td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-info col-md-12">
+                                            There is no data to display
+
+                                        </div>
+                                    }
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-info col-md-12">
+                                            There is no data to display
+
+                                        </div>
+                                    }
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $("#list").change(function () {
+            var id = $(this).val();
+            alert(id);
+            // $.get("/CP/Aqars/CountryList/" + id);
+            $.ajax({
+                url: "@Url.Action("Index", "Books")",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ id: id }),
+                success: function (response) {
+                    return response;
+                    //alert(response);
+                    //console.log(response);
+                    //document.getElementById("rr2").innerHTML = response;
+                }
+            });
+        });
+    });
+</script>
+
+
+
+

@@ -1,0 +1,387 @@
+﻿@model IEnumerable<dorranceCP.Models.FAQs>
+
+@{
+    ViewBag.Title = "FAQs";
+    string url2 = "http://portal.dorrancepublishing.com/Content/Images/Original/";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+
+}
+
+@section css{
+
+    <style>
+        .table thead tr th {
+            font-size: 15px !important;
+        }
+        th{
+            text-align: center;
+        }
+        table.dataTable tbody th, table.dataTable tbody td {
+    padding: 8px 23px !important;
+}
+
+        .numOfBook {
+            width: 20% !important;
+        }
+
+          .container{
+            max-width: 95% !important;
+        }
+        /*.table thead tr th {
+            padding: 17px !important;
+        }*/
+
+
+
+        /*switch togggle*/
+        .switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #4fa746;;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+    </style>
+
+}
+
+<div class="pageBody" style="overflow:hidden !important;">
+    <div class="whiteOverlay">
+
+    </div>
+    <div class="container">
+        @Html.Partial("_msg")
+        <div class="row">
+            <div class="pageHeader" style="width:100%;margin-left: 1%;">
+           <div class="clearfix">
+                     <div class="float-left">
+                    <h4><a href="/CP/Home/dashboard">Home</a> / FAQs</h4>
+                    <h2 class="pageTitle">FAQs</h2>
+                    <span>Welcome Back , <span>@(user != null ? user.Name : "")</span></span>
+                </div>
+                    <div class="paginationBox float-right" style="margin-right: 0 !important;">
+                    <div class="generateCreateButtons">
+                        <a data-toggle="modal" data-target="#AddNewBook" style="margin-right: 3px !important;width: 112px !important;" href="#" class="btn generateBtn btnMargin">Add Question</a>
+
+                        @*<a  href="/CP/Authers/Add" style="width: 112px !important;" class="btn generateBtn"> + Creat Author</a>*@
+                    </div>
+                    @* paging *@
+                   
+                </div>
+              </div>
+                <div class="clearfix tableHeader" style="width:100%;">
+                    <form method="get">
+                        <div class="searchBox float-left">
+                            @*<input type="text" class="search" value="search...">*@
+                            <input autofocus value="@ViewBag.q"
+                                   name="q" type="text" class="search"
+                                   placeholder="search ...">
+
+                            <button style="color: #f3f6f9;border: none;position: absolute;left: 0;top: 35%;background-color: transparent;"
+                                    type="submit">
+                                <i class="fa fa-search" style="top: 36% !important;"></i>
+                            </button>
+                        </div>
+                    </form>
+                    @Html.Partial("_paging")
+                  
+                    
+                </div>
+                </div>
+            @if (Model.Count() > 0)
+            {
+                <div style="width:100%;">
+                    <div class="table-responsive scr">
+                        <table class="table table-checkable" >
+                            <thead>
+                                <tr>
+                                    <th hidden></th>
+                                    <th width="5%">#No</th>
+                                    <th style="width: 80%;float: left;">Question Owner</th>
+                                    <th width="18%">Question</th>
+                                    <th width="18%">Answer</th>
+                                    <th width="18%">Date</th>
+                                    <th width="18%">Public/Private</th>
+                                    @*<th width="18%">Activation</th>*@
+                                    <th style="width: 9% !important;">Settings</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var i = 0;}
+                                @foreach (var item in Model)
+                                {
+                                    var nam = "Admin";
+                                    if(item.auther_id != null || item.auther_id != 0)
+                                    {
+                                        var auth = db.authers.Where(u => u.id == item.auther_id).FirstOrDefault();
+                                        if (auth != null)
+                                        {
+                                            nam = auth.name;
+                                        }
+                                       
+                                    }
+                                    i = i + 1;
+                                    <tr>
+                                        <td hidden></td>
+                                        <td hidden><input type="text" class="id" value="@item.id"/></td>
+                                        <td width="5%">#@i</td>
+                                        <td class="emailTable">@nam</td>
+                                        <td><a href="/CP/FAQs/Edit/@item.id">@item.question</a></td>
+                                        <td style="width: 32%;">@item.answer</td>
+                                        <td>@(!String.IsNullOrEmpty(item.date+"") ? item.date.Value.ToString("MM/dd/yyyy") : "")</td>
+                                        <td class="emailTable">
+                                            <label class="switch">
+                                                <input type="checkbox" class="pub" checked="@item.is_public" />   @*onchange="toggleCheck()"*@
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </td>
+                                        @*<td class="emailTable">
+                                            <label class="switch">
+                                                <input type="checkbox" class="activ" checked="@item.active" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                         </td>*@
+                                       
+
+                                        @*@(item.active == false ? "active" : "not active")</td>*@
+                                        @*@if (item.active == false)
+                                        {
+                                            <td>
+                                                <a title="Activate" class="btn btn-xs btn-warning"
+                                                   href="/CP/FAQs/Active/@item.id">
+                                                    activate
+                                                </a>
+
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <a title="Deactivate" class="btn btn-xs btn-success"
+                                                   href="/CP/FAQs/Active/@item.id">
+                                                    deactivate
+
+                                                </a>
+
+                                            </td>
+                                        }*@
+
+                                        <td width=3% class="settingsSec" style="cursor: pointer;width: 40%;">
+                                            <a href="/CP/FAQs/Edit/@item.id" class="btn btn-success btn-sm">Reply</a>
+
+                                             @*<i class="fa fa-ellipsis-v"></i>
+                                            <div class="settingBox">
+                                                <ul>
+                                                   
+                                                    <li>
+                                                    </li>
+                                                   
+                                                </ul>
+                                            </div>*@
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-info col-md-12">
+                                            There is no data to display
+
+                                        </div>
+                                    }
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="AddNewBook" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h5 class="AddBookTitle"> Add New Question</h5>
+
+            @using (Html.BeginForm("Add", "FAQs", FormMethod.Post,
+                                        new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="addBookForm">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                    <div class="addBookLeft">
+
+                        <div class="form-group">
+                            <input required type="text" name="ques" class="form-control" placeholder="Question">
+
+
+                        </div>
+                        <div class="form-group">
+                            <input required type="text" name="ans" class="form-control" placeholder="Answer">
+                        </div>
+                        <button style="margin-top: 23px !important;" class="btn addBookBtn" type="submit">Add</button>
+                  
+                    </div>
+
+                </div>
+                }
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+  
+<script>
+    $(document).ready(function () {
+
+        $(".activ").on('change', function () {
+            var i = $(this).closest('tr').find('.id').val();
+            window.location.replace("/CP/FAQs/Active/?id=" + i);
+        });
+
+        $(".pub").on('change', function () {
+            var i = $(this).closest('tr').find('.id').val();
+            window.location.replace("/CP/FAQs/Public/?id=" + i);
+        });
+
+    });
+    </script>
+    @*//alert("");
+    //function toggleCheck2() {
+    //    if (document.getElementById("activ").checked === true) {
+    //        alert("sfs");
+    //       // document.getElementById("aLink").style.display = "block";
+    //    } else {
+    //        alert("no");
+    //       // document.getElementById("aLink").style.display = "none";
+    //    }
+    //}
+
+
+    // if ($(this).is(':checked')) {
+    //  alert("");
+    // if ($(this).find("td").find('input[type="checkbox"]').is(":checked")) {
+    // var t = $(this).find('input[type="text"]').val();   // get id's of user
+    //  console.log(i);
+    // weights.push($(this).find('select').val());
+
+    //}
+    // }
+
+    //    switchStatus = $(this).is(':checked');
+    //    alert(switchStatus);// To verify
+    //}
+    //else {
+    //    switchStatus = $(this).is(':checked');
+    //    alert(switchStatus);// To verify
+    //}*@
+}
+
+@*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>*@
+
+
+    @*//$('.switch input:checkbox').change(function () {
+    //    if ($(this).is(":checked")) {
+    //        $(this).addClass("active");
+    //        toggleColor();
+    //        console.log('ON');
+    //    } else {
+    //        $(this).removeClass("active");
+    //        console.log('OFF');
+    //    }
+    //});
+
+
+     //$(".activ").on('change', function () {
+     //   var i = $(this).closest('tr').find('.id').val();
+     //  window.location.replace("/CP/FAQs/Active/?id=" + i);
+       // alert(i);
+        $.ajax({
+            url: "@Url.Action("Active", "FAQs")",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ id:i }),
+            success: function (response) {
+                //alert(response);
+                //document.getElementById("rr2").innerHTML = response;
+            }
+          });*@
+
+
+
+
+    @*//$(document).ready(function () {
+
+    //    var switchStatus = false;
+
+    //});*@
+
+
+
+
+
+
+
+

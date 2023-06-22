@@ -1,0 +1,255 @@
+﻿
+@{
+    ViewBag.Title = "Invite Author";
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+    int id = ViewBag.nid;
+    string title1 = ViewBag.title1;
+    string msg = ViewBag.msg;
+    string link1 = ViewBag.link1;
+    string link2 = ViewBag.link2;
+
+    var suh = db.authers.Where(y => y.id == id).FirstOrDefault();
+}
+<style>
+    .EmailModal{
+        padding-right: 0 !important;
+    }
+</style>
+
+
+   @using (Html.BeginForm("InviteAuthor", "Authers", FormMethod.Post,
+                                                 new { enctype = "multipart/form-data" }))
+   {
+   
+    <h5 class="modal-title" style="padding:3%;"> Invite Author</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="modal-body">
+        <input id="nid" hidden name="id" value="@id" style="font-size: 13px;border: none;width: 100%;text-align: center;" />
+        <div class="pageBody" style="overflow:hidden !important;background-color:unset !important;padding-top: 0 !important;">
+            <div class="whiteOverlay">
+
+            </div>
+            <div class="container">
+                @Html.Partial("_msg")
+                <div>
+                    @*<div class="pageHeader" style="width:100%;margin-left: 2%;">
+                        <div class="float-left">
+                            <h4><a href="/CP/Home/dashboard">Home</a> / Settings</h4>
+                            <h2 class="pageTitle">
+                                Invite Author
+                            </h2>
+                        </div>
+                    </div>*@
+                    @Html.AntiForgeryToken()
+
+
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top: 1% !important;">
+                        <tr>
+                            <td style="padding: 10px 0 30px 0;">
+                                <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border: 1px solid #cccccc; border-collapse: collapse;">
+                                    <tr>
+                                        @*<td align="center" bgcolor="#70bbd9" style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
+                                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/h1.gif" alt="Creating Email Magic" width="300" height="230" style="display: block;" />
+                                        </td>*@
+                                        <td align="center" style="color: #153643;font-size: 28px;font-weight: bold;font-family: Arial, sans-serif;">
+                                            <img src="http://portal.dorrancepublishing.com/Content/logo%201.png" alt="Creating Email Magic" style="display: block;width: 200px !important;height: 200px !important;" />
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td bgcolor="#ffffff" style="padding: 0 30px 0 30px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                               
+                                                <tr>
+                                                    <td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
+                                                        <input type="text" value="@title1" style="background: #fff;" class="form-control" name="subject" placeholder="subjcet">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
+                                                        <textarea class="ckeditor form-control" style="background: #fff;height: 170px;" name="message" placeholder="Message" rows="5">@Html.Raw(msg)</textarea>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    @*<tr>
+                                        <td bgcolor="#ffffff" style="padding: 0 30px 40px 30px;">
+                                            Start your journey in Dorrance by downloading the App by clicking the applicable link below!
+                                            <br />
+                                            Download from the Apple App Store here:
+                                            <br />
+                                            <a href="@link1" target="_blank"><img style="width:20%;" src="http://cp.dorrancepublishing.com/Content/ios_btn.png" /></a>
+                                            <br />
+                                            Download from the Google Play Store here:
+                                            <br />
+                                            <a href="@link2" target="_blank"><img style="width:20%;" src="http://cp.dorrancepublishing.com/Content/play-store.png" /></a>
+                                            <br />You Can Open Your Account on Dorrance Website here :<br /><a href="http://portal.dorrancepublishing.com/Account/Login" target="_blank">Dorrance Website Click here !</a>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td bgcolor="#aaa" style="padding: 10px 30px 30px 30px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                <tr>
+                                                    <td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;" width="75%">
+                                                        Copyrights &copy; Dorrance <br />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>*@
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <br />
+                    <div class="inbox-compose-btn" style="margin-left: 7%;">
+                        <button class="btn green" style=" background: #5cbdb6;color: #fff;"><i class="fa fa-check"></i>Send</button>
+                        <a href="/CP/Authers/Index" style=" background: #9a9797; color: #fff;" class="btn">Discard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   }
+
+
+
+
+
+
+<script id="template-upload" type="text/x-tmpl">
+    {% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td class="name" width="30%"><span>{%=file.name%}</span></td>
+        <td class="size" width="40%"><span>{%=o.formatFileSize(file.size)%}</span></td>
+        {% if (file.error) { %}
+        <td class="error" width="20%" colspan="2"><span class="label label-danger">Error</span> {%=file.error%}</td>
+        {% } else if (o.files.valid && !i) { %}
+        <td>
+            <p class="size">{%=o.formatFileSize(file.size)%}</p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+            </div>
+        </td>
+        {% } else { %}
+        <td colspan="2"></td>
+        {% } %}
+        <td class="cancel" width="10%" align="right">
+            {% if (!i) { %}
+            <button class="btn btn-sm red cancel">
+                <i class="fa fa-ban"></i>
+                <span>Cancel</span>
+            </button>
+            {% } %}
+        </td>
+    </tr>
+    {% } %}
+</script>
+<script id="template-download" type="text/x-tmpl">
+    {% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        {% if (file.error) { %}
+        <td class="name" width="30%"><span>{%=file.name%}</span></td>
+        <td class="size" width="40%"><span>{%=o.formatFileSize(file.size)%}</span></td>
+        <td class="error" width="30%" colspan="2"><span class="label label-danger">Error</span> {%=file.error%}</td>
+        {% } else { %}
+        <td class="name" width="30%">
+            <a href="{%=file.url%}" title="{%=file.name%}" data-gallery="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
+        </td>
+        <td class="size" width="40%"><span>{%=o.formatFileSize(file.size)%}</span></td>
+        <td colspan="2"></td>
+        {% } %}
+        <td class="delete" width="10%" align="right">
+            <button class="btn default btn-sm" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}" {% if (file.delete_with_credentials) { %} data-xhr-fields='{"withCredentials":true}' {% } %}>
+                <i class="fa fa-times"></i>
+            </button>
+        </td>
+    </tr>
+    {% } %}
+</script>
+
+
+<script src="~/Content/print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
+
+<script>
+    function printPdf() {
+        const filename  = 'Orders.pdf';
+
+        html2canvas(document.querySelector('#bill'),
+								{scale: 1}
+						 ).then(canvas => {
+						     let pdf = new jsPDF('p', 'mm', 'a4');
+						     var x = pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 20, 15, 185, 170);
+						     //console.log(x);
+						     //console.log(canvas.toDataURL('image/png'));
+						     pdf.save(filename);
+						 });
+    }
+
+    function printPdf2(id) {
+        //printJS(id, 'pdf');
+        //var doc = new jsPDF()
+        //var tx = document.getElementById(id).innerHTML;
+        //doc.text(tx, 10, 10)
+        //doc.save('orders.pdf')
+
+        var doc = new jsPDF();
+        var elementHTML = $('#bill').html();
+        var specialElementHandlers = {
+            '#elementH': function (element, renderer) {
+                return true;
+            }
+        };
+        doc.fromHTML(elementHTML, 15, 15, {
+            'width': 170,
+            'elementHandlers': specialElementHandlers
+        });
+
+        // Save the PDF
+        doc.save('sample-document.pdf');
+
+    }
+
+    
+    function fnExcelReport(id) {
+        var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+        var textRange; var j = 0;
+        tab = document.getElementById(id); // id of table
+
+        for (j = 0 ; j < tab.rows.length ; j++) {
+            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+
+        tab_text = tab_text + "</table>";
+        tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+        tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+        tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html", "replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+        }
+        else                 //other browser not tested on IE 11
+            sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+        return (sa);
+    }
+
+</script>

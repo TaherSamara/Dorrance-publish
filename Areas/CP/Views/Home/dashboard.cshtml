@@ -1,0 +1,501 @@
+﻿
+@{
+                ViewBag.Title = "Dashboard";
+                string url2 = "http://cp.dorrancepublishing.com/Content/Images/Original/";
+                //var user = ViewBag.User as dorranceCP.Models.admin;
+                dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+                int users = ViewBag.users;
+                int books = ViewBag.books;
+                int orders = ViewBag.orders;
+                int faq = ViewBag.faqs;
+
+                var last_users = ViewBag.last_users as IEnumerable<dorranceCP.Models.authers>;
+                var last_books = ViewBag.last_books as IEnumerable<dorranceCP.Models.book>;
+                var last_orders = ViewBag.last_orders as IEnumerable<dorranceCP.Models.Orders>;
+                var last_faqs = ViewBag.last_faqs as IEnumerable<dorranceCP.Models.FAQs>; }
+<style>
+    .badge2 {
+        border-radius: 50%;
+        height: 2rem;
+        width: 2rem;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 900;
+        color: white;
+    }
+
+    .form-group {
+        margin-bottom: 10px !important;
+    }
+
+    .selectric-wrapper {
+        display: none !important;
+    }
+
+    .chosen-select {
+        display: block;
+        width: 100%;
+        height: calc(1.5em + .75rem + 2px);
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
+    .chosen-choices {
+        display: block !important;
+        width: 100% !important;
+        height: calc(2.5em + 1.75rem + -4px) !important;
+        padding: 1.375rem 0.75rem !important;
+        font-size: 1rem !important;
+        /*display: block;
+    width: 100%;
+    height: calc(2.5em + 1.75rem + -4px);
+    padding: 1.375rem 0.75rem;
+    font-size: 1rem;*/
+        font-weight: 400 !important;
+        line-height: 1.5 !important;
+        color: #495057 !important;
+        background-color: #f3f6f9 !important;
+        background-clip: padding-box !important;
+        background-color: #F3F6F9 !important;
+        border: .5px solid #AAAAAA !important;
+        /*height: 60px;*/
+        border-radius: 5px !important;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out !important;
+    }
+</style>
+
+@*<link href="/COntent/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/COntent/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />*@
+@*<link href="~/Content/select2/select2.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />*@
+@*<link href="~/Content/chosen.css" rel="stylesheet" />*@
+@*<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>*@
+@*<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>*@
+
+
+<div class="pageBody">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <a class="dashboard-stat dashboard-stat-v2 blue" href="/CP/Authers/">
+                    <div class="visual">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+                            <span data-counter="counterup" data-value="@users">@users</span>
+                        </div>
+                        <div class="desc"> Authors </div>
+
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <a class="dashboard-stat dashboard-stat-v2 red" href="/CP/Books/">
+                    <div class="visual">
+                        <i class="fa fa-bar-chart-o"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+                            <span data-counter="counterup" data-value="@books">@books</span>
+                        </div>
+                        <div class="desc"> Books</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <a class="dashboard-stat dashboard-stat-v2 green" href="/CP/Orders/">
+                    <div class="visual">
+                        <i class="fa fa-desktop"></i>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+                            <span data-counter="counterup" data-value="@orders">@orders</span>
+                        </div>
+                        <div class="desc"> Orders </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <a class="dashboard-stat dashboard-stat-v2 purple" href="/CP/FAQs/">
+                    <div class="visual" style="width: 100% !important;padding-top: 0 !important;padding-left: 0 !important;margin-bottom: 15px;font-size: 35px;line-height: 145px !important;">
+                        @*<i class="fa fa-globe"></i>*@
+                        @{var bks2 = db.FAQs.Where(w => w.is_read == false).Count(); }
+                        <div class="desc">
+
+                            <span style="font-size: 18px !important;color: #F4FF4A;font-weight: bold;"><span class="badge2" style=" font-size: 18px !important;color: #F4FF4A;font-weight: bold;">@bks2 </span> New Faqs</span>
+
+                        </div>
+                    </div>
+                    <div class="details">
+                        <div class="number">
+
+                            <span data-counter="counterup" data-value="@faq">@faq <span style="font-size: 25px;">FAQs </span></span>
+                        </div>
+
+                        @*<input hidden id="bg" value="@bks2" />
+                            <span class="bdge">
+                                @if (bks2 == 0)
+                                {
+                                    <a href="/CP/FAQs/" class="nav-link"><span class="bdge">@bks2</span></a>
+                                }
+
+                            </span>*@
+
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="pageHeader" style="width:100%;box-shadow: 1px 3px 4px 3px #dedede;padding: 3%;background: #f3f6f9;">
+            <p style="margin-bottom: -3rem !important;font-size:20px;font-weight: 500;color: #5cbdb6;">Orders for Current Period</p>
+            <a style="float:right;font-size: 15px;margin-top: 2%;font-weight: 500;color: #5cbdb6;" href="/CP/Orders/">more</a>
+
+            @if (last_orders.Count() > 0)
+            {
+<div style="width: 100%;">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th hidden></th>
+                    <th width=3%>#No</th>
+                    <th width=10%>Order No</th>
+                    <th style="width: 188px !important;">SKU/ISBN</th>
+                    <th style="width: 167px !important;" width=11%>Book Title</th>
+                    <th>QTY</th>
+                    <th style="width: 80px !important;">Price</th>
+                    <th>Order Date</th>
+                    <th>Edition</th>
+                    <th>Name</th>
+                    <th>Comments</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @{ var i = 0;}
+                @foreach (var item in last_orders)
+                {
+                    var book = db.book.Where(b => b.isbn13 == item.sku).FirstOrDefault();
+                    i = i + 1;
+<tr>
+    <td hidden></td>
+    <td width=5%>#@i</td>
+    <td>
+        @item.order_number
+    </td>
+    <td>@item.sku</td>
+    <td>@item.product</td>
+    <td>@item.quantity_ordered</td>
+    <td style="width: 80px !important;">$ @item.total_price</td>
+    <td>
+        @*@item.order_date.Value.Month @item.order_date.Value.Day <br>
+                @item.order_date.Value.Year
+            <br />*@
+        @item.order_date.Value.ToString("MM/dd/yyyy")
+    </td>
+    <td>@(book != null ? book.version : "")</td>
+    <td>@item.Name</td>
+    <td>@item.comments</td>
+</tr>}
+            </tbody>
+        </table>
+    </div>
+</div> }
+else
+{
+<div class="alert alert-info col-md-12">
+    There is no data to display
+
+</div>}
+        </div>
+        <br />
+        <div class="pageHeader" style="width:100%;box-shadow: 1px 3px 4px 3px #dedede;padding: 3%;background: #f3f6f9;">
+            <p style="margin-bottom: -3rem !important;font-size:20px;font-weight: 500;color: #5cbdb6;">Last Books</p>
+            <a style="float:right;font-size: 15px;margin-top: 2%;font-weight: 500;color: #5cbdb6;" href="/CP/Books/">more</a>
+
+            @if (last_books.Count() > 0)
+            {
+<div style="width: 100%;">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th hidden></th>
+                    <th width=5%>#No</th>
+                    <th width=13%>Book Image</th>
+                    <th width=15%>SKU/ISBN</th>
+                    <th width=15%>Book Title</th>
+                    <th>Author Name</th>
+                    <th>PUB Date</th>
+                    <th>Genre</th>
+                    <th>Version</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @{ var i = 0;}
+                @foreach (var item in last_books)
+                {
+                    string auther = "";
+                    var athr = db.authers.Where(r => r.id == item.auther_id && r.is_delete == false).FirstOrDefault();
+                    if (athr != null)
+                    {
+                        auther = athr.name;
+                    }
+                    i = i + 1;
+<tr>
+    <td hidden></td>
+    <td width=5%>#@i</td>
+    <td>
+        <div class="bookImg"><img style="width: 73% !important;" src=@(String.IsNullOrEmpty(item.image)? "/Content/assets_cp/images/uploadImage.png":url2+item.image) alt="@item.title"></div>
+    </td>
+    <td>@item.isbn13</td>
+    <td>@item.title</td>
+    <td>@auther</td>
+    <td>@(!String.IsNullOrEmpty(item.date_finished_books_received) ? Convert.ToDateTime(item.date_finished_books_received).ToString("MM/dd/yyyy") : "")</td>
+    <td>@item.Genre</td>
+    <td>@item.version</td>
+
+</tr>}
+            </tbody>
+        </table>
+    </div>
+</div> }
+else
+{
+<div class="alert alert-info col-md-12">
+    There is no data to display
+
+</div>}
+        </div>
+
+        <br />
+        <div class="pageHeader" style="width:100%;box-shadow: 1px 3px 4px 3px #dedede;padding: 3%;background: #f3f6f9;">
+            <p style="margin-bottom: -3rem !important;font-size:20px;font-weight: 500;color: #5cbdb6;">Last Authors</p>
+            <a style="float:right;font-size: 15px;margin-top: 2%;font-weight: 500;color: #5cbdb6;" href="/CP/Authers/">more</a>
+
+            @if (last_users.Count() > 0)
+            {
+
+<div style="width:100%;">
+
+    <div class="table-responsive ">
+        <table class="table">
+            <thead>
+                <tr>
+                    @*<th hidden style="display: none;"></th>*@
+                    <th width="5%" style="text-align: left;">#No</th>
+                    @*<td width="5%" hidden style="display: none;"></td>*@
+                    <th width="18%">Author Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th width="17%">Address</th>
+                    <th width="10%">Country</th>
+                    <th class="numOfBook">No. of Books</th>
+                    @*<th style="width: 9% !important;">generate</th>*@
+
+                </tr>
+            </thead>
+            <tbody>
+                @{ var i = 0;}
+                @foreach (var item in last_users)
+                {
+                    var bks = db.book.Where(b => b.auther_id == item.id && b.is_delete == false).Count();
+                    i = i + 1;
+<tr>
+
+    <td width="5%">#@i</td>
+    <td id="iid" hidden>@item.id</td>
+    @*<td width="5%"><input style="width: 160% !important;" name="mycheckbox" class="form-control" type="checkbox" data-row="@item.id" id="chk"/></td>*@
+    <td class="clearfix">
+        <a href="/CP/Authers/Preview/@item.id">
+            <h4 style="display: table !important;">@item.name</h4>
+        </a>
+    </td>
+    <td class="emailTable"><a href="/CP/Authers/Preview/@item.id">@item.email</a></td>
+    <td>@item.phone</td>
+    <td width="17%" style="word-break:break-all;">
+        @item.address
+    </td>
+    <td width="10%">@(item.country != null ? item.country.country_en_name : "")</td>
+    <td class="numberTable" style="text-align: center;"><a href="/CP/Books/BookAuthers/@item.id">@bks</a></td>
+    @*<td>
+            <a id="my_modal" style="text-align: center;margin-right: 3px !important;width: 140px !important;height: 35px !important;line-height: 21px !important;" href="/CP/Authers/generate/@item.id" class="btn generateBtn btnMargin">Earning Statement</a>
+
+        </td>*@
+    @*<td width=3% class="settingsSec1" style="cursor: pointer;">
+            <i class="fa fa-download"></i>
+            <div class="settingBox1">
+                <ul>
+                    <li>
+                        <a onClick="fnExcelReport('html_table');"><i class="fa fa-eye"></i>Spreadsheet for accounting</a>
+                    </li>
+                    <li>
+                        <a href="/CP/Authers/Pdf/@item.id"><i class="fa fa-pencil"></i>Document of statements</a>
+                    </li>
+                    <li>
+                        <a href="/CP/Authers/Email/@item.id" class="Confirm"> <i class="fa fa-trash"></i> Email statements to author</a>
+                    </li>
+
+
+                </ul>
+            </div>
+        </td>*@
+
+</tr>}
+
+            </tbody>
+        </table>
+    </div>
+</div> }
+else
+{
+<div class="alert alert-info col-md-12">
+    There is no data to display
+
+</div>}
+        </div>
+
+
+
+        <br />
+        <div class="pageHeader" style="width:100%;box-shadow: 1px 3px 4px 3px #dedede;padding: 3%;background: #f3f6f9;">
+            <p style="margin-bottom: -3rem !important;font-size:20px;font-weight: 500;color: #5cbdb6;">Last FAQs</p>
+            <a style="float:right;font-size: 15px;margin-top: 2%;font-weight: 500;color: #5cbdb6;" href="/CP/FAQs/">more</a>
+
+            @if (last_faqs.Count() > 0)
+            {
+<div style="width:100%;">
+    <div class="table-responsive">
+        <table class="table dataTable">
+            <thead>
+                <tr>
+                    <th hidden></th>
+                    <th width="5%">#No</th>
+                    <th width="18%">Question Owner</th>
+                    <th width="18%">Question</th>
+                    <th width="18%">Answer</th>
+                    <th width="18%">Public/Private</th>
+                    <th width="18%">Activation</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ var i = 0;}
+                @foreach (var item in last_faqs)
+                {
+                    var nam = "Admin";
+                    if (item.auther_id != null || item.auther_id != 0)
+                    {
+                        var auth = db.authers.Where(u => u.id == item.auther_id).FirstOrDefault();
+                        if (auth != null)
+                        {
+                            nam = auth.name;
+                        }
+
+                    }
+                    i = i + 1;
+<tr style="height: 67px !important;box-shadow: 0.47px 2.69px 10px rgba(119, 119, 119, .1);background:#fff;">
+    <td hidden></td>
+    <td hidden><input type="text" class="id" value="@item.id" /></td>
+    <td width="5%">#@i</td>
+    <td>@nam</td>
+    <td><a href="/CP/FAQs/Edit/@item.id">@item.question</a></td>
+    <td style="width: 32%;">@item.answer</td>
+    <td>
+        @item.is_public
+
+    </td>
+    <td>
+        @item.active
+        @*<label class="switch">
+                <input type="checkbox" class="activ" checked="@item.active" />
+                <span class="slider round"></span>
+            </label>*@
+    </td>
+
+
+    @*@(item.active == false ? "active" : "not active")</td>*@
+    @*@if (item.active == false)
+        {
+            <td>
+                <a title="Activate" class="btn btn-xs btn-warning"
+                   href="/CP/FAQs/Active/@item.id">
+                    activate
+                </a>
+
+            </td>
+        }
+        else
+        {
+            <td>
+                <a title="Deactivate" class="btn btn-xs btn-success"
+                   href="/CP/FAQs/Active/@item.id">
+                    deactivate
+
+                </a>
+
+            </td>
+        }*@
+
+
+</tr>}
+
+            </tbody>
+        </table>
+    </div>
+</div> }
+else
+{
+<div class="alert alert-info col-md-12">
+    There is no data to display
+
+</div>}
+        </div>
+
+
+
+    </div>
+</div>
+@*<script src="/Content/jquery.min.js" type="text/javascript"></script>
+    <script src="/Content/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/Content/js.cookie.min.js" type="text/javascript"></script>
+    <script src="/Content/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="/Content/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="/COntent/bootstrap-switch.min.js" type="text/javascript"></script>*@
+
+@*<script type="text/javascript" src="~/Content/select2/select2.min.js"></script>*@
+@*<script src="/Content/bootstrap-multiselect/js/bootstrap-multiselect.js" type="text/javascript"></script>*@
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN THEME GLOBAL SCRIPTS -->
+@*<script src="/Content/app.min.js" type="text/javascript"></script>*@
+<!-- END THEME GLOBAL SCRIPTS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+@*<script src="/Content/components-bootstrap-multiselect.min.js" type="text/javascript"></script>*@
+@*<script src="/Content/jquery.min.js" type="text/javascript"></script>
+    <script src="~/Content/chosen.js"></script>
+    <script>
+        $("select.chosen-select").chosen({
+            height: "55px",
+
+        });
+
+        $(document).ready(function () {
+
+
+            //alert("");
+            //$(".statesSelect").select2();
+        });
+    </script>*@

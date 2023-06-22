@@ -1,0 +1,1193 @@
+﻿
+@{ ViewBag.Title = "bookDetailes";
+    Layout = "~/Areas/CP/Views/Shared/_Layout_Web.cshtml";
+    //var bs = ViewBag.books as IEnumerable<dorranceCP.Models.Orders>;
+    var all_orders = ViewBag.all_orders as List<dorranceCP.Models.Orders>;
+
+    var fq = ViewBag.faq as IEnumerable<dorranceCP.Models.FAQs>;
+    var bs2 = ViewBag.booksO as IEnumerable<dorranceCP.Models.book>;
+    var ur = ViewBag.url;
+    var bkdet = ViewBag.bkdet as dorranceCP.Models.Orders;
+    var earn = ViewBag.earn as IEnumerable<dorranceCP.Models.Earnings>;
+    var all_earning = ViewBag.all_earning as IEnumerable<dorranceCP.Models.Earnings>;
+    var not = ViewBag.not as IEnumerable<dorranceCP.Models.Notifications>;
+    var ord = ViewBag.ord as IEnumerable<dorranceCP.Models.Orders>;
+    string sk = (ViewBag.sku != null ? ViewBag.sku : "");
+    int order_num = (ViewBag.bid != null ? ViewBag.bid : 0);
+    int id = ViewBag.id;
+    DateTime dt = DateTime.UtcNow;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+    //List<dorrance.Classes.earn> earn2 = ViewBag.newobj as List<dorrance.Classes.earn>;
+    double total_current = (ViewBag.total_current != null ? ViewBag.total_current : 0);
+    double total_last = (ViewBag.total_last != null ? ViewBag.total_last : 0);
+
+    string crr1 = ViewBag.crr1;
+    string crr2 = ViewBag.crr2;
+    string ls1 = ViewBag.ls1;
+    string ls2 = ViewBag.ls2;
+    string p1c = ViewBag.p1;
+    string p2s = ViewBag.p2;
+
+    var earn2 = ViewBag.earn2 as List<dorranceCP.Classes.earn>;
+    var earn3 = ViewBag.earn3 as List<dorranceCP.Classes.earn>;
+    int cn = (ViewBag.cn != null ? ViewBag.cn : 0);
+    int yy1 = (ViewBag.yy1 != null ? ViewBag.yy1 : 0);
+    int yy2 = (ViewBag.yy2 != null ? ViewBag.yy2 : 0);
+    int yy3 = (ViewBag.yy3 != null ? ViewBag.yy3 : 0);
+    int yy4 = (ViewBag.yy4 != null ? ViewBag.yy4 : 0);
+    int yy6 = (ViewBag.yy6 != null ? ViewBag.yy6 : 0);
+    int yy7 = (ViewBag.yy7 != null ? ViewBag.yy7 : 0);
+
+    var datef = Convert.ToDateTime(yy4 + "-" + ls1);
+    var datet = Convert.ToDateTime(yy3 + "-" + ls2);
+    var pp = db.BookTotalForPeriod.AsNoTracking().Where(w => w.is_reset == false && w.sku == sk && w.from_date >= datef && w.to_date <= datet).ToList();
+    double tt = 0;
+    foreach (var m in pp)
+    {
+        tt = tt + Convert.ToDouble(m.total_earnings);
+    } }
+<style>
+    .hidden {
+        display: none;
+    }
+
+    header {
+        height: 74px;
+    }
+
+    .st_hvr:hover {
+        background: #f8f9fa;
+        margin-top: 15px;
+        box-shadow: 1px 2px 0px #aaaaaa;
+        cursor: pointer;
+    }
+
+    span, p {
+        color: #a4a3a3;
+        font-weight: 600;
+    }
+</style>
+<header>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 gol">
+                <div class="leftSide">
+                    <div class="homeLogo">
+                        <a><img src="~/Content/logo_d3.png" class="logScr" style="margin-left: 12% !important;width: 73%" alt=""></a>
+                    </div>
+                    <input hidden value="@ViewBag.sku" id="sk" />
+
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 gol2">
+                <div class="clearfix">
+                    <div class="rightSide" style="width: 100%;">
+                        <div class="dd">
+                            <a title="Home" style="border-left: 1px solid #D8D8D8;display: inline-block;padding: 0 25px;padding-top: 5%;height: 73px;float: left;">
+                                @*<div class="blackCircle" style="background-color:unset !important"><img src="~/Content/2.png" /></div>*@
+                                <i style="font-size: 1.5em;color: #76c8c3;" class="fa fa-home"></i>
+                            </a>
+                        </div>
+                        <div class="stt2 statScr" style="border-left: 1px solid #D8D8D8;display: inline-block;padding: 0 25px;padding-top: 5%;height: 73px;float: left;">
+                            <a title="Orders Statistic">
+                                @*class="stt2"*@
+                                <div style="background-color:unset !important;width: 20px;height: 20px;border-radius: 50%;margin: 0 auto;"><img src="~/Content/1.png" /></div>
+                            </a>
+                        </div>
+                        <div class="fAQ" style="padding-top: 5%;">
+                            <a class="FaqRefresh" title="Frequently Asked Questions">
+                                <div class="blackCircle" style="background-color:unset !important"><img src="~/Content/3.png" /></div>
+                            </a>
+                        </div>
+                        @if (cn > 0)
+                        {
+            <div class="notification" title="Notifications" style="padding: 41px 25px ;padding-top: 3% !important;">
+
+                <a href="#">
+                    <div class="blackCircle" style="background-color:unset !important">
+
+                        <span id="sp" style="float: right;">@cn</span>
+
+                        <img src="~/Content/2.png" />
+                    </div>
+                    @*<i class="fa fa-bell"></i>*@
+                </a>
+            </div> }
+        else
+        {
+<div class="notification" title="Notifications" style="padding: 41px 25px ;padding-top: 5% !important;">
+
+    <a href="#">
+        <div class="blackCircle" style="background-color:unset !important">
+
+            <img src="~/Content/2.png" />
+        </div>
+        @*<i class="fa fa-bell"></i>*@
+    </a>
+</div>}
+                        <div class="personalInfo" style="padding-top: 5% !important;">
+                            <div class="personaImg">
+                                <img style="height: 100% !important;width: unset !important;" src=@(String.IsNullOrEmpty(ViewBag.image) || ViewBag.image == "http://cp.dorrancepublishing.com/Content/Images/Original/" ? "/Content/book.png" : "http://cp.dorrancepublishing.com/Content/Images/Original/"+ViewBag.image) alt="">
+                            </div>
+                            <h5 class="personName">@ViewBag.name</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-12  d-lg-none d-md-none d-block">
+                    <div class="subscribe">
+                        <input type="email" class="form-control subscribeinput" placeholder="email">
+                        <a href="#" class="subBtn btn"> subscribe</a>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+</header>
+
+<section class="content bookDetailsSec">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="booksCont col-md-5 col-12">
+                <div class="row">
+
+                    @{ if (bs2 != null)
+                        {
+                            foreach (var b in bs2)
+                            {
+            <div class="col-lg-6 col-md-12 col-12">
+                <a href="/CP/Authers/bookDetailes2?authid=@id&sku=@b.isbn13">
+                    <div class=bookBox @(b.id == ViewBag.bid ? "active" : "")>
+                        <div class="bookImg">
+                            @{ var img = "";
+                                var exst2 = db.book.AsNoTracking().Where(w => w.isbn13 == b.isbn13 && w.is_delete == false).FirstOrDefault();
+                                if (exst2 != null)
+                                {
+                                    img = exst2.image;
+                                } }
+                            <img src=@(String.IsNullOrEmpty(exst2.image) ? "/Content/book.png" : "http://cp.dorrancepublishing.com/Content/Images/Original/"+img) alt="@b.title">
+                        </div>
+                        <div class="bookDetails">
+                            @*<a href="/Home/bookDetailes/@b.id">*@
+                            <h6>Title : @exst2.title</h6>
+                            @*<p>Order ID  @b.order_number</p>*@
+                            @{ var ord2 = db.Orders.Where(sk2 => sk2.sku == b.isbn13 && sk2.auther_id == id && sk2.is_delete == false).ToList();
+                                double p = 0;
+                                if (ord2.Count() > 0)
+                                {
+                                    foreach (var rd in ord2)
+                                    {
+                                        var earn_order = rd.local_sort_text1;
+                                        var earn_book = b.earnings_scheme;
+                                        var sc1 = db.scheme_1.AsNoTracking().Where(s1 => s1.text.Contains(earn_order)).FirstOrDefault();
+                                        var sc1_id = 0;
+                                        if (sc1 != null)
+                                        {
+                                            sc1_id = sc1.id;
+                                        }
+                                        var sc2 = db.scheme_2.AsNoTracking().Where(s2 => s2.text.Contains(earn_book)).FirstOrDefault();
+                                        var sc2_id = 0;
+                                        if (sc2 != null)
+                                        {
+                                            sc2_id = sc2.id;
+                                        }
+                                        //var sc1_list = db.scheme_1.ToList();
+                                        //var order_period = c.order_date.Value.Month;
+                                        //var current_period = dt.Month;
+
+
+                                        //foreach (var f in sc1_list)
+                                        //{
+                                        var earning_ratio = all_earning.Where(er => er.id_scheme_1 == sc1_id && er.id_scheme_2 == sc2_id && er.sku == rd.sku).FirstOrDefault();
+                                        double v = 0;
+                                        if (earning_ratio != null)
+                                        {
+                                            v = Convert.ToDouble((earning_ratio.value / 100) * rd.total_price);
+                                        }
+                                        p = p + v;
+                                    }
+
+                                }
+                                //double valp = 0;
+                                //var lastp = db.GetLastTotalForBook(b.isbn13, 0).FirstOrDefault();
+                                //if (lastp != null)
+                                //{
+                                //    valp = (lastp.Value != null ? lastp.Value : 0);
+                                //}
+                                //double valc = 0;
+                                //var currp = db.GetLastTotalForBook(b.isbn13, 1).FirstOrDefault();
+                                //if (currp != null)
+                                //{
+                                //    valc = (currp.Value != null ? currp.Value : 0);
+                                //} 
+
+                                }
+
+                            @*<p>Aggregate Earnings $@((valc + valp).ToString("0.00"))</p>*@
+                            <p>Aggregate Earnings $@((p).ToString("0.00"))</p>
+                            <p>ISBN : @b.isbn13</p>
+                            <p>@ord2.Count() Orders</p>
+                        </div>
+                    </div>
+                </a>
+            </div> }
+    }
+    else
+    {
+<div style="color: #000;font-weight: bold;">There is no data to display</div> } }
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 col-12">
+                        <div class="bookDetailsBox" style="padding: 27px 12px !important;">
+                            <h6 class="text-center" style="color: #000000;">Book Details</h6>
+                            @if (!String.IsNullOrEmpty(sk))
+                            {
+                <div class="bookImg">
+                    @{ var img3 = "";
+                        var exst3 = db.book.AsNoTracking().Where(w => w.isbn13 == sk && w.is_delete == false).FirstOrDefault();
+                        if (exst3 != null)
+                        {
+                            img3 = ur + "" + exst3.image;
+                        } }
+                    <img style="border: groove;" src=@(String.IsNullOrEmpty(exst3.image) ? "/Content/book.png" : img3) alt="">
+                </div>
+                <div class="bookDetails" style="width: 55% !important;">
+                    <a href="#">
+                        <h6>@exst3.title</h6>
+                    </a>
+                    <span>ISBN : @sk</span><br />
+                    <span style="font-weight:bolder;color:#000;">
+                        Earnings For Current Period:
+                    </span><br />
+                    <span>
+                        <span style="font-weight:bolder;">From : </span>@crr1 @yy1  <br />
+                        <span style="font-weight:bolder;"> To :</span> @crr2 @yy2
+                    </span>
+                    <br /><span style="font-weight: bolder;color: #000;font-size: 13px;"> Payable on:</span> <span style="color: #828080;">@p1c @yy6</span><br />
+                    <span style="color: #5BBDB7;">Total : $ @total_current.ToString("0.00")</span>
+                    <br />
+                    <span style="margin-left: 0 !important;font-weight:bolder;color:#000;">Earnings For Last Period:</span><br />
+                    <span>
+                        <span style="font-weight:bolder;">From : </span>@ls1 @yy4 <br />
+                        <span style="font-weight:bolder;"> To :</span> @ls2 @yy3
+                    </span>
+                    <br /><span style="font-weight: bolder;color: #000;font-size: 13px;"> Payable on:</span> <span style="color: #828080;">@p2s @yy7</span><br />
+                    @*<span style="color: #5BBDB7;">Total : $ @tt.ToString("0.00")</span>*@
+                    <span style="color: #5BBDB7;">Total : $ @total_last.ToString("0.00")</span>
+                    @*<p>@bkdet.total_price $</p>*@
+                </div>
+                                                <div class="clearfix"></div>
+                                                                <div class="bookProfileDetails">
+                                                                    <h6>
+                                                                        Earnings Details For Current Period:
+                                                                    </h6>
+                                                                    @{ //var ss = db.scheme_1.ToList();
+                                                                        if (earn2.Count > 0)
+                                                                        {
+                                                                            //var valueObject = earn2.FirstOrDefault(x => x.value > 0);
+                                                                            //var valueObject2 = earn3.FirstOrDefault(x => x.value > 0);
+
+                                                                            foreach (var e in earn2.Where(z => z.sku == sk).ToList())
+                                                                            {
+                                                                                 <p> @e.text <span>$ @e.value </span></p> 
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    @*else
+                                                                        {
+                                                                            foreach (var e2 in ss)
+                                                                            {
+                                                                                <p>@e2.text <span>$ 0</span></p>
+
+                                                                            }
+                                                                        }*@
+
+                                                                </div> }
+                                                            else
+                                                            {
+                                                <div style="padding: 8%;color: #787779;">There is no data</div>}
+                            @*<button class="btn confirmPass bookDetailsBtn"> See Detailed Statistics </button>*@
+                        </div>
+                    </div>
+                    @*<div id="rr2">@Html.Partial("stat")</div>*@
+
+                    <div class="col-lg-6 col-md-12 col-12 ala">
+                        <div class="bookDetailsBox" id="tblData" style="overflow-y: scroll;padding: 27px 5px !important;">
+                            @*<div>
+                                    <h6 class="text-center" style="color:#000 !important;">Orders for Current Period  <a id="allord" class="text-right" style="cursor:pointer;color: #69c8c2 !important;float: right;padding: 1%;font-weight: 550;" title="All Orders"><i class="fa fa-list"></i></a></h6>
+                                </div>*@
+
+                            <div style="text-align: center;">
+                                <h6 class="text-center" style="color:#000 !important;">
+                                    Orders for Current Period
+
+                                    <br><br>
+                                    <a class="text-right cord" style="border-bottom: 3px solid #5bbdb7;cursor:pointer;color: #69c8c2 !important;padding: 1%;font-weight: 550;" title="Orders for Current Period">
+                                        Orders for Current Period
+                                    </a>
+                                    <a class="text-right allord" style="cursor:pointer;color: #69c8c2 !important;padding: 1%;font-weight: 550;" title="All Orders">
+                                        All Orders
+                                    </a>
+                                </h6>
+                            </div>
+
+                            @*<input id="tf" type="date" class="fromTo" style="padding: 2px !important;border-radius: 7px !important;" placeholder="From" name="from">
+                                <input id="ft" type="date" class="fromTo" style="padding: 2px !important;border-radius: 7px !important;" placeholder="To" name="to">*@
+                            @*//@Html.Partial("~/Views/Shared/stat.cshtml")*@
+                            @*<div id="rr2">@Html.Partial("stat")</div>*@
+                            @{ try
+                                {
+
+                                    //var cr1 = @crr1;
+                                    //var cr2 = @crr2;
+                                    var lst = new List<dorranceCP.Models.Orders>();
+                                    int y = dt.Year;
+                                    int y1 = dt.Year - 1;
+                                    //var current_orders = db.Orders.Where(x => x.is_delete == false && x.auther_id == id && x.sku == sk && (x.order_date.Value.Month > 4 && x.order_date.Value.Month < 11) && (x.order_date.Value.Year == y)).OrderByDescending(x => x.id).OrderByDescending(x => x.order_date).ToList();
+                                    var current_orders = all_orders.Where(x => x.is_delete == false && x.sku == sk && x.auther_id == id && ((x.order_date.Value.Month > 4 && x.order_date.Value.Month < 11) && (x.order_date.Value.Year == y))).OrderByDescending(x => x.id).ToList();
+
+                                    //var last_orders = db.Orders.Where(x => x.is_delete == false && x.sku == sk && x.auther_id == id && ((x.order_date.Value.Month < 5 && x.order_date.Value.Month > 0 && x.order_date.Value.Year == y+1) || (x.order_date.Value.Month > 10 && x.order_date.Value.Month <= 12 && x.order_date.Value.Year == y))).OrderByDescending(x => x.order_date).ToList();
+                                    var last_orders = all_orders.Where(x => x.is_delete == false && x.auther_id == id && x.sku == sk).OrderByDescending(x => x.id).ToList();
+                                    if ((dt.Month > 10 && dt.Month <= 12) || dt.Month < 5)
+                                    {
+                                        if ((dt.Month > 10 && dt.Month <= 12))
+                                        {
+                                            last_orders = all_orders.Where(x3 => x3.is_delete == false && x3.auther_id == id && x3.sku == sk && ((x3.order_date.Value.Month < 5 && x3.order_date.Value.Month > 0 && (x3.order_date.Value.Year == y + 1)) || (x3.order_date.Value.Month > 10 && x3.order_date.Value.Month <= 12 && (x3.order_date.Value.Year == y)))).OrderByDescending(x2 => x2.order_date).ToList();
+
+                                            //y = dt.Year;
+                                            //last_orders = db.Orders.Where(x2 => x2.is_delete == false && x2.auther_id == authid && x2.sku == s && (((x2.order_date.Value.Month > 4 && x2.order_date.Value.Month < 11) && (x2.order_date.Value.Year == y)) || ((x2.order_date.Value.Month > 4 && x2.order_date.Value.Month < 11) && (x2.order_date.Value.Year == y)))).OrderByDescending(x2 => x2.id).ToList();
+                                        }
+                                        if (dt.Month < 5)
+                                        {
+                                            last_orders = all_orders.Where(x3 => x3.is_delete == false && x3.auther_id == id && x3.sku == sk && ((x3.order_date.Value.Month < 5 && x3.order_date.Value.Month > 0 && (x3.order_date.Value.Year == y)) || (x3.order_date.Value.Month > 10 && x3.order_date.Value.Month <= 12 && (x3.order_date.Value.Year == y1)))).OrderByDescending(x2 => x2.order_date).ToList();
+                                            //y = dt.Year - 1;
+                                            //last_orders = db.Orders.Where(x2 => x2.is_delete == false && x2.auther_id == c && (x2.order_date.Value.Month > 4 && x2.order_date.Value.Month < 11) && (x2.order_date.Value.Year == y)).OrderByDescending(x2 => x2.id).ToList();
+                                        }
+                                    }
+
+                                    if (dt.Month > 4 && dt.Month < 11)
+                                    {
+                                        lst = current_orders;
+                                    }
+                                    else
+                                    {
+                                        lst = last_orders;
+                                    }
+                                    if (lst.Count() > 0)
+                                    {
+                                        double p2 = 0;
+                                        //double v = 0;
+                                        foreach (var o in lst)
+                                        {
+
+                    <a data-id="@o.id" href="javascript:void(0);" class="showOrder">
+
+                        <div class="notifyItemBox StatisticsItem st_hvr" style="padding: 19px 12px !important;">
+                            <div class="Date" style="margin-right: 9px !important;">
+                                @o.order_date.Value.Month @o.order_date.Value.Day <br>
+                                @o.order_date.Value.Year
+                            </div>
+                            <div class="StatisticsDetails" style="margin-right: 9px !important;width: 24% !important;font-size: 13px;">
+                                <p style="color: #408de1;">ID:@o.order_number</p>
+                                <p>@o.local_sort_text1</p>
+                            </div>
+                            <div class="city" style="margin-right: 9px !important;">
+                                <p>Qty</p>
+                                <p>@o.quantity_ordered</p>
+                            </div>
+                            @{ var bo = db.book.AsNoTracking().Where(e => e.isbn13 == o.sku && e.auther_id == id).FirstOrDefault();
+
+                                //var ord = db.Orders.Where(sk => sk.sku == n.sku).FirstOrDefault();
+                                //var this_book = db.book.Where(bs1 => bs1.isbn13 == b.sku).FirstOrDefault();
+                                var earn_order = o.local_sort_text1;
+                                var earn_book = bo.earnings_scheme;
+                                var sc1 = db.scheme_1.AsNoTracking().Where(s1 => s1.text.Contains(earn_order)).FirstOrDefault();
+                                var sc1_id = 0;
+                                if (sc1 != null)
+                                {
+                                    sc1_id = sc1.id;
+                                }
+                                var sc2 = db.scheme_2.AsNoTracking().Where(s2 => s2.text.Contains(earn_book)).FirstOrDefault();
+                                var sc2_id = 0;
+                                if (sc2 != null)
+                                {
+                                    sc2_id = sc2.id;
+                                }
+                                //var sc1_list = db.scheme_1.ToList();
+                                //var order_period = c.order_date.Value.Month;
+                                //var current_period = dt.Month;
+
+                                //foreach (var f in sc1_list)
+                                //{
+                                var earning_ratio = all_earning.Where(er => er.id_scheme_1 == sc1_id && er.id_scheme_2 == sc2_id && er.sku == o.sku).FirstOrDefault();
+                                double v = 0;
+
+                                if (earning_ratio != null)
+                                {
+                                    v = Convert.ToDouble((earning_ratio.value / 100) * o.total_price);
+                                }
+                                else
+                                {
+                                    v = 0;
+                                }
+                                //p = p + v;
+
+        <div class="price" style="margin-right: 0 !important;">
+            <p>Earnings</p>
+            <p>$@v.ToString("0.00")</p>
+        </div>
+                                <div class="price" style="text-align: right !important;">
+                                    <a data-id="@o.id" href="javascript:void(0);" class="showOrder">
+                                        <p><i class="fa fa-info-circle" style="font-size: 1.5em !important;"></i></p>
+                                    </a>
+                                </div> }
+
+
+                        </div>
+
+                    </a> }
+            }
+            else
+            {
+<div style="padding: 8%;color: #787779;">No Orders</div> }
+}
+catch
+{
+
+} }
+
+                            @*<div id="paged">
+
+                                </div>*@
+
+                            @*@{
+                                if (ord != null) {
+                                    foreach (var o in ord)
+                                    {
+                                <div class="notifyItemBox StatisticsItem">
+                                    <div class="Date">
+                                        @o.date.Value.Day @o.date.Value.Month <br>
+                                        @o.date.Value.Year
+                                    </div>
+                                    <div class="StatisticsDetails">
+                                        <h6>@o.product</h6>
+                                        <p>@o.EarningRatio</p>
+                                    </div>
+                                    <div class="city">
+                                        <p>Qty</p>
+                                        <p>@o.quantity_ordered</p>
+                                    </div>
+                                    <div class="price">
+                                        <p>profit</p>
+                                        <p>@o.total_price$</p>
+                                    </div>
+                                </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                    <div style="padding: 8%;color: #787779;">No Orders</div>
+                                    }
+                                }*@
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-12 col-12 aorders hidden">
+                        <div class="bookDetailsBox" id="tblData" style="overflow-y: scroll;padding: 27px 5px !important;">
+                            @*<div>
+                                    <h6 class="text-center" style="color:#000 !important;">All Orders  <a id="cord" class="text-right" style="cursor:pointer;color: #69c8c2 !important;float: right;padding: 1%;font-weight: 550;" title="Orders for Current Period"><i class="fa fa-list"></i></a></h6>
+                                </div>*@
+
+                            <div style="text-align: center;">
+                                <h6 class="text-center" style="color:#000 !important;">
+                                    All Orders
+
+                                    <br><br>
+                                    <a class="text-right cord" style="cursor:pointer;color: #69c8c2 !important;padding: 1%;font-weight: 550;" title="Orders for Current Period">
+                                        Orders for Current Period
+                                    </a>
+                                    <a class="text-right allord" style="border-bottom: 3px solid #5bbdb7;cursor:pointer;color: #69c8c2 !important;padding: 1%;font-weight: 550;" title="All Orders">
+                                        All Orders
+                                    </a>
+                                </h6>
+                            </div>
+                            @*<input id="tf" type="date" class="fromTo" style="padding: 2px !important;border-radius: 7px !important;" placeholder="From" name="from">
+                                <input id="ft" type="date" class="fromTo" style="padding: 2px !important;border-radius: 7px !important;" placeholder="To" name="to">*@
+                            @*//@Html.Partial("~/Views/Shared/stat.cshtml")*@
+                            @*<div id="rr2">@Html.Partial("stat")</div>*@
+                            @{ try
+                                {
+                                    //var cr1 = @crr1;
+                                    //var cr2 = @crr2;
+                                    var lst = new List<dorranceCP.Models.Orders>();
+
+                                    var allorders = all_orders.Where(x => x.is_delete == false && x.auther_id == id && x.sku == sk).OrderByDescending(x => x.id).OrderByDescending(x => x.order_date).ToList();
+
+                                    if (allorders.Count() > 0)
+                                    {
+                                        double p2 = 0;
+                                        double v = 0;
+                                        foreach (var o in allorders)
+                                        {
+
+                    <a data-id="@o.id" href="javascript:void(0);" class="showOrder">
+
+                        <div class="notifyItemBox StatisticsItem st_hvr" style="padding: 19px 12px !important;">
+                            <div class="Date" style="margin-right: 9px !important;">
+                                @o.order_date.Value.Month @o.order_date.Value.Day <br>
+                                @o.order_date.Value.Year
+                            </div>
+                            <div class="StatisticsDetails" style="margin-right: 9px !important;width: 24% !important;font-size: 13px;">
+                                <p style="color: #408de1;">ID:@o.order_number</p>
+                                <p>@o.local_sort_text1</p>
+                            </div>
+                            <div class="city" style="margin-right: 9px !important;">
+                                <p>Qty</p>
+                                <p>@o.quantity_ordered</p>
+                            </div>
+                            @{ var bo = db.book.AsNoTracking().Where(e => e.isbn13 == o.sku && e.auther_id == id).FirstOrDefault();
+
+                                //var ord = db.Orders.Where(sk => sk.sku == n.sku).FirstOrDefault();
+                                //var this_book = db.book.Where(bs1 => bs1.isbn13 == b.sku).FirstOrDefault();
+                                var earn_order = o.local_sort_text1;
+                                var earn_book = bo.earnings_scheme;
+                                var sc1 = db.scheme_1.AsNoTracking().Where(s1 => s1.text.Contains(earn_order)).FirstOrDefault();
+                                var sc1_id = 0;
+                                if (sc1 != null)
+                                {
+                                    sc1_id = sc1.id;
+                                }
+                                var sc2 = db.scheme_2.AsNoTracking().Where(s2 => s2.text.Contains(earn_book)).FirstOrDefault();
+                                var sc2_id = 0;
+                                if (sc2 != null)
+                                {
+                                    sc2_id = sc2.id;
+                                }
+                                //var sc1_list = db.scheme_1.ToList();
+                                //var order_period = c.order_date.Value.Month;
+                                //var current_period = dt.Month;
+
+                                //foreach (var f in sc1_list)
+                                //{
+                                var earning_ratio = all_earning.Where(er => er.id_scheme_1 == sc1_id && er.id_scheme_2 == sc2_id && er.sku == o.sku).FirstOrDefault();
+                                //double v = 0;
+                                if (earning_ratio != null)
+                                {
+                                    v = Convert.ToDouble((earning_ratio.value / 100) * o.total_price);
+                                }
+                                else
+                                {
+                                    v = 0;
+                                }
+                                //p = p + v;
+
+        <div class="price" style="margin-right: 0 !important;">
+            <p>Earnings</p>
+            <p>$@v.ToString("0.00")</p>
+        </div>
+                                <div class="price" style="text-align: right !important;">
+                                    <a data-id="@o.id" href="javascript:void(0);" class="showOrder">
+                                        <p><i class="fa fa-info-circle" style="font-size: 1.5em !important;"></i></p>
+                                    </a>
+                                </div> }
+
+
+                        </div>
+
+                    </a> }
+            }
+            else
+            {
+<div style="padding: 8%;color: #787779;">No Orders</div> }
+}
+catch
+{
+
+} }
+
+                            @*<div id="paged">
+
+                                </div>*@
+
+                            @*@{
+                                if (ord != null) {
+                                    foreach (var o in ord)
+                                    {
+                                <div class="notifyItemBox StatisticsItem">
+                                    <div class="Date">
+                                        @o.date.Value.Day @o.date.Value.Month <br>
+                                        @o.date.Value.Year
+                                    </div>
+                                    <div class="StatisticsDetails">
+                                        <h6>@o.product</h6>
+                                        <p>@o.EarningRatio</p>
+                                    </div>
+                                    <div class="city">
+                                        <p>Qty</p>
+                                        <p>@o.quantity_ordered</p>
+                                    </div>
+                                    <div class="price">
+                                        <p>profit</p>
+                                        <p>@o.total_price$</p>
+                                    </div>
+                                </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                    <div style="padding: 8%;color: #787779;">No Orders</div>
+                                    }
+                                }*@
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+</section>
+
+
+<div class="modal changePassModal" id="changePassModal" tabindex="-1" role="dialog" style="background: #5c5b5b !important;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <h5 class="modal-title"> Update Password</h5>
+            <p>To protect and maintain account security, please add a new password.</p>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="modal-body">
+                <input id="r" style="font-size: 13px;border: none;width: 100%;text-align: center;" />
+                <form action="">
+                    <div class="form-group">
+                        <input type="password" required name="newpass" id="newpass" class="form-control" placeholder="New Password">
+                        <i class="fa fa-eye-slash" style="top: 31% !important;" id="showHide" onclick="myFunction()"></i>
+
+                    </div>
+                    <div class="form-group">
+                        <input type="password" required name="confirm" id="confirm" class="form-control" placeholder="Confirm Password">
+                        <i class="fa fa-eye-slash" id="showHide2" style="top: 55% !important;" onclick="myFunction2()"></i>
+                    </div>
+                    <input id="ok" style="cursor: pointer;" class="btn confirmPass" value="OK">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src='https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.3.min.js'></script>
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js'></script>
+    <script>
+
+        function myFunction() {
+            var x = document.getElementById("newpass");
+            if (x.type == "text") {
+                x.type = "password";
+                $("#showHide").addClass("fa-eye-slash");
+                $("#showHide").removeClass("fa-eye");
+            }
+            else {
+                x.type = "text";
+                $("#showHide").removeClass("fa-eye-slash");
+                $("#showHide").addClass("fa-eye");
+            }
+        }
+
+        function myFunction2() {
+            var x = document.getElementById("confirm");
+            if (x.type == "text") {
+                x.type = "password";
+                $("#showHide2").addClass("fa-eye-slash");
+                $("#showHide2").removeClass("fa-eye");
+            }
+            else {
+                x.type = "text";
+                $("#showHide2").removeClass("fa-eye-slash");
+                $("#showHide2").addClass("fa-eye");
+            }
+        }
+
+        $(document).ready(function () {
+
+            $(".allord").click(function () {
+                //alert("ad");
+                if ($(".ala").hasClass("hidden")) {
+                    $(".ala").removeClass("hidden");
+                    $(".aorders").addClass("hidden");
+
+                } else {
+                    $(".ala").addClass("hidden");
+                    $(".aorders").removeClass("hidden");
+
+                }
+
+            });
+
+            $(".cord").click(function () {
+                //alert("ad");
+                if ($(".ala").hasClass("hidden")) {
+                    $(".ala").removeClass("hidden");
+                    $(".aorders").addClass("hidden");
+
+                } else {
+                    $(".ala").addClass("hidden");
+                    $(".aorders").removeClass("hidden");
+
+                }
+
+            });
+            $(".editProfile").click(function () {
+                //alert("");
+                // debugger;
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                //var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("EditProfile", "Home")",
+                    contentType: "application/json; charset=utf-8",
+                data: { "pid": id },
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    //alert(data);
+                    $('#myModalContent2').html(data);
+                    //$('#myModal').modal(options);
+                    $('#edit').modal('show');
+
+                },
+                error: function () {
+                    alert("Error Occrs.");
+                }
+            });
+        });
+
+            $(".showOrder").click(function () {
+                //alert("");
+                // debugger;
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                //var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("showOrder", "Authers")",
+                    contentType: "application/json; charset=utf-8",
+                data: { "pid": id },
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    //alert(data);
+                    $('#myModalContent3').html(data);
+                    //$('#myModal').modal(options);
+                    $('#orderm').modal('show');
+
+                },
+                error: function () {
+                    alert("Error Occrs.");
+                }
+            });
+        });
+
+
+            $(".FaqRefresh").click(function () {
+                //var id1 = $(this).val();
+                var em = $("#qf").val();
+                //var confirm = $("#confirm").val();
+                //alert(em);
+                $.ajax({
+                    url: "@Url.Action("booksSer", "Home")",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ qf: em }),
+                    success: function (response) {
+                        // alert(response);
+                        //if(respon)
+                        document.getElementById("fagsarch").innerHTML = response;
+
+                    }
+                });
+            });
+            //jQuery(document).ready(function ($) {
+
+            $("#my_form").submit(function (event) {
+                var em = $("#qf").val();
+                //var confirm = $("#confirm").val();
+                //alert(em);
+                $.ajax({
+                    url: "@Url.Action("booksSer", "Home")",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ qf: em }),
+                    success: function (response) {
+                        // alert(response);
+                        //if(respon)
+                        document.getElementById("fagsarch").innerHTML = response;
+
+                    }
+                });
+            });
+
+            $(".shownotify").click(function () {
+                //alert("");
+                // debugger;
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                //var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("NotifyDetails", "Home")",
+                    contentType: "application/json; charset=utf-8",
+                    data: { "nid": id },
+                    datatype: "json",
+                    success: function (data) {
+                        //debugger;
+                        // alert(data);
+                        $('#myModalContent').html(data);
+                        //$('#myModal').modal(options);
+                        $('#myModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Error Occrs.");
+                    }
+                });
+            });
+
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+
+            $(".notx").click(function () {
+                //var id1 = $(this).val();
+                //var em = $("#qf").val();
+                //var confirm = $("#confirm").val();
+                // alert("x");
+                $.ajax({
+                    url: "@Url.Action("UnReadNotifications", "Home")",
+                    type: "Get",
+                contentType: "application/json",
+                success: function (response) {
+                    // alert(response);
+                    //if(respon)
+                    document.getElementById("sp").innerHTML = "0";
+
+                }
+            });
+        });
+
+
+            $("#my_form").submit(function (e) {
+                e.preventDefault();
+            });
+
+            $("#addask").click(function () {
+                //$([document.documentElement, document.body]).animate({
+                //debugger;
+                $("#tarea").focus();
+                $('.FAQDropdown').animate({ scrollTop: $('.FAQDropdown').prop("scrollHeight") }, 500);
+            });
+
+            // GetPageData(1, 10, sk);
+            var skx = $("#sk").val();
+
+
+
+
+            // $("#ft").keypress(function (e) {
+            $("#ft").change(function () {
+                //alert("bb");
+                var from = $("#tf").val();
+                var to = $("#ft").val();
+                var sk = $("#sk").val();
+
+                $.ajax({
+                    url: "@Url.Action("Statistics", "Home")",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ from: from, to: to, sku: sk }),
+                    success: function (response) {
+                        //alert(response);
+                        document.getElementById("rr2").innerHTML = response;
+
+                    }
+                });
+
+            });
+
+            $(".stt").change(function () {
+                //alert("bb");
+                var from = $("#tf").val();
+                var to = $("#ft").val();
+                var sk = $("#sk").val();
+
+                $.ajax({
+                    url: "@Url.Action("Statistics", "Home")",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ from: from, to: to, sku: sk }),
+                    success: function (response) {
+                        //alert(response);
+                        document.getElementById("rr2").innerHTML = response;
+
+                    }
+                });
+
+            });
+
+
+
+
+            $("#tf").change(function () {
+                //alert("bb");
+                var from = $("#tf").val();
+                var to = $("#ft").val();
+                var sk = $("#sk").val();
+
+                $.ajax({
+                    url: "@Url.Action("Statistics", "Home")",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ from: from, to: to, sku: sk }),
+                    success: function (response) {
+                        //alert(response);
+                        document.getElementById("rr2").innerHTML = response;
+
+                    }
+                });
+
+            });
+
+
+            $("#ft").keypress(function (e) {
+                var from = $("#tf").val();
+                var to = $("#ft").val();
+                var sk = $("#sk").val();
+
+                $.ajax({
+                    url: "@Url.Action("Statistics", "Home")",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ from: from, to: to, sku: sk }),
+                    success: function (response) {
+                        //alert(response);
+                        document.getElementById("rr2").innerHTML = response;
+
+                    }
+                });
+
+            });
+
+            $("#tf").keypress(function (e) {
+                var from = $("#tf").val();
+                var to = $("#ft").val();
+                var sk = $("#sk").val();
+
+                $.ajax({
+                    url: "@Url.Action("Statistics", "Home")",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ from: from, to: to, sku: sk }),
+                    success: function (response) {
+                        //alert(response);
+                        document.getElementById("rr2").innerHTML = response;
+
+                    }
+                });
+
+            });
+            $(".bookDetailsBtn").click(function () {
+                var from = $("#tf").val();
+                var to = $("#ft").val();
+                var sk = $("#sk").val();
+
+                $.ajax({
+                    url: "@Url.Action("Statistics", "Home")",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({ from: from, to: to, sku: sk }),
+                    success: function (response) {
+                        //alert(response);
+                        document.getElementById("rr2").innerHTML = response;
+
+                        //console.log(response);
+                        //if (response == "Password Changed Successfully") {
+                        //    inputF.setAttribute("style", "font-size:small;width: 100%;text-align:center;color:#31b14c;font-weight:bold;border:none;");
+                        //    inputF.value = response.toString();
+                        //    newpass.value = "";
+                        //    confirm.value = "";
+                        //    inputF.value = "";
+                        //    $('#changePassModal').modal('hide');
+                        //} else {
+                        //    inputF.setAttribute("style", "font-size:small;width: 100%;;text-align:center;color:#e24d62;font-weight:bold;border:none;");
+                        //    inputF.value = response.toString();
+
+                        //}
+                    }
+                });
+            });
+        });
+
+
+        //your code here
+        $("#ok").click(function () {
+            //var id1 = $(this).val();
+            var newpass = $("#newpass").val();
+            var confirm = $("#confirm").val();
+            var inputF = document.getElementById("r");
+            //var newpass = document.getElementById("newpass");
+            //var confirm = document.getElementById("confirm");
+
+            //alert(newpass);
+            // $.get("/CP/Aqars/CountryList/" + id);
+            $.ajax({
+                url: "@Url.Action("ChangePassword", "Account2")",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ new_password: newpass, confirmed_password: confirm }),
+                success: function (response) {
+                    //alert(response);
+                    //console.log(response);
+                    if (response == "Password Changed Successfully") {
+                        inputF.setAttribute("style", "font-size:small;width: 100%;text-align:center;color:#31b14c;font-weight:bold;border:none;");
+                        inputF.value = response.toString();
+                        newpass.value = "";
+                        confirm.value = "";
+                        inputF.value = "";
+                        //$('#changePassModal').modal('hide');
+                        window.location.href = "@Url.Action("SignOut", "Home")";
+
+                    } else {
+                        inputF.setAttribute("style", "font-size:small;width: 100%;;text-align:center;color:#e24d62;font-weight:bold;border:none;");
+                        inputF.value = response.toString();
+
+                    }
+                }
+            });
+        });
+
+        $("#send").click(function () {
+            //var id1 = $(this).val();
+            var tarea = $("#tarea").val();
+            var inputFr = document.getElementById("tarea");
+            var txt = document.getElementById("txt");
+
+            //alert(newpass);
+            // $.get("/CP/Aqars/CountryList/" + id);
+            $.ajax({
+                url: "@Url.Action("Send", "Home")",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ text: tarea }),
+                success: function (response) {
+
+                    //alert(response);
+                    //console.log(response);
+                    if (response == "Question Added Successfully") {
+                        //inputF.setAttribute("style", "color:#f00");
+                        txt.setAttribute("style", "font-size:small;width: 100%;text-align:center;color:#31b14c;font-weight:bold;border:none;");
+                        //txt.setAttribute("style", "font-weight:bold");
+                        txt.value = response.toString();
+                        inputFr.value = "";
+                        //window.location.href = "@Url.Action("home2", "Home")";
+
+                        //$('#changePassModal').modal('hide');
+                    } else {
+                        //inputF.setAttribute("style", "color:#e24d62");
+                        //inputF.value = response.toString();
+                        txt.setAttribute("style", "font-size:small;width: 100%;text-align:center;color:#e24d62;font-weight:bold;border:none;");
+                        //txt.setAttribute("style", "font-weight:bold");
+                        txt.value = response.toString();
+                        //window.location.href = "@Url.Action("home2", "Home")";
+
+                    }
+                }
+            });
+        });
+
+
+
+        $("#btn1").click(function () {
+            //var id1 = $(this).val();
+            var em = $("#qf").val();
+            //var confirm = $("#confirm").val();
+            //alert(em);
+            $.ajax({
+                url: "@Url.Action("booksSer", "Home")",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ qf: em }),
+                success: function (response) {
+                    // alert(response);
+                    //if(respon)
+                    document.getElementById("fagsarch").innerHTML = response;
+
+                }
+            });
+        });
+
+        $("#subs").click(function () {
+            //var id1 = $(this).val();
+            var em = $("#em").val();
+            //var confirm = $("#confirm").val();
+            var inputF1 = document.getElementById("r1");
+            var eml = document.getElementById("em");
+
+            //alert(newpass);
+            // $.get("/CP/Aqars/CountryList/" + id);
+            $.ajax({
+                url: "@Url.Action("Subscribe", "Home")",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ em: em }),
+                success: function (response) {
+                    //alert(response);
+                    //console.log(response);
+                    if (response == "Subscribe Successfully") {
+                        inputF1.setAttribute("style", "font-size:small;width: 100%;text-align:center;color:#31b14c;font-weight:bold;border:none;");
+                        inputF1.value = response.toString();
+                        eml.value = "";
+                    } else {
+                        inputF1.setAttribute("style", "font-size:small;width: 100%;text-align:center;color:#e24d62;font-weight:bold;border:none;");
+                        inputF1.value = response.toString();
+
+                    }
+                }
+            });
+        });
+        //  });
+
+        //});
+        //JQuery(function () {
+
+
+        @*$("#cuntlist").change(function () {
+            //var id = document.getElementById("d").value;
+            $.ajax({
+                url: "@Url.Action("CountryList", "Aqars")",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ cid: $("#cuntid").val() }),
+                success: function (response) {
+                    response ? alert("It worked!") : alert("It didn't work.");
+                }
+            });
+        });*@
+
+
+
+    </script>
+
+}
+

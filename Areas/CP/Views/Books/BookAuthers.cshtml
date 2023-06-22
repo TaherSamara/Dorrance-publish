@@ -1,0 +1,226 @@
+﻿@model IEnumerable<dorranceCP.Models.book>
+@{
+    ViewBag.Title = "Book Authers";
+    string url2 = "http://cp.dorrancepublishing.com/Content/Images/Original/";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+
+}
+<style>
+    .table thead tr th {
+        font-size: 16px !important;
+    }
+    .container{
+            max-width: 95% !important;
+        }
+</style>
+
+<div class="pageBody">
+    <div class="whiteOverlay">
+    </div>
+    <div class="container">
+        @Html.Partial("_msg")
+        <div class="row">
+            <div class="pageHeader" style="width:100%;margin-left: 1%;">
+                <div class="clearfix">
+                    <div style="margin-bottom:2%;">
+                        <h4><a href="/CP/Books/">Home</a> / Books</h4>
+                        <h2 class="pageTitle">Books</h2>
+                        <span>welcome Back,<span>@(user != null ? user.Name : "")</span></span>
+                       </div>
+                    </div>
+                    <div class="clearfix tableHeader" style="width:100%;">
+
+                        <form method="get">
+                            <div class="searchBox float-left">
+                                @*<input type="text" class="search" value="search...">*@
+                                <input autofocus value="@ViewBag.q"
+                                       name="q" type="text" class="search"
+                                       placeholder="search ...">
+
+                                <button style="color: #f3f6f9;border: none;position: absolute;left: 0;top: 35%;background-color: transparent;"
+                                        type="submit">
+                                    <i class="fa fa-search" style="top: 36% !important;"></i>
+                                </button>
+                            </div>
+                        </form>
+                        @Html.Partial("_paging")
+
+                    </div>
+
+                    </div>
+
+            @if (Model.Count() > 0)
+            {
+                <div style="width: 100%;">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th hidden></th>
+                                    <th width=5%>#No</th>
+                                    <th width=13%>Book Image</th>
+                                    <th width=15%>SKU/ISBN</th>
+                                    <th width=15%>Book Title</th>
+                                    <th>Author Name</th>
+                                    <th>PUB Date</th>
+                                    @*<th>Genre</th>*@
+                                    <th>Version</th>
+                                    <th>Settings</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var i = 0;}
+                                @foreach (var item in Model)
+                                {
+                                    string auther = "";
+                                    var athr = db.authers.Where(r => r.id == item.auther_id && r.is_delete == false).FirstOrDefault();
+                                    if (athr != null)
+                                    {
+                                        auther = athr.name;
+                                    }
+                                    i = i + 1;
+                                    <tr>
+                                        <td hidden></td>
+                                        <td width=5%>#@i</td>
+                                        <td>
+                                            <div class="bookImg"><img style="width: 73% !important;" src=@(String.IsNullOrEmpty(item.image)? "/Content/assets_cp/images/uploadImage.png":url2+item.image) alt="@item.title"></div>
+                                        </td>
+                                        <td>@item.isbn13</td>
+                                        <td>@item.title</td>
+                                        <td>@auther</td>
+                                        <td>@(!String.IsNullOrEmpty(item.date_finished_books_received) ? item.date_finished_books_received : "")</td>
+                                        @*<td>@item.Genre</td>*@
+                                        <td>@item.version</td>
+                                        <td width=3% class="settingsSec">
+                                            <a href="javascript:;"
+                                               class="float-right settings"><i class="fa fa-ellipsis-v"></i></a>
+                                            <div class="settingBox">
+                                                <ul>
+                                                    <li>
+                                                        <a href="/CP/Books/View/@item.id"><i class="fa fa-eye"></i>View Book</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/CP/Books/Edit/@item.id"><i class="fa fa-pencil"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/CP/Books/Delete/@item.id" class="Confirm"> <i class="fa fa-trash"></i> Delete</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/CP/Orders/OrdBooks?sku=@item.isbn13"> <i class="fa fa-list-alt"></i>Orders</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/CP/Books/Earn/@item.isbn13"> <i class="fa fa-list-alt"></i>Earnings</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-info col-md-12">
+                                            There is no data to display
+
+                                        </div>
+                                    }
+                </div>
+            </div>
+</div>
+
+
+<div class="modal fade" id="AddNewBook" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h5 class="AddBookTitle"> Add New Book</h5>
+            @using (Html.BeginForm("Add", "Books", FormMethod.Post,
+           new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="addBookForm">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="addBookLeft">
+                        <div class="AddBookImg">
+                            <label for="uploadImg" id="uploadImgLabel">
+                                <img src="/Content/assets_cp/images/uploadImage.png"
+                                     alt="">
+                            </label>
+                            <input type="file" id="img">
+                            <span class="uploadImgText">Book Image</span>
+                        </div>
+                        <div class="form-group margin-topForm">
+                            <input type="text" name="sku" class="form-control" placeholder="SKU/ISBN">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="title" class="form-control" placeholder="Book Title">
+                        </div>
+                        <div class="form-group">
+                            <select name="auther_id">
+                                <option value=@ViewBag.id>Author Name</option>
+                                @{
+                                    var authers = db.authers.Where(w => w.is_delete == false).ToList();
+
+                                    foreach (var c in authers)
+                                    {
+                                        <option value=@c.id>@c.name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="vl"></div>
+                    <div class="addBookRight">
+
+                        <div class="form-group">
+                            <input type="date" name="pub" class="form-control" placeholder="Pub Date">
+                        </div>
+                        @*<div class="form-group">
+                            <input type="text" name="gen" class="form-control" placeholder="Genre">
+                        </div>*@
+                        <div class="form-group">
+                            <input type="text" name="ver" class="form-control" placeholder="Book Version">
+                        </div>
+
+                        <button class="btn addBookBtn" type="submit">Save</button>
+                    </div>
+                </div>
+                                    }
+        </div>
+    </div>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $("#list").change(function () {
+            var id = $(this).val();
+            alert(id);
+            // $.get("/CP/Aqars/CountryList/" + id);
+            $.ajax({
+                url: "@Url.Action("Index", "Books")",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ id: id }),
+                success: function (response) {
+                    return response;
+                    //alert(response);
+                    //console.log(response);
+                    //document.getElementById("rr2").innerHTML = response;
+                }
+            });
+        });
+    });
+</script>
+
+
+
+

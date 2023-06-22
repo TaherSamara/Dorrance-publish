@@ -1,0 +1,167 @@
+﻿
+@{ ViewBag.Title = "Scheduled emails report";
+
+    var records = ViewBag.cronJob as IEnumerable<dorranceCP.Models.cronLog>; }
+
+<style>
+    tr, th {
+        text-align: left !important;
+    }
+</style>
+
+
+<style>
+    .table thead tr th {
+        font-size: 16px !important;
+    }
+
+    .container {
+        max-width: 95% !important;
+    }
+
+    th, td {
+        text-align: left;
+    }
+
+    .AdvanceSearch .selectric-wrapper {
+        width: 20% !important;
+    }
+
+    /*.table thead tr th {
+        padding: 17px !important;
+    }*/
+    .chosen-container-single {
+        width: 190px !important;
+    }
+
+    .chosen-select {
+        display: block;
+        width: 100%;
+        height: calc(1.5em + .75rem + 2px);
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
+    .chosen-choices {
+        display: block !important;
+        width: 100% !important;
+        height: calc(2.5em + 1.75rem + -4px) !important;
+        padding: 1.375rem 0.75rem !important;
+        font-size: 1rem !important;
+        /*display: block;
+    width: 100%;
+    height: calc(2.5em + 1.75rem + -4px);
+    padding: 1.375rem 0.75rem;
+    font-size: 1rem;*/
+        font-weight: 400 !important;
+        line-height: 1.5 !important;
+        color: #495057 !important;
+        background-color: #f3f6f9 !important;
+        background-clip: padding-box !important;
+        background-color: #F3F6F9 !important;
+        border: .5px solid #AAAAAA !important;
+        /*height: 60px;*/
+        border-radius: 5px !important;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out !important;
+    }
+
+    .selectric-wrapper {
+        display: none !important;
+    }
+
+    .chosen-single {
+        height: calc(1.5em + 1.75rem + -4px) !important;
+        padding: 0.475rem 0.75rem !important;
+    }
+</style>
+
+<div class="pageBody">
+    <div class="whiteOverlay">
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="pageHeader" style="width:100%;margin-left: 1%;padding-right: 6%;">
+
+                <div>
+                    <h4><a href="/CP/Home/dashboard">Home</a> / Scheduled emails report</h4>
+                    <h2 class="pageTitle">Scheduled emails report</h2>
+                    @*<span>Welcome Back , <span>@(user != null ? user.Name : "")</span></span>*@
+                </div>
+                <div class="clearfix tableHeader" style="width:100%;">
+                    <form method="get">
+                        <div class="searchPagination clearfix">
+                            <div class="AdvanceSearch float-left" style="width:100%;margin-top:0 !important;">
+                                <div class="form-group clearfix">
+                                    <label class="control-label" style="float:left;margin-top: 1%;width:13%;">
+                                        From Date
+                                    </label>
+                                    <input style="width: 20%;margin: 3px;" value="@ViewBag.date1" name="date1" type="date" title="From Date" class="form-control" placeholder="From Date">
+                                    <label class="control-label" style="float:left;margin-top: 1%;width:13%;">
+                                        To Date
+                                    </label>
+                                    <input style="width: 20%;margin: 3px;" value="@ViewBag.date3" name="date3" type="date" title="To Date" class="form-control" placeholder="To Date">
+                                    <button type="submit" class="btn AdvanceSearchBtn" style="margin-top: 0;">Search</button>
+                                    <a href="/CP/CronJob/Index" type="submit" class="btn AdvanceSearchBtn" style="margin-top:0 !important;width: 5%;" title="Refresh"><i class="fa fa-refresh"></i></a>
+
+                                </div>
+
+                                <div class="form-group clearfix">
+
+                                </div>
+                            </div>
+                        </div>
+                        @if (records.Count() > 0)
+                        {
+            @Html.Partial("_paging")}
+                    </form>
+                </div>
+            </div>
+
+            @if (records.Count() > 0)
+            {
+<div style="width: 100%;">
+    <div class="table-responsive">
+        <table class="table" style="width: 100% !important;">
+            <thead>
+                <tr>
+                    <th hidden></th>
+                    <th width=5%>No</th>
+                    <th width=10%>Email</th>
+                    <th width=20%>Date</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ var i = 0;}
+                @foreach (var item in records)
+                {
+                    i = i + 1;
+<tr>
+    <td hidden></td>
+    <td width=5%>#@i</td>
+    <td width=10%>@item.email</td>
+    <td width=20%>@item.date.Value.ToString("MM/dd/yyyy hh:mm")</td>
+    <td>@item.error</td>
+</tr>
+}
+            </tbody>
+        </table>
+    </div>
+</div> }
+else
+{
+<div class="alert alert-info col-md-12">
+    There is no data to display
+
+</div>}
+        </div>
+    </div>
+</div>

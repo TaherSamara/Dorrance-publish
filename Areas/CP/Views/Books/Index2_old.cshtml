@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "Books";
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+    var all = ViewBag.vw as IEnumerable<dorranceCP.Models.book>;
+}
+
+
+<style>
+    .table thead tr th {
+        font-size: 16px !important;
+    }
+
+    .container {
+        max-width: 95% !important;
+    }
+
+    td {
+        color: #fff !important;
+    }
+</style>
+
+<div class="pageBody">
+    <div class="whiteOverlay">
+    </div>
+    <div class="container">
+        @Html.Partial("_msg")
+        <div class="row">
+            <div class="pageHeader" style="width:100%;margin-left: 1%;padding-right: 6%;">
+                <div class="generateCreateButtons float-right">
+                    <a href="/CP/Books/" class="btn generateBtn" style="width: 150px !important;">
+                        Return to Books
+                    </a>
+                </div>
+                <div>
+                    <h4><a href="/CP/">Home</a> / Books</h4>
+                    <h2 class="pageTitle">Books</h2>
+                </div>
+
+            </div>
+
+            @if (all.Count() > 0)
+            {
+                <div style="width: 100%;">
+                    <div class="table-responsive">
+                        <p class="float-right">@ViewBag.sum</p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th hidden></th>
+                                    <th width=3%>#No</th>
+                                    <th width=10%>Contract No</th>
+                                    <th>Book Title</th>
+                                    <th width=11%>ISBN</th>
+                                    <th>Book Type</th>
+                                    <th>Book Price</th>
+                                    <th>EISBN</th>
+
+                                    <th>E-book Price</th>
+                                    <th>Earning Scheme</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var i = 0;}
+                                @foreach (var item in all)
+                                {
+                                    i = i + 1;
+                                    string color = "red";
+                                    if (item.id == 0)
+                                    {
+                                        color = "green";
+                                        <tr style="background-color:red;color:#fff;">
+                                            <td hidden></td>
+                                            <td width=5%>#@i</td>
+                                            <td>
+                                                @item.Genre 
+                                            </td>
+                                            <td>@item.title</td>
+                                            <td>@item.isbn13</td>
+                                            <td>@item.BookType_old</td>
+                                            <td>@item.BOOKPRICE_old</td>
+                                            <td>@item.eisbn</td>
+                                            <td>@item.E_bookPrice_old</td>
+                                            <td>@item.earnings_scheme</td>
+                                        </tr>
+
+                                    }
+                                    else
+                                    {
+                                        <tr style="background-color:green;color:#fff;">
+                                            <td hidden></td>
+                                            <td width=5%>#@i</td>
+                                            <td>
+                                                @item.Genre
+                                            </td>
+                                            <td>@item.title</td>
+                                            <td>@item.isbn13</td>
+                                            <td>@item.BookType_old</td>
+                                            <td>@item.BOOKPRICE_old</td>
+                                            <td>@item.eisbn</td>
+                                            <td>@item.E_bookPrice_old</td>
+                                            <td>@item.earnings_scheme</td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-info col-md-12">
+                                            There is no data to display
+
+                                        </div>
+                                    }
+        </div>
+    </div>
+</div>
+
+
+
+

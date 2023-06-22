@@ -1,0 +1,116 @@
+﻿@model IEnumerable<dorranceCP.Models.settings>
+
+@{
+    ViewBag.Title = "Settings";
+    string url2 = "http://portal.dorrancepublishing.com/Content/Images/Original/";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+
+}
+
+@section css{
+
+    <style>
+        .table thead tr th {
+            font-size: 15px !important;
+        }
+
+        .numOfBook {
+            width: 20% !important;
+        }
+           .container{
+            max-width: 95% !important;
+        }
+
+        /*.table thead tr th {
+            padding: 17px !important;
+        }*/
+    </style>
+
+}
+
+<div class="pageBody" style="overflow:hidden !important;">
+    <div class="whiteOverlay">
+
+    </div>
+    <div class="container">
+        @Html.Partial("_msg")
+        <div class="row">
+            <div class="pageHeader" style="width:100%;margin-left: 1%;">
+                <div class="float-left">
+                    <h4><a href="/CP/Home/dashboard">Home</a> / Settings</h4>
+                    <h2 class="pageTitle">Settings</h2>
+                    <span>Welcome Back , <span>@(user != null ? user.Name : "")</span></span>
+                </div>
+            </div>
+            @if (Model.Count() > 0)
+            {
+                <div style="width:100%;">
+                    <div class="table-responsive scr">
+                        <table class="table table-checkable" style="width: 990px !important;">
+                            <thead>
+                                <tr>
+                                    <th hidden></th>
+                                    <th width="5%">#No</th>
+                                    <th width="20%">Text</th>
+                                    <th width="30%">Value</th>
+                                    @*<th style="width: 9% !important;">Settings</th>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ var i = 0;}
+                                @foreach (var item in Model.Where(x=>x.id == 5 || x.id == 6))
+                                {
+                                    i = i + 1;
+                                    <tr>
+                                        <td hidden></td>
+
+                                        <td width="5%">#@i</td>
+                                        <td class="emailTable">@item.text</td>
+                                        <td>@item.value</td>
+                                            <td width=3% class="settingsSec" hidden style="cursor: pointer;">
+                                            <i class="fa fa-ellipsis-v"></i>
+                                            <div class="settingBox">
+                                                <ul>
+                                                   
+                                                    <li>
+                                                        <a href="/CP/Settings/Edit/@item.id"><i class="fa fa-pencil"></i>Edit</a>
+                                                    </li>
+                                                   
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-info col-md-12">
+                                            There is no data to display
+
+                                        </div>
+                                    }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts{
+    
+   
+    }
+
+
+
+
+
+

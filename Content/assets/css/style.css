@@ -1,0 +1,716 @@
+@font-face{
+    font-family: 'myanmar-sangam-mn';
+    src: url('../fonts/myanmar-sangam-mn.ttf');
+}
+body{
+    font-family: 'myanmar-sangam-mn';
+    color:white;
+
+}
+a:hover{
+    text-decoration: none;
+}
+#main{
+    width:100%;
+    height:100%;
+    position: relative;
+    padding-top:80px;
+z-index: 2;
+}
+.overlay{
+    background-image: url("../images/books.png");
+    z-index: -1;
+    position: absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    opacity: .15;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#main:before{
+    background-color:#000;
+    content: "";
+    position: absolute;
+    width:100%;
+    height:100%;
+    z-index:-1;
+    top:0;
+    left:0;
+
+}
+img{
+    width:100%;
+}
+.whiteFooter{
+    content: "";
+    position: absolute;
+    width:100%;
+    z-index:0;
+    left:0;  
+    bottom:0;
+    right:0;
+}
+.logo{
+    width:160px;
+    margin-bottom:50px;
+}
+.mainHero h1{
+    font-size:37px;
+}
+.mobileImg{
+width:100%;
+}
+.signBtn{
+background-color:white;
+border-radius: 25px;
+display: block;
+margin-top:42px;
+text-align: center;
+cursor: pointer;
+width:150px;
+/*height:49px;*/
+vertical-align: middle;
+}
+.signForm{
+    width:100%;
+    background-color: white;
+    border-radius: 8px;
+    padding:28px;
+    box-shadow:0 1px 4px rgba(0,0,0,.2)
+}
+.signForm h2{
+    font-size:30px;
+    color:black
+}
+.signForm span{
+    font-size:14px;
+    color:#A1A1A1;
+}
+.signInfoForm{
+
+width:100%}
+.signInfoForm  .form-group{
+    margin-top:20px;
+    position: relative;
+}
+.signInfoForm label{
+    font-size:14px;
+    margin:0;
+    color:black;
+}
+.signInfoForm .form-control,.subscribeinput{
+border:1px solid #EBEBEB;
+width:100%;
+border-radius: 4px;
+border-left:2px solid #5BBDB7;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+color:#BDBDBD;
+font-size:13px;
+height:45px;
+
+}
+.form-control:focus,textarea:focus{
+    box-shadow: 0 0 0 0.2rem rgba(91, 189, 183,.25);  
+    border:0 !important;  
+}
+button:focus{
+    box-shadow: 0 0 0 0.2rem rgba(91, 189, 183,.25);    
+
+}
+.signInfoForm .form-control::placeholder{
+    font-size:13px;
+    color:#BDBDBD;
+}
+.form-group i{
+position: absolute;
+right: 7%;
+color: #BEBEBE;
+cursor: pointer;
+top: 48%;
+}
+.signFormBtn{
+    width:100%;
+    text-align: center;
+    color:white;
+    border-radius: 4px;
+    background-color: #5BBDB7;
+    margin:0 auto;
+    margin-top:28px;
+    font-size:15px;
+    height:45px;
+
+}
+.forgetPassword{
+    font-size:14px;
+    color:black;
+    text-align: center;
+    display: block;
+    margin-top:22px;
+}
+.signFormBtn:hover{
+box-shadow: 1px 1px 8px 2px rgba(0,0,0,.2);
+   transition: all .5s;;
+   color:white;
+}
+header{
+    background-color:white;
+    height: 70px;
+    position: relative;
+}
+.homeLogo{
+    width:250px;
+    border-right: 1px solid #D8D8D8;
+    display: inline-block;
+}
+.subscribe{
+    margin-left:25px;
+    /*width:335px !important;*/
+    width : 425px !important;
+    position: relative;
+    display: inline-block;
+}
+.subscribeinput{
+    width:100%;
+    background-color:#F9FAFC;
+    border-radius: 21px;
+    height:43px;
+    border:0;
+}
+.subBtn {
+    background-color: #5BBDB7;
+    border-radius: 25px;
+    position: absolute;
+    right:5px;
+    top:5px;
+    height:34px;
+    width:116px;
+    text-align: center;
+    color:white;
+    font-size: 14px;
+}
+.subBtn:hover{
+    color:white;
+}
+.blackCircle{
+    width:20px;
+    height:20px;
+    border-radius: 50%;
+    background-color: black;
+    margin:0 auto;
+  }
+  .leftSide{
+      padding:10px 0;
+  }
+  .rightSide{
+    float:right
+  }
+.fAQ,.notification,.personalInfo{
+    border-left: 1px solid #D8D8D8 ;
+    display: inline-block;
+    padding:0 25px;
+    padding-top:7%;
+    height:70px;
+float: left;
+}
+    .notification i{
+        color:black;
+        font-size:20px;
+    }
+#homeBody{
+    background-color: #F9FAFC;
+    color:black
+
+}
+.content{
+    background-color: #F9FAFC;
+padding:25px  40px;
+}
+.personalInfo{
+    cursor: pointer;
+    display: table;
+}
+.personaImg{
+width: 36px;
+height:36px;
+border-radius: 50%;
+overflow:hidden;
+margin-right:16px;
+display: inline-block;}
+.personName{
+    display: inline-block;
+    font-size:15px;
+    color:black;
+    display: table-cell;
+    vertical-align: middle;
+}
+.bookBox{
+    width:219px;
+    padding:17px;
+    background-color: white;
+    border-radius: 15px;;
+    display: inline-block;
+    margin-right:25px;
+    margin-bottom: 30px;
+    cursor: pointer;
+    transition: all .5s;
+}
+.bookBox.active{
+    border:1px solid #5BBDB7;
+}
+.bookBox:hover{
+    box-shadow:0 1px 6px rgba(0,0,0,.2);
+    transition: all .5s;
+}
+
+.bookImg{
+    width:95%;
+    margin:0 auto;
+    height:188px;
+    overflow: hidden;
+    border-radius: 6px;
+}
+.bookDetails{
+    margin-top:10px;
+}
+.bookDetails h6{
+color:#5BBDB7;
+font-size: 17px;
+}
+.bookDetails p{
+    font-size: 14px;
+    /*color:#ACACAC;*/
+    color: #408de1;
+    font-weight: 600;
+    margin:0;
+}
+
+.confirmPass{
+    background-color:white;
+    color:black;
+    border:2px solid #5BBDB7;
+    text-align: center;
+    width:156px;
+    height:45px;
+    display: block;
+    border-radius: 22px;
+    margin:0 auto;
+    margin-top: 25px;;
+    transition: .5s all;
+}
+.confirmPass:hover{
+background-color: #5BBDB7;
+color:white;
+transition: .5s all;
+}
+
+.changePassModal .modal-dialog {
+    width:432px;
+
+}
+.changePassModal  .modal-content{
+    padding:0;
+}
+.changePassModal .modal-content{
+    width:100%;
+    padding:45px 25px;
+    text-align: center;
+    border:0;
+    border-radius: 25px;
+    position: relative;
+}
+.changePassModal h5{
+font-size:19px ;
+color:black;
+margin-bottom:10px;
+}
+.changePassModal p{
+    font-size:15px;
+    color:black;
+    display: block;
+    margin-bottom: 0rem;
+}
+
+.changePassModal .modal-body .form-group{
+    margin-top:25px;
+}
+.changePassModal .modal-body .form-control{
+    border:0;
+    border-bottom: 1px solid #E2E2E2;
+    border-radius: 0;
+}
+
+.changePassModal .modal-body .form-control::placeholder{
+    font-size: 12px;
+    color:#BDBDBD;
+}
+.changePassModal .close{
+    position: absolute;
+    right:10%;
+    top:10%;
+}
+.notifyDropDown,.FAQDropdown,.profileDropDown{
+    width:370px;
+    height:auto;
+    background-color: white;
+    padding:30px 18px;
+    position: absolute;
+    right:1%;
+    top: 120%;
+        box-shadow: 0 12px 14px rgba(0,0,0,.1);
+    border-radius: 10px;
+    display: none;
+    z-index: 6666666;
+}
+.notifyDropDown:before,.FAQDropdown:before,.profileDropDown:before{
+    content: "";
+    position: absolute;
+    margin-top:-6px;
+    margin-left:-5px;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 12px solid white;
+    right: 45%;
+    top: -1%;
+}
+
+.FAQDropdown:before{
+    right: 65% 
+}
+.profileDropDown:before{
+    right: 25% 
+}
+.notifyItemBox{
+    background-color:#F9FAFC;
+    width:100%;
+    border-radius: 15px;
+    margin-bottom:10px;
+    padding:20px 15px;
+
+}
+.Date,.notifyDetails,.price,.city,.StatisticsDetails{
+    width:13%;
+    display: inline-block;
+    margin-right:30px;
+    font-size: 14px;
+    color:black;
+    vertical-align: middle;
+}
+.notifyDetails{
+    width:50%;
+}
+.notifyDetails h6{
+    color:#5BBDB7;
+    margin:0;
+
+}
+.notifyDetails h4{
+    font-size:15px;
+    margin:0;
+
+}
+.notifyDetails p,.price p{
+font-size: 13px;
+/*color:#ACACAC;*/
+color: #408de1;
+font-weight: 600;
+margin:0;
+}
+.price{
+    margin-right:0;
+    text-align: rightF ;
+}
+.price p{
+    font-size: 14px;;
+}
+.FAQDropdown h2{
+    font-size:15px;
+}
+.faqToggle a h4,.faqToggle p{
+    font-size:13px;
+    /*color:#BDBDBD;*/
+     color: #408de1;
+    font-weight: 600;
+}
+.faqToggle {
+    padding-bottom:10px;
+    border-bottom: 1px solid #BDBDBD;
+    margin-top:20px;
+}
+.faqToggle p{
+    display: none;
+
+}
+.AskExpert{
+    background-color: #F9FAFC;
+    width:100%;
+    border-radius: 14px;
+    padding:22px;
+    margin-top:17px;
+}
+textarea::placeholder{
+    font-size: 17px;
+    color:#919191;
+}
+.AskExpert textarea{
+    border:0;
+    width:100%;
+    height:100px;
+    background-color: transparent;
+    resize: none;
+}
+.profileDropDown .profileDropDownImg{
+    width:186px;
+    height:186px;
+    border-radius: 50%;
+    margin:0 auto;
+    margin-bottom:30px;
+    overflow: hidden;
+}
+.profileDropDown h2{
+    font-size:25px;
+    margin-bottom:0;
+}
+.profileDropDown span{
+    font-size: 15px;
+    color:#8D8D8D;
+}
+.changePass{
+    margin-bottom: 60px;
+    width:177px;
+    font-size: 16px;;
+}
+.logout{
+    font-size:16px;
+    color:#5BBDB7
+}
+.booksCont{
+    width:45%;
+    display: inline-block;
+    float: left;
+}
+.bookDetailsBox{
+    width:100%;
+        background-color:white;
+    border-radius: 22px;
+    padding:27px 23px;
+    height:676px;
+
+}
+.bookDetailsBox .bookImg,.bookDetailsBox .bookDetails{
+    display: inline-block;
+    width:40%;
+    float: left;
+}
+.bookDetailsBox .bookDetails{
+    margin-left:10px;
+    width:49%;
+}
+.bookDetailsBox .bookDetails h6{
+    font-size:21px;
+    color:black;
+    margin-bottom:8px;
+}
+.bookDetails span{
+    font-size: 14px;
+    color: #408de1;
+    font-weight: 600;
+    /*color:#ACACAC;*/
+}
+.bookDetails span span{
+    color:black
+}
+.bookDetailsBox .bookDetails p{
+    color:#5BBDB7;
+}
+.bookProfileDetails h6{
+    color:black;
+    font-size:15px;
+}
+.bookProfileDetails{
+    margin-top:10px;
+}
+.bookProfileDetails p{
+    font-size:15px;
+    /*color:#ACACAC;*/
+    color: #408de1;
+    font-weight: 600;
+    margin:0;
+}
+.bookProfileDetails p span{
+    color:#5BBDB7
+}
+.bookDetailsBtn{
+    width:232px;
+    margin-top:46px;
+}
+.booksCont .bookBox{
+    margin-right:0;
+    width:90%;
+}
+.bookDetailsBox h6{
+    font-size:17px;
+    margin-bottom:28px;
+}
+.StatisticsBox{
+    display: none;
+}
+
+.fromTo{
+    width:48%;
+    background-color: #F9FAFC;
+    font-size:14px;
+    color:#8D8D8D;
+    border-radius: 14px;
+    height:40px;
+    padding:10px;
+    display: inline-block;
+}
+.StatisticsItem{
+    margin-top:15px;
+   
+    
+}
+.StatisticsDetails{
+    width:35%;
+}
+.StatisticsDetails h6{
+    font-size:17px;
+    color:#5BBDB7;
+    margin-bottom: 0;
+}
+.StatisticsItem p{
+    font-size:13px;
+    /*color:#ACACAC;*/
+    color: #408de1;
+    font-weight: 600;
+    margin:0;
+}
+.StatisticsBox .date,.StatisticsBox .price,.StatisticsBox .city{
+    width:16%;
+    margin-right:0;
+}
+
+@media(min-width:320px) and (max-width:767px){
+    header{
+        height: auto;
+    }
+    .homeLogo{
+        width:100%;
+    }
+    .changePassModal .modal-dialog{
+        width:100%;
+    }
+    .logo{
+        margin:10px auto
+    }
+    .mainHero{
+        text-align: center;
+    }
+    .signForm{
+        margin-top:20px;
+    }
+    .signBtn{
+        margin:20px auto
+    }
+    .mobileImg{
+        display: none;
+    }
+    .rightSide{
+        float: none;
+    }
+    .bookBox {
+        margin:0px auto;
+        margin-bottom: 30px;
+        width:100%;
+    }
+    .notifyDropDown:before,.FAQDropdown:before,.profileDropDown:before{
+        display: none;
+    }
+    .notifyDropDown,.FAQDropdown,.profileDropDown{
+        
+    width:320px;}
+    .fAQ,.notification,.personalInfo{
+        padding:10px;
+        border-left:0;
+        height:auto
+    }
+    .personaImg {
+        width: 18px;
+        height: 18px;
+        margin-right: 11px;}
+        .notification i {
+            color: black;
+            font-size: 14px;
+        }
+        .blackCircle{
+            width:14px;
+            height:14px;
+        }
+        .subscribe {
+            width: 95%;
+            margin:0 auto;
+            margin-top:10px;
+            margin-bottom:10px;
+        }
+.bookDetailsBox{
+ 
+width:100%;
+margin-bottom:20px;
+}
+.content{
+padding:10px;
+}
+.bookDetailsBox .bookImg, .bookDetailsBox .bookDetails{
+    width:100%;
+    display: block;
+    margin-bottom:20px;
+}
+
+.booksCont .bookBox{
+    width:100%;
+}
+.StatisticsDetails h6{
+    font-size:14px;
+}
+.StatisticsBox .date, .StatisticsBox .price, .StatisticsBox .city{
+    width:17%;
+}
+.StatisticsDetails{
+    width:41%;
+    margin-right:0;
+}
+
+.Date{
+    font-size:12px;
+}
+.StatisticsItem p{
+    font-size: 13px;;
+}
+.StatisticsBox {
+    padding:10px;
+}
+.notifyItemBox{
+    padding:20px 10px;
+}
+}
+
+@media(min-width:768px) and (max-width:1200px){
+    .homeLogo{
+        width:38%;
+    }
+    .subscribe{
+width:60%;
+        margin-left: 0;
+    }
+    .StatisticsBox {
+        margin-top:20px;
+    }
+
+}

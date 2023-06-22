@@ -1,0 +1,193 @@
+﻿
+@{
+    ViewBag.Title = "Send Email";
+    Layout = "~/Areas/CP/Views/Shared/_Layout.cshtml";
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+
+}
+
+
+<style>
+     .form-group{
+        margin-bottom: 10px !important;
+    }
+      .selectric-wrapper{
+        display:none !important;
+    }
+      .chosen-container{
+         width: 96% !important;
+    margin-left: 1.5%;
+      }
+
+    .chosen-select {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+    .chosen-choices{
+        display: block !important;
+    width: 100% !important;
+    height: calc(2.5em + 1.75rem + -4px) !important;
+    padding: 1.375rem 0.75rem !important;
+    font-size: 1rem !important;
+        /*display: block;
+    width: 100%;
+    height: calc(2.5em + 1.75rem + -4px);
+    padding: 1.375rem 0.75rem;
+    font-size: 1rem;*/
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: #495057 !important;
+    background-color: #f3f6f9 !important;
+    background-clip: padding-box !important;
+      background-color: #F3F6F9 !important;
+    border: .5px solid #AAAAAA !important;
+    /*height: 60px;*/
+    border-radius: 5px !important;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out !important;
+    }
+
+</style>
+@using (Html.BeginForm(null, null, FormMethod.Post, new
+{
+    enctype = "multipart/form-data",
+    @class = "inbox-compose form-horizontal",
+    style = "    margin-top: 10%;"
+}))
+
+{
+    @Html.Partial("_msg")
+    
+        <div class="pageHeader" style="margin-left: 2%;">
+            <h4><a href="/CP/Home/dashboard">Home</a> / Send Email To Author</h4>
+            <h3 class="pageTitle"> Send Email To Author</h3>
+        </div>
+        <br />
+        @Html.AntiForgeryToken()
+        <div class="inbox-form-group">
+            <div class="controls-row">
+
+                <div class="portlet-body form">
+                    <!-- BEGIN FORM-->
+                    <div class="form-body">
+                        <div class="form-group first">
+
+                            <select multiple="multiple" style="margin: 0 !important;padding: 11px 5px !important;" required class="form-control chosen-select statesSelect advanceSerachSelect" name="auth[]" tabindex="4">
+                                <option value="0" selected>All</option>
+                                @{
+                                    var authers2 = db.authers.Where(w => w.is_delete == false).ToList();
+
+                                    foreach (var c2 in authers2)
+                                    {
+                                        <option value=@c2.id>@c2.name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="subject" value="" placeholder="subjcet">
+                            </div>
+                        </div>
+                        <div class="form-group last">
+
+                            <div class="col-md-12">
+                                <textarea class=" form-control" name="message" rows="6"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="link1" value="" placeholder="Apple Store Link (Optional)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="link2" value="" placeholder="Google Store Link (Optional)">
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="inbox-compose-attachment">
+                        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+                        <span class="btn green fileinput-button">
+                            <i class="fa fa-plus"></i>
+                            <span>
+                                AddFiles ...
+                            </span>
+                            <input type="file" name="files" multiple="multiple">
+                        </span>
+                        <!-- The table listing the files available for upload/download -->
+                        @*<table role="presentation" class="table table-striped">
+                                <tbody class="files"></tbody>
+                            </table>
+                    </div>*@
+                    <!-- END FORM-->
+                </div>
+            </div>
+        </div>
+        <script id="template-upload" type="text/x-tmpl">
+            {% for (var i=0, file; file=o.files[i]; i++) { %}
+            <tr class="template-upload fade">
+                <td class="name" width="30%"><span>{%=file.name%}</span></td>
+                <td class="size" width="40%"><span>{%=o.formatFileSize(file.size)%}</span></td>
+                {% if (file.error) { %}
+                <td class="error" width="20%" colspan="2"><span class="label label-danger">Error</span> {%=file.error%}</td>
+                {% } else if (o.files.valid && !i) { %}
+                <td>
+                    <p class="size">{%=o.formatFileSize(file.size)%}</p>
+                    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                    </div>
+                </td>
+                {% } else { %}
+                <td colspan="2"></td>
+                {% } %}
+                <td class="cancel" width="10%" align="right">
+                    {% if (!i) { %}
+                    <button class="btn btn-sm red cancel">
+                        <i class="fa fa-ban"></i>
+                        <span>Cancel</span>
+                    </button>
+                    {% } %}
+                </td>
+            </tr>
+            {% } %}
+        </script>
+        <script id="template-download" type="text/x-tmpl">
+            {% for (var i=0, file; file=o.files[i]; i++) { %}
+            <tr class="template-download fade">
+                {% if (file.error) { %}
+                <td class="name" width="30%"><span>{%=file.name%}</span></td>
+                <td class="size" width="40%"><span>{%=o.formatFileSize(file.size)%}</span></td>
+                <td class="error" width="30%" colspan="2"><span class="label label-danger">Error</span> {%=file.error%}</td>
+                {% } else { %}
+                <td class="name" width="30%">
+                    <a href="{%=file.url%}" title="{%=file.name%}" data-gallery="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
+                </td>
+                <td class="size" width="40%"><span>{%=o.formatFileSize(file.size)%}</span></td>
+                <td colspan="2"></td>
+                {% } %}
+                <td class="delete" width="10%" align="right">
+                    <button class="btn default btn-sm" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}" {% if (file.delete_with_credentials) { %} data-xhr-fields='{"withCredentials":true}' {% } %}>
+                        <i class="fa fa-times"></i>
+                    </button>
+                </td>
+            </tr>
+            {% } %}
+        </script>
+        <br />
+        <div class="inbox-compose-btn">
+            <button class="btn green" style=" background: #5cbdb6;color: #fff;"><i class="fa fa-check"></i>Send</button>
+            <a href="/CP/NewsLetter/Send"  style=" background: #9a9797; color: #fff;" class="btn">Discard</a>
+        </div>
+        }

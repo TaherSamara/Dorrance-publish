@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="825f331e05824da3aca7b36e972f22d1" Name="Diagram1">
+        <EntityTypeShape EntityType="NS_DorranceModel.BookTotalForPeriod" Width="1.5" PointX="8.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.ContractNumbersAuthors" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.FAQs" Width="1.5" PointX="2.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.Messages" Width="1.5" PointX="5.25" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.Orders" Width="1.5" PointX="5.25" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.settings" Width="1.5" PointX="4.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.Subscribe" Width="1.5" PointX="7.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.Temp_Authors" Width="1.5" PointX="9.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.Temp_Book" Width="1.5" PointX="11.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.Temp_Orders" Width="1.5" PointX="13.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.C__MigrationHistory" Width="1.5" PointX="7.75" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.admin" Width="1.5" PointX="0.75" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.AspNetRoles" Width="1.5" PointX="1.5" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.AspNetUserClaims" Width="1.5" PointX="3" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.AspNetUserLogins" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.AspNetUsers" Width="1.5" PointX="0.75" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.BillingAddress" Width="1.5" PointX="5.25" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.book" Width="1.5" PointX="10.75" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.bookOld" Width="1.5" PointX="3" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.country" Width="1.5" PointX="0.75" PointY="23.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.devices" Width="1.5" PointX="12.75" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.Earnings" Width="1.5" PointX="11" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.Earnings_Scheme_1" Width="1.5" PointX="14.75" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.Earnings_Scheme_2" Width="1.5" PointX="15.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.EarningsOld" Width="1.5" PointX="14" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.EmailTemplate" Width="1.5" PointX="15.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.Invoices" Width="1.5" PointX="8.25" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.Links" Width="1.5" PointX="3" PointY="42.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.Logs" Width="1.5" PointX="16.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.Notifications" Width="1.5" PointX="16.75" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.Periods" Width="1.5" PointX="6" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.scheme_1" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.scheme_2" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.ShippingAddress" Width="1.5" PointX="5.25" PointY="30.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.Slider" Width="1.5" PointX="16.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NS_DorranceModel.C_bookback" Width="1.5" PointX="16.75" PointY="18.5" IsExpanded="true" />
+        <AssociationConnector Association="NS_DorranceModel.FK_BookTotalForPeriod_Periods" ManuallyRouted="false" />
+        <AssociationConnector Association="NS_DorranceModel.FK_Book_admin" ManuallyRouted="false" />
+        <AssociationConnector Association="NS_DorranceModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="NS_DorranceModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="NS_DorranceModel.FK_Earnings2_scheme_1" ManuallyRouted="false" />
+        <AssociationConnector Association="NS_DorranceModel.FK_Earnings2_scheme_2" ManuallyRouted="false" />
+        <AssociationConnector Association="NS_DorranceModel.FK_Earnings_scheme_1" ManuallyRouted="false" />
+        <AssociationConnector Association="NS_DorranceModel.FK_Earnings_scheme_2" ManuallyRouted="false" />
+        <AssociationConnector Association="NS_DorranceModel.FK_Invoices_Periods" ManuallyRouted="false" />
+        <AssociationConnector Association="NS_DorranceModel.AdminLink" ManuallyRouted="false" />
+        <AssociationConnector Association="NS_DorranceModel.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="NS_DorranceModel.authers" Width="1.5" PointX="3" PointY="15.5" />
+        <AssociationConnector Association="NS_DorranceModel.FK_Messages_authers" />
+        <AssociationConnector Association="NS_DorranceModel.FK_Orders_authers" />
+        <AssociationConnector Association="NS_DorranceModel.FK_authers_admin" />
+        <AssociationConnector Association="NS_DorranceModel.FK_authers_AspNetUsers" />
+        <AssociationConnector Association="NS_DorranceModel.FK_authers_country" />
+        <AssociationConnector Association="NS_DorranceModel.FK_BillingAddress_authers" />
+        <AssociationConnector Association="NS_DorranceModel.FK_Invoices_authers" />
+        <AssociationConnector Association="NS_DorranceModel.FK_ShippingAddress_authers" />
+        <EntityTypeShape EntityType="NS_DorranceModel.alltots" Width="1.5" PointX="18.375" PointY="7.75" />
+        <EntityTypeShape EntityType="NS_DorranceModel.cronLog" Width="1.5" PointX="19.375" PointY="0.75" />
+        <EntityTypeShape EntityType="NS_DorranceModel.EmailJob" Width="1.5" PointX="19.375" PointY="3.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

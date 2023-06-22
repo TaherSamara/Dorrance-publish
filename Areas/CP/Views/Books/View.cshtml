@@ -1,0 +1,235 @@
+﻿@model dorranceCP.Models.book
+@{
+    ViewBag.Title = "View Book";
+    string url2 = "http://cp.dorrancepublishing.com/Content/Images/Original/";
+    var user = ViewBag.User as dorranceCP.Models.admin;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+
+
+}
+@section css{
+    <style>
+        .page-header-fixed .page-container {
+            margin-top: 50px !important;
+        }
+
+        input {
+            height: 38px !important;
+        }
+        label{
+            text-align:left;
+        }
+    </style>
+}
+
+
+
+<div class="pageHeader col-md-9" style="width:100%;margin-top: 9%;">
+    <h4 style="font-size:17px;">
+    <a href="/CP/Home/dashboard">Home</a> / <a href="/CP/Books/">Books</a>/ View Book</h4>
+
+    <div class="row" style="margin-left: 1%;margin-top: 3%;">
+        <div class="pageHeader" style="width:100%;box-shadow: 1px 3px 4px 3px #dedede;padding: 3%;">
+
+            <p style="font-size:20px;font-weight: 500;">View Book</p>
+            <hr />
+            <br />
+            <div class="addBookForm">
+                <div class="addBookLeft" style="width: 50% !important;">
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.title, "Book Title", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.title" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.sub_title, "Book SubTitle", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.sub_title" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.isbn13, "SKU/ISBN", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.isbn13" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+                    @{ 
+                        string nm = "";
+                    }
+                    @if (Model.auther_id != 0)
+                    {
+                        var auth = db.authers.Where(y => y.id == Model.auther_id && y.is_delete == false).FirstOrDefault();
+                        if (auth != null)
+                        {
+                            nm = auth.name;
+                        }
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.auther_id, "Author Name", htmlAttributes: new { @class = "control-label col-md-5" })
+                                <input value="@nm" disabled class="form-control col-md-7 float-right" />
+                            </div>
+                        </div>
+
+
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(model => model.auther_id, "Author Name", htmlAttributes: new { @class = "control-label col-md-5" })
+                                <input value="" disabled class="form-control col-md-7 float-right" />
+                            </div>
+                        </div>
+                    }
+                    
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.additional_binding, "Additional Binding", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.additional_binding" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.binding, "Binding", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.binding" disabled class="form-control col-md-7 float-right"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.bindings_due, "Binding Due", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.bindings_due" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.earnings_scheme, "Earning Scheme", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.earnings_scheme" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+
+
+                    <div class="form-group" style="margin-bottom: 28%;">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.image, "Photo", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <img style="width: 34% !important;" src=@(String.IsNullOrEmpty(Model.image)? "/Content/assets_cp/images/uploadImage.png":url2+Model.image) />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="addBookRight" style="width: 50% !important;">
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.eisbn, "EISBN", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.eisbn" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.imprint, "Imprint", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.imprint" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.retail_price, "Retail Price", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.retail_price" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.retail_price_usd_for_additonal_binding, "Retail Price For Additional Binding", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.retail_price_usd_for_additonal_binding" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.unpaid_earnings_amount, "Unpaid Earnings Amount", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.unpaid_earnings_amount" Value=@(Model.unpaid_earnings_amount == null ? 0 : Model.unpaid_earnings_amount) disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.version, "Book Version", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.version" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.isbn13_for_additional_binding, "ISBN For Additional Binding", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.isbn13_for_additional_binding" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+
+                    @*<div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.Genre, "Category Book", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.Genre" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>*@
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.ebook_retail_price, "Ebook Retail Price", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.ebook_retail_price" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.date_finished_books_received, "Date Finished Received", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.date_finished_books_received" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.BookType_old, "Book Type", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.BookType_old" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.BOOKPRICE_old, "Book Price", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.BOOKPRICE_old" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            @Html.LabelFor(model => model.E_bookPrice_old, "E-Book Price", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <input value="@Model.E_bookPrice_old" disabled class="form-control col-md-7 float-right" />
+                        </div>
+                    </div>
+
+                </div>
+
+                @*<div class="form-group">
+                    <div class="col-md-offset-2 col-md-7">
+                        <input type="submit" value="add" class="btn btn-primary" />
+                        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-defult" })
+                    </div>
+                </div>*@
+            </div>
+        </div>
+
+                </div>
+            </div>
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,268 @@
+﻿@model dorranceCP.Models.Orders
+@{
+    var ord = ViewBag.ord as dorranceCP.Models.Orders;
+    dorranceCP.Models.NS_DorranceEntities db = new dorranceCP.Models.NS_DorranceEntities();
+    string url2 = "http://cp.dorrancepublishing.com/Content/Images/Original/";
+    var b = db.book.Where(w => w.isbn13 == ord.sku && w.is_delete == false).FirstOrDefault();
+}
+@*<style>
+    input{
+        float: right;
+    }
+    label{
+    color: #000;
+    font-size: 17px;
+    }
+    .combo {
+    width: 200px;
+}
+</style>*@
+@*<link href="~/Content/chosen.min.css" rel="stylesheet" />*@
+
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h5 class="AddBookTitle" style="color: #5bbdb7;"> Order Details</h5>
+    <br />
+            <div class="addBookLeft">
+
+                @*<div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => b, "Book Title", htmlAttributes: new { @class = "control-label col-md-3", style = "color: #000 !important;font-size: 17px !important;" })
+                        @Html.EditorFor(model => b, new { htmlAttributes = new { @class = "form-control col-md-9 float-right", type = "number", required = "required" } })
+                        @Html.ValidationMessageFor(model => b, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.order_number, "Order Number", htmlAttributes: new { @class = "control-label col-md-5", style = "color: #000 !important;font-size: 17px !important;" })
+                        <input class="form-control col-md-7 float-right" readonly value="@Model.order_number" type="text" />
+                        @*@Html.EditorFor(model => model.order_number, new { htmlAttributes = new { @class = "form-control col-md-7 float-right", required = "required" } })*@
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.sku, "SKU Order", htmlAttributes: new { @class = "control-label col-md-5", style = "color: #000 !important;font-size: 17px !important;" })
+                        <input class="form-control col-md-7 float-right" value="@Model.sku" readonly  type = "text"/>
+                        @*@Html.EditorFor(model => model.sku, new { htmlAttributes = new { @class = "form-control col-md-7 float-right",  type = "number", required = "required" }})*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.order_number, "Book Title", htmlAttributes: new { @class = "control-label col-md-5", style = "color: #000 !important;font-size: 17px !important;" })
+                        <input class="form-control col-md-7 float-right" readonly value="@b.title" type="text" />
+                        @*@Html.EditorFor(model => model.order_number, new { htmlAttributes = new { @class = "form-control col-md-7 float-right", required = "required" } })*@
+                    </div>
+                </div>
+
+               
+                @*<div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.local_sort_text1, "Earning Schema", htmlAttributes: new { @class = "control-label col-md-3", style = "color: #000 !important;font-size: 17px !important;" })
+                        @Html.EditorFor(model => model.local_sort_text1, new { htmlAttributes = new { @class = "form-control col-md-9 float-right",disabled= "disabled", required = "required" } })
+                    </div>
+                </div>*@
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.local_sort_text1, "Earnings Type", htmlAttributes: new { @class = "control-label col-md-5", style = "color: #000 !important;font-size: 17px !important;" })
+                        <input class="form-control col-md-7 float-right" readonly value="@Model.local_sort_text1" type="text" />
+                        @*@Html.EditorFor(model => model.local_sort_text1, new { htmlAttributes = new { @class = "form-control col-md-7 float-right", type = "number", required = "required" } })*@
+                    </div>
+                </div>
+              
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.quantity_ordered, "Quantity", htmlAttributes: new { @class = "control-label col-md-5", style = "color: #000 !important;font-size: 17px !important;" })
+                        <input class="form-control col-md-7 float-right" readonly value="@Model.quantity_ordered" type="text" />
+                        @*@Html.EditorFor(model => model.quantity_ordered, new { htmlAttributes = new { @class = "form-control col-md-7 float-right", type = "text", required = "required" } })*@
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.total_price, "Total Received for Order", htmlAttributes: new { @class = "control-label col-md-5", style = "color: #000 !important;font-size: 14px !important;" })
+                        <input class="form-control col-md-7 float-right" readonly value="$ @Model.total_price" type="text" />
+
+                        @*@Html.EditorFor(model => model.total_price, new { htmlAttributes = new { @class = "form-control col-md-7 float-right", type = "text", required = "required" } })*@
+                    </div>
+                </div>
+
+@{
+    double v = 0;
+    var bo = db.book.Where(e => e.isbn13 == Model.sku).FirstOrDefault();
+
+    //var ord = db.Orders.Where(sk => sk.sku == n.sku).FirstOrDefault();
+    //var this_book = db.book.Where(bs1 => bs1.isbn13 == b.sku).FirstOrDefault();
+    var earn_order = Model.local_sort_text1;
+    var earn_book = bo.earnings_scheme;
+    var sc1 = db.scheme_1.Where(s1 => s1.text.Contains(earn_order)).FirstOrDefault();
+    var sc1_id = 0;
+    if (sc1 != null)
+    {
+        sc1_id = sc1.id;
+    }
+    var sc2 = db.scheme_2.Where(s2 => s2.text.Contains(earn_book)).FirstOrDefault();
+    var sc2_id = 0;
+    if (sc2 != null)
+    {
+        sc2_id = sc2.id;
+    }
+    var sc1_list = db.scheme_1.ToList();
+    //var order_period = c.order_date.Value.Month;
+    //var current_period = dt.Month;
+
+    //foreach (var f in sc1_list)
+    //{
+    var earning_ratio = db.Earnings.Where(er => er.id_scheme_1 == sc1_id && er.id_scheme_2 == sc2_id && er.sku == Model.sku).FirstOrDefault();
+    //double v = 0;
+    if (earning_ratio != null)
+    {
+        v = Convert.ToDouble((earning_ratio.value / 100) * Model.total_price);
+    }
+}
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class = "control-label col-md-5", style = "color: #000 !important;font-size: 17px !important;">Earnings</label>
+                        <input class="form-control col-md-7 float-right" readonly value="$ @v" type="text" />
+
+                        @*@Html.EditorFor(model => model.total_price, new { htmlAttributes = new { @class = "form-control col-md-7 float-right", type = "text", required = "required" } })*@
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.order_date, "Order Date", htmlAttributes: new { @class = "control-label col-md-5", style = "color: #000 !important;font-size: 17px !important;" })
+                        <input class="form-control col-md-7 float-right" readonly value=@Model.order_date type="text" />
+                    </div>
+                </div>
+                @*<div class="form-group">
+                    <div class="col-md-12">
+                        @Html.LabelFor(model => model.country_id, "Country", htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.DropDownListFor(model => model.country_id, (SelectList)ViewBag.CountryList, "Author Country", htmlAttributes: new { @class = "form-control col-md-9", style= "margin-left: 7%;", required = "required" })
+                        @Html.ValidationMessageFor(model => model.country_id, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+             
+                @*<div class="form-group">
+                    <div class="AddBookImg">
+                        <label for="uploadImg" id="uploadImgLabel">
+                            <img src="~/Content/assets_cp/images/uploadImage.png" alt="uploadImage.png">
+                        </label>
+                        <input type="file" name="img"/>
+                        <span class="uploadImgText">Image</span>
+                    </div>
+                </div>*@
+                @*<div class="form-group" style="margin-bottom: 13% !important;">
+                    <div class="AddBookImg col-md-12">
+                        <span class="uploadImgText col-md-3" style="color: #000;">Image</span>
+                        <label for="uploadImg" id="uploadImgLabel" class="col-md-9" style= "color: #000 !important;font-size: 17px !important;">
+                           @if (Model != null && !string.IsNullOrEmpty(Model.image))
+                           {
+                                 <br />
+                                 <img src="@url2@Model.image" class="img-thumbnail img-rounded" style="width: 40% !important;" />
+                           }
+                           else
+                           {
+                               <img style="width: 40% !important;" src="@(String.IsNullOrEmpty(Model.image) ? "/Content/assets_cp/images/uploadImage.png" : url2 + Model.image)" />
+                           }
+                        </label>
+                        <input type="file" name="img" class="float-right">
+
+                    </div>
+                </div>*@
+                @*<div class="form-group" style="margin-top: 12%;">
+                    @Html.LabelFor(model => model.image, "Author Image", htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-10">
+                        <input type="file" name="img" />
+                        @if (Model != null && !string.IsNullOrEmpty(Model.image))
+                        {
+                            <br />
+                          <img src="@url2@Model.image" class="img-thumbnail img-rounded" style="width: 34% !important;" />
+                        }
+                        else
+                        {
+                            <img style="width: 34% !important;" src="@(String.IsNullOrEmpty(Model.image)? "/Content/assets_cp/images/uploadImage.png":url2+Model.image)" />
+                        }
+                        @Html.ValidationMessageFor(model => Model.image, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+                @*<div class="form-group margin-topForm">
+                    <input required value="@usr.name" type="text" name="auth_name" class="form-control" placeholder="Author Name">
+                </div>
+                <div class="form-group">
+                    <input required type="email" name="auth_email" class="form-control" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <input required type="number" name="auth_phone" class="form-control" placeholder="Phone">
+                </div>
+                <div class="form-group">
+                    <input required type="text" name="auth_address" class="form-control" placeholder="Address">
+                </div>
+                <div class="form-group ">
+                    <input type="text" name="auth_address2" class="form-control" placeholder="Address 2">
+                </div>*@
+                @*<div class="form-group">
+                        <input type="text" class="form-control" placeholder="Country">
+                    </div>*@
+
+                @*<div class="form-group">
+                    <select required name="auth_country">
+                        <option value="">Country</option>
+                        @{
+                            var country = db.country.Where(w => w.visible_on_list == true).ToList();
+
+                            foreach (var c in country)
+                            {
+                                <option value=@c.id>@c.country_en_name</option>
+                            }
+                        }
+                    </select>
+                </div>*@
+
+            @*</div>
+            <div class="vl"></div>
+            <div class="addBookRight">
+                <div class="AddBookImg">
+                    <label for="uploadImg" id="uploadImgLabel">
+                        <img src="~/Content/assets_cp/images/uploadImage.png"
+                             alt="uploadImage.png">
+                    </label>
+                    <input type="file" name="img">
+                    <span class="uploadImgText">Author Image</span>
+                </div>*@
+
+                @*<button style="width: 100% !important;height:50px !important;background: #5cbdb6 !important;color: #fff !important;" class="btn addBookBtn" type="submit">Save</button>*@
+            </div>
+    }
+@*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src='https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.3.min.js'></script>
+<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js'></script>
+
+<script src="~/Content/assets/js/jquery.selectric.min.js"></script>
+<script src="~/Content/chosen.jquery.js"></script>
+
+<script>
+        $("select.chosen-select").chosen({
+            height: "55px",
+
+        });
+
+
+        $('select').selectric({
+            disableOnMobile: false,
+            nativeOnMobile: false,
+            dir: "ltr"
+        });
+        $('.selectric-wrapper button').append('<i class="fas fa-chevron-down"></i>');
+</script>*@
+@*<script>
+    $(".combo").select2({
+        //allowClear: true,
+        //width: "resolve"
+    });
+</script>*@
